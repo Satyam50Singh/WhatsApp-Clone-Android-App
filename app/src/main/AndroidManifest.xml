@@ -11,6 +11,9 @@
         android:theme="@style/Theme.WhatsappClone">
         <activity
             android:name=".ui.activities.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
