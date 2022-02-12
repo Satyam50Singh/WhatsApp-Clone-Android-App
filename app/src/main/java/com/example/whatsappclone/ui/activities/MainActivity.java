@@ -25,12 +25,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // for removing shadow of action bar
         getSupportActionBar().setElevation(0);
+        init();
+        settingViewPagerAdapter();
+    }
+
+    private void init() {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
-
         tabLayout.setupWithViewPager(viewPager);
+    }
 
+    private void settingViewPagerAdapter() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         viewPagerAdapter.addFragment(new CameraFragment(), "");
@@ -40,5 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_photo_camera);
+        tabLayout.getTabAt(1).select();
     }
 }
