@@ -1,12 +1,18 @@
 package com.example.whatsappclone.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.ViewPagerAdapter;
@@ -15,6 +21,8 @@ import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -29,6 +37,70 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
         init();
         settingViewPagerAdapter();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Toast.makeText(getApplicationContext(), "Search : " + s, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+            case R.id.new_group:
+                Toast.makeText(getApplicationContext(), "New Group", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.new_broadcast:
+                Toast.makeText(getApplicationContext(), "New BroadCast", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.linked_devices:
+                Toast.makeText(getApplicationContext(), "Linked Devices", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.payments:
+                Toast.makeText(getApplicationContext(), "Payments", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.starred_messages:
+                Toast.makeText(getApplicationContext(), "Starred Messages", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            case R.id.settings:
+                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     private void init() {
