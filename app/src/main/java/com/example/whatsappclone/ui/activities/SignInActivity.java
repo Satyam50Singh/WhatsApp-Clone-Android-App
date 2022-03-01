@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.whatsappclone.R;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
