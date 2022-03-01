@@ -5,4 +5,11 @@
     <string name="whatsapp_splash_logo">whatsapp_splash_logo</string>
     <string name="action_search">Search</string>
     <string name="action_settings"></string>
+    <string name="enter_your_name">Enter Your Name :</string>
+    <string name="enter_your_email">Enter Your Email :</string>
+    <string name="enter_your_password">Enter Your Password :</string>
+    <string name="already_have_an_account">Already Have an Account ?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
 </resources>
