@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,7 +60,7 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
         firebaseAuth = FirebaseAuth.getInstance();
-
+        firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.request_token_id))
@@ -134,8 +135,20 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Utils.hideProgressDialog();
-                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            finish();
+                            try {
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                UserModel userModel = new UserModel();
+                                String userId = firebaseUser.getUid();
+                                userModel.setUserId(firebaseUser.getUid());
+                                userModel.setUsername(firebaseUser.getDisplayName());
+                                userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
+                                firebaseDatabase.getReference().child("Users").child(task.getResult().getUser().getUid()).setValue(userModel);
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                finish();
+                            }catch (Exception e) {
+                                Utils.showToastMessage(SignInActivity.this, "Google sign in failed" + e.getMessage());
+
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Utils.hideProgressDialog();
