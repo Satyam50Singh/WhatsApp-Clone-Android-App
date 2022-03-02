@@ -64,8 +64,6 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Utils.hideProgressDialog();
-                                    Utils.showToastMessage(SignInActivity.this, firebaseAuth.getCurrentUser().getUid());
-                                    Utils.showToastMessage(SignInActivity.this, firebaseAuth.getCurrentUser().getEmail());
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                     finish();
                                 }else {

@@ -37,4 +37,6 @@
     <string name="creating_your_account">We\'re creating your account</string>
     <string name="login_to_your_account">Login to your Account</string>
     <string name="login">Login</string>
+    <string name="action_log_out">Log out</string>
+    <string name="user_log_out">User Log out</string>
 </resources>

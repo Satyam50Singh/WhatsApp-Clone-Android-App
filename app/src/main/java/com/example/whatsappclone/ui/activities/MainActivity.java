@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +18,15 @@ import com.example.whatsappclone.ui.fragments.CallsFragment;
 import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
+import com.example.whatsappclone.utils.Utils;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
 
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,15 +81,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settings:
                 Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.logout:
+                userLogOut();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+
     private void init() {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         tabLayout.setupWithViewPager(viewPager);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     // this method is used to set tabs in tab layout
@@ -100,5 +110,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_photo_camera);
         tabLayout.getTabAt(1).select();
+    }
+
+    // method for user log out
+    private void userLogOut() {
+        firebaseAuth.signOut();
+        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+        Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
     }
 }

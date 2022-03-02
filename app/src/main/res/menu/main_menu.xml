@@ -57,6 +57,10 @@
         android:iconTint="@color/white"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/logout"
+        android:iconTint="@color/white"
+        android:title="@string/action_log_out"
+        app:showAsAction="never" />
 
 </menu>
