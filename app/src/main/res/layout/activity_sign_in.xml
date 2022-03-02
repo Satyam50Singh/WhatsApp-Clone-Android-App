@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
@@ -13,7 +14,7 @@
         android:id="@+id/imageView2"
         android:layout_width="110dp"
         android:layout_height="105dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         app:srcCompat="@drawable/whatsapp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -45,16 +46,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/tv_create_an_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
+        android:singleLine="true"
         android:text="@string/create_an_new_account" />
 
     <Button
+        android:id="@+id/btn_sign_in"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:text="@string/sign_in"
         android:textAllCaps="false"
@@ -63,11 +66,11 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" >
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?android:attr/listDivider">
 
     </View>
 
@@ -87,8 +90,8 @@
             android:text="@string/google"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:cornerRadius="4dp"
-            app:strokeWidth="2dp" />
+            android:textStyle="bold"
+            app:cornerRadius="4dp" />
 
         <Button
             android:layout_width="150dp"
@@ -99,6 +102,7 @@
             android:padding="10dp"
             android:text="@string/facebook"
             android:textAllCaps="false"
+            android:textStyle="bold"
             app:cornerRadius="4dp" />
 
     </LinearLayout>

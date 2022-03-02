@@ -8,18 +8,21 @@ import android.os.Handler;
 
 import com.example.whatsappclone.R;
 
+import java.util.Objects;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashScreen.this, MainActivity.class));
-            }
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        init();
+    }
+    private void init() {
+        new Handler().postDelayed(() -> {
+            startActivity(new Intent(SplashScreen.this, HomeActivity.class));
+            finish();
         }, 1000);
     }
 }

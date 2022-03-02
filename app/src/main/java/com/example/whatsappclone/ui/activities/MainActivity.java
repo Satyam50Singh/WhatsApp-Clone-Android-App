@@ -2,16 +2,13 @@ package com.example.whatsappclone.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.whatsappclone.R;
@@ -21,8 +18,6 @@ import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
@@ -63,43 +58,27 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                // User chose the "Settings" item, show the app settings UI...
                 return true;
             case R.id.new_group:
                 Toast.makeText(getApplicationContext(), "New Group", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             case R.id.new_broadcast:
                 Toast.makeText(getApplicationContext(), "New BroadCast", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             case R.id.linked_devices:
                 Toast.makeText(getApplicationContext(), "Linked Devices", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             case R.id.payments:
                 Toast.makeText(getApplicationContext(), "Payments", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             case R.id.starred_messages:
                 Toast.makeText(getApplicationContext(), "Starred Messages", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             case R.id.settings:
                 Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -109,16 +88,17 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    // this method is used to set tabs in tab layout
     private void settingViewPagerAdapter() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         viewPagerAdapter.addFragment(new CameraFragment(), "");
-        viewPagerAdapter.addFragment(new ChatFragment(), "CHATS");
-        viewPagerAdapter.addFragment(new StatusFragment(), "STATUS");
-        viewPagerAdapter.addFragment(new CallsFragment(), "CALLS");
+        viewPagerAdapter.addFragment(new ChatFragment(), getString(R.string.chats_tab));
+        viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
+        viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
 
         viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_photo_camera);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_photo_camera);
         tabLayout.getTabAt(1).select();
     }
 }

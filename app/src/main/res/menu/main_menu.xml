@@ -2,57 +2,61 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_baseline_search_24"
+        android:icon="@drawable/ic_search"
         android:title="@string/action_search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/new_group"
-        android:title="New Group"
+    <item
+        android:id="@+id/new_group"
         android:iconTint="@color/white"
-        app:showAsAction="never"/>
-    <item android:id="@+id/new_broadcast"
-        android:title="New Broadcast"
+        android:title="@string/action_new_group"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/new_broadcast"
         android:iconTint="@color/white"
-        app:showAsAction="never"/>
-    <item android:id="@+id/linked_devices"
-        android:title="Linked Devices"
+        android:title="@string/action_new_broadcast"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/linked_devices"
         android:iconTint="@color/white"
-        app:showAsAction="never"/>
-    <item android:id="@+id/starred_messages"
-        android:title="Starred messages"
+        android:title="@string/action_linked_devices"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/starred_messages"
         android:iconTint="@color/white"
-        app:showAsAction="never"/>
-    <item android:id="@+id/payments"
-        android:title="Payments"
+        android:title="@string/action_starred_messages"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/payments"
         android:iconTint="@color/white"
+        android:title="@string/action_payments"
         app:showAsAction="never">
         <menu>
             <item
-                android:title="Debit Card"
                 android:id="@+id/debit_card"
                 android:iconTint="@color/white"
+                android:title="@string/action_debit_card"
                 app:showAsAction="never"></item>
             <item
-                android:title="Credit Card"
                 android:id="@+id/credit_card"
                 android:iconTint="@color/white"
+                android:title="@string/action_credit_card"
                 app:showAsAction="never"></item>
             <item
-                android:title="Net Banking"
                 android:id="@+id/net_banking"
                 android:iconTint="@color/white"
+                android:title="@string/action_net_banking"
                 app:showAsAction="never"></item>
         </menu>
     </item>
-    <item android:id="@+id/settings"
-        android:title="Settings"
+    <item
+        android:id="@+id/settings"
         android:iconTint="@color/white"
-        app:showAsAction="never"/>
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
 
 </menu>
