@@ -15,3 +15,4 @@
 - Navigation Between Home, SignUp, SignIn Activities
 - Utils : Toast, ProgressDialog
 - Connection With Firebase 
+- SignUp Controls Validation
