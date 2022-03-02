@@ -28,9 +28,11 @@
     <string name="action_net_banking">Net Banking</string>
     <string name="please_wait">Please Wait</string>
     <string name="email_required">Email Required!</string>
-    <string name="email_required">Email Required!</string>
     <string name="invalid_email">Invalid Email!</string>
     <string name="password_required">Password Required!</string>
     <string name="username_required">Username Required!</string>
     <string name="password_length_error">Password length must be greater or equal to 6!</string>
+    <string name="user_created_successfully">User Created Successfully</string>
+    <string name="creating_account">Creating Acccount</string>
+    <string name="creating_your_account">We\'re creating your account</string>
 </resources>

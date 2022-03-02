@@ -19,9 +19,11 @@ public class Utils {
     // method to show and hide progress dialog
     public static ProgressDialog progressDialog = null;
 
-    public static void showProgressDialog(Context context, String message) {
+    public static void showProgressDialog(Context context, String message, String title) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context);
+            if(title.length() > 0 )
+                progressDialog.setTitle(title);
             progressDialog.setMessage(message);
             progressDialog.setCancelable(false);
         }
