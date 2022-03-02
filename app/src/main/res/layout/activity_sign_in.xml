@@ -81,6 +81,7 @@
         android:gravity="center|center_vertical">
 
         <Button
+            android:id="@+id/btn_google_sign_in"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -95,6 +96,7 @@
             app:cornerRadius="4dp" />
 
         <Button
+            android:id="@+id/btn_facebook_sign_in"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

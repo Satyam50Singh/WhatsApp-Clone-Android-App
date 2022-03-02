@@ -20,3 +20,6 @@
 - Storing User Data in realtime database
 - SignIn Control Validation
 - SignIn With Email and Password
+- User Sign Out
+- User Login By Google Account
+- Adding SHA to firebase
