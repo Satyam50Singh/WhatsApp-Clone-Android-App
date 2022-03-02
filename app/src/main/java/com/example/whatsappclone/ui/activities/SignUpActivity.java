@@ -50,35 +50,40 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(view -> userSignUp());
     }
 
+    // method for user signup
     private void userSignUp() {
-        if (Utils.validateUsername(etUsername) && Utils.credentialsValidation(etEmail, etPassword)) {
-            username = etUsername.getText().toString().trim();
-            email = etEmail.getText().toString().trim();
-            password = etPassword.getText().toString().trim();
-            firebaseAuth = FirebaseAuth.getInstance();
-            firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
+        try {
+            if (Utils.validateUsername(SignUpActivity.this, etUsername) && Utils.credentialsValidation(SignUpActivity.this, etEmail, etPassword)) {
+                username = etUsername.getText().toString().trim();
+                email = etEmail.getText().toString().trim();
+                password = etPassword.getText().toString().trim();
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
 
-            Utils.showProgressDialog(SignUpActivity.this, getString(R.string.creating_your_account), getString(R.string.creating_account));
+                Utils.showProgressDialog(SignUpActivity.this, getString(R.string.creating_account), getString(R.string.creating_your_account));
 
-            // this createUserWithEmailAndPassword() will create an new user
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                UserModel userModel = new UserModel(username, email, password);
-                                String id = task.getResult().getUser().getUid();
-                                firebaseDatabase.getReference().child("Users").child(id).setValue(userModel); // storing values in realtime database
-                                Utils.hideProgressDialog();
-                                Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
-                                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                                finish();
-                            } else {
-                                Utils.showToastMessage(SignUpActivity.this, task.getException().getMessage());
-                                Utils.hideProgressDialog();
+                // this createUserWithEmailAndPassword() will create an new user
+                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    UserModel userModel = new UserModel(username, email, password);
+                                    String id = task.getResult().getUser().getUid();
+                                    firebaseDatabase.getReference().child("Users").child(id).setValue(userModel); // storing values in realtime database
+                                    Utils.hideProgressDialog();
+                                    Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
+                                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                                    finish();
+                                } else {
+                                    Utils.showToastMessage(SignUpActivity.this, task.getException().getMessage());
+                                    Utils.hideProgressDialog();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+        } catch (Exception e) {
+            Utils.showToastMessage(SignUpActivity.this, e.getMessage());
         }
     }
 }

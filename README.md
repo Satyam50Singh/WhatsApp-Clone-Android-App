@@ -18,3 +18,5 @@
 - SignUp Controls Validation
 - SignUp With Email and Password
 - Storing User Data in realtime database
+- SignIn Control Validation
+- SignIn With Email and Password

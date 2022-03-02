@@ -19,7 +19,7 @@ public class Utils {
     // method to show and hide progress dialog
     public static ProgressDialog progressDialog = null;
 
-    public static void showProgressDialog(Context context, String message, String title) {
+    public static void showProgressDialog(Context context, String title, String message) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context);
             if(title.length() > 0 )
@@ -36,37 +36,37 @@ public class Utils {
     }
 
     // method for email & password validation
-    public static boolean credentialsValidation(TextInputEditText etEmail, TextInputEditText etPassword) {
+    public static boolean credentialsValidation(Context context, TextInputEditText etEmail, TextInputEditText etPassword) {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
-            etEmail.setError(Resources.getSystem().getString(R.string.email_required));
+            etEmail.setError(context.getString(R.string.email_required));
             etEmail.requestFocus();
             return false;
         }
         if (!email.matches(Constants.EMAIL_PATTERN)) {
-            etEmail.setError(Resources.getSystem().getString(R.string.invalid_email));
+            etEmail.setError(context.getString(R.string.invalid_email));
             etEmail.requestFocus();
             return false;
         }
         if (password.isEmpty()) {
-            etPassword.setError(Resources.getSystem().getString(R.string.password_required));
+            etPassword.setError(context.getString(R.string.password_required));
             etPassword.requestFocus();
             return false;
         }
         if (password.length() < 6) {
-            etPassword.setError(Resources.getSystem().getString(R.string.password_length_error));
+            etPassword.setError(context.getString(R.string.password_length_error));
             etPassword.requestFocus();
             return false;
         }
         return true;
     }
 
-    public static boolean validateUsername(TextInputEditText etUsername) {
+    public static boolean validateUsername(Context context, TextInputEditText etUsername) {
         String username = etUsername.getText().toString().trim();
         if (username.isEmpty()) {
-            etUsername.setError(Resources.getSystem().getString(R.string.username_required));
+            etUsername.setError(context.getString(R.string.username_required));
             etUsername.requestFocus();
             return false;
         }
