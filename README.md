@@ -14,3 +14,4 @@
 - Sign In Activity Layout Design
 - Navigation Between Home, SignUp, SignIn Activities
 - Utils : Toast, ProgressDialog
+- Connection With Firebase 
