@@ -31,4 +31,5 @@
     - adapter for recyclerview
     - fetching user records from firebase
     - setting recyclerview adapter
-    
+- Check Network Status
+   

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.utils;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -24,6 +25,8 @@ public class SplashScreen extends AppCompatActivity {
     }
     private void init() {
         firebaseAuth = FirebaseAuth.getInstance();
+        // checking is internet available or not.
+        NetworkManager.checkNetworkConnectedStatus(SplashScreen.this);
         new Handler().postDelayed(() -> {
             // if user is loggedIn then we navigate to MainActivity
             if(firebaseAuth.getCurrentUser() != null) {
