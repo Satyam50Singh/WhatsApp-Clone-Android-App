@@ -47,4 +47,5 @@
     <string name="success">Success</string>
     <string name="verification_email_sent">Verification Email has been sent</string>
     <string name="email_not_verified">Your email is not verified</string>
+    <string name="no_record_found">No Records Found</string>
 </resources>

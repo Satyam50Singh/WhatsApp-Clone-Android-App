@@ -2,6 +2,7 @@ package com.example.whatsappclone.ui.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,10 @@ import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -24,14 +29,15 @@ public class ChatFragment extends Fragment {
 
     private RecyclerView rcvUserList;
     ArrayList<UserModel> userList = new ArrayList<>();
+    UserListAdapter userListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser  = firebaseAuth.getCurrentUser();
-        if(!firebaseUser.isEmailVerified()) {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (!firebaseUser.isEmailVerified()) {
             Utils.showToastMessage(getContext(), getString(R.string.email_not_verified));
         }
 
@@ -43,17 +49,40 @@ public class ChatFragment extends Fragment {
 
     private void init(View rootView) {
         rcvUserList = rootView.findViewById(R.id.rcv_user_list);
-        userList.add(new UserModel("Satyam Singh", "" , ""));
-        userList.add(new UserModel("Sachin Singh", "" , ""));
-        userList.add(new UserModel("Vinay Singh", "" , ""));
-        userList.add(new UserModel("Neha Pandey", "" , ""));
-        userList.add(new UserModel("Satyam Singh", "" , ""));
-        userList.add(new UserModel("Sachin Singh", "" , ""));
-        userList.add(new UserModel("Vinay Singh", "" , ""));
-        userList.add(new UserModel("Neha Pandey", "" , ""));
-        UserListAdapter userListAdapter = new UserListAdapter(getContext(), userList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rcvUserList.setLayoutManager(layoutManager);
+        Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
+        loadUserRecord();
+        userListAdapter = new UserListAdapter(getContext(), userList);
+        rcvUserList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvUserList.setAdapter(userListAdapter);
+    }
+
+    // fetching users from firebase
+    private void loadUserRecord() {
+        try {
+            FirebaseDatabase firebaseDatabase;
+            firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
+            firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userList.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                        userModel.getUserId(dataSnapshot.getKey());
+                        userList.add(userModel);
+                    }
+                    userListAdapter.notifyDataSetChanged();
+                    Utils.hideProgressDialog();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Utils.hideProgressDialog();
+                    Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                }
+            });
+        } catch (Exception e) {
+            Utils.showLog(getString(R.string.error), e.getMessage());
+        }
+
     }
 }
