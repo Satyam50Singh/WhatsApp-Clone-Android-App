@@ -12,10 +12,12 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
@@ -64,26 +66,38 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // this createUserWithEmailAndPassword() will create an new user
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    UserModel userModel = new UserModel(username, email, password);
-                                    String id = task.getResult().getUser().getUid();
-                                    firebaseDatabase.getReference().child("Users").child(id).setValue(userModel); // storing values in realtime database
-                                    Utils.hideProgressDialog();
-                                    Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
-                                    startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                                    finish();
-                                } else {
-                                    Utils.showToastMessage(SignUpActivity.this, task.getException().getMessage());
-                                    Utils.hideProgressDialog();
-                                }
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+
+                                // sending email for verification
+                                sentVerificationEmail(firebaseAuth.getCurrentUser());
+
+                                UserModel userModel = new UserModel(username, email, password);
+                                String id = task.getResult().getUser().getUid();
+                                firebaseDatabase.getReference().child("Users").child(id).setValue(userModel); // storing values in realtime database
+                                Utils.hideProgressDialog();
+                                Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
+                                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                Utils.showToastMessage(SignUpActivity.this, task.getException().getMessage());
+                                Utils.hideProgressDialog();
                             }
                         });
             }
         } catch (Exception e) {
             Utils.showToastMessage(SignUpActivity.this, e.getMessage());
         }
+    }
+
+    private void sentVerificationEmail(FirebaseUser currentUser) {
+        currentUser.sendEmailVerification()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Utils.showToastMessage(SignUpActivity.this, getString(R.string.verification_email_sent));
+                    }
+                })
+                .addOnFailureListener(e -> Utils.showToastMessage(SignUpActivity.this, e.getMessage()));
+
     }
 }

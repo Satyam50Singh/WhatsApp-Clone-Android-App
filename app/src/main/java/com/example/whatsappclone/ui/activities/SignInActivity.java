@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Auth;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -62,12 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.request_token_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, Auth.getGoogleSignInOptions(this));
     }
 
     // method for user login
@@ -87,7 +83,7 @@ public class SignInActivity extends AppCompatActivity {
                                     Utils.hideProgressDialog();
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                     finish();
-                                }else {
+                                } else {
                                     Utils.showToastMessage(SignInActivity.this, task.getException().getMessage());
                                     Utils.hideProgressDialog();
                                 }
@@ -116,12 +112,11 @@ public class SignInActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Utils.showToastMessage(this, "firebaseAuthWithGoogle:" + account.getId());
                 Utils.showProgressDialog(SignInActivity.this, getString(R.string.login), getString(R.string.login_to_your_account));
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Utils.showToastMessage(this, "Google sign in failed" + e.getMessage());
+                Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed));
             }
         }
     }
@@ -138,20 +133,19 @@ public class SignInActivity extends AppCompatActivity {
                             try {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 UserModel userModel = new UserModel();
-                                String userId = firebaseUser.getUid();
                                 userModel.setUserId(firebaseUser.getUid());
                                 userModel.setUsername(firebaseUser.getDisplayName());
                                 userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
                                 firebaseDatabase.getReference().child("Users").child(task.getResult().getUser().getUid()).setValue(userModel);
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 finish();
-                            }catch (Exception e) {
-                                Utils.showToastMessage(SignInActivity.this, "Google sign in failed" + e.getMessage());
-
+                            } catch (Exception e) {
+                                Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed)+ e.getMessage());
                             }
                         } else {
                             // If sign in fails, display a message to the user.
                             Utils.hideProgressDialog();
+                            Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed));
                         }
                     }
                 });

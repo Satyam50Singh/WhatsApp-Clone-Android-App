@@ -5,6 +5,7 @@ import static android.provider.Settings.System.getString;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.whatsappclone.R;
@@ -71,5 +72,10 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    // method to show log
+    public static void showLog(String tag, String message) {
+        Log.d(tag, message);
     }
 }

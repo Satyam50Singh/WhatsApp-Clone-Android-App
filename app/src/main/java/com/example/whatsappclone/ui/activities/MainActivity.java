@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,7 +19,13 @@ import com.example.whatsappclone.ui.fragments.CallsFragment;
 import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
+import com.example.whatsappclone.utils.Auth;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     private FirebaseAuth firebaseAuth;
+    GoogleSignInClient googleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +98,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void init() {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         tabLayout.setupWithViewPager(viewPager);
         firebaseAuth = FirebaseAuth.getInstance();
+        // Configure Google Sign In
+        googleSignInClient = GoogleSignIn.getClient(this, Auth.getGoogleSignInOptions(this));
     }
 
     // this method is used to set tabs in tab layout
@@ -114,8 +123,22 @@ public class MainActivity extends AppCompatActivity {
 
     // method for user log out
     private void userLogOut() {
-        firebaseAuth.signOut();
-        startActivity(new Intent(MainActivity.this, SignInActivity.class));
-        Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
+        try {
+            firebaseAuth.signOut();
+            googleSignInClient.signOut()
+                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
+                            }
+                        }
+                    });
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
+        } catch (Exception e) {
+            Utils.showLog(getString(R.string.error), getString(R.string.google_sign_out_failed) + e.getMessage());
+
+        }
     }
 }

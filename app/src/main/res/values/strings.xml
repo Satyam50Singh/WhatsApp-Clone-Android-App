@@ -33,11 +33,17 @@
     <string name="username_required">Username Required!</string>
     <string name="password_length_error">Password length must be greater or equal to 6!</string>
     <string name="user_created_successfully">User Created Successfully</string>
-    <string name="creating_account">Creating Acccount</string>
+    <string name="creating_account">Creating Account</string>
     <string name="creating_your_account">We\'re creating your account</string>
     <string name="login_to_your_account">Login to your Account</string>
     <string name="login">Login</string>
     <string name="action_log_out">Log out</string>
     <string name="user_log_out">User Log out</string>
     <string name="request_token_id">150087040940-0otnuhbqmjvskhdvp2geqojku3uee9cq.apps.googleusercontent.com</string>
+    <string name="error">Error : </string>
+    <string name="google_sign_in_failed">Google sign in failed</string>
+    <string name="google_sign_out_failed">Google sign out failed</string>
+    <string name="logout_successfully">logout Successfully</string>
+    <string name="success">Success</string>
+    <string name="verification_email_sent">Verification Email has been sent</string>
 </resources>

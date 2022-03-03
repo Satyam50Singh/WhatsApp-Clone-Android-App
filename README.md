@@ -23,3 +23,6 @@
 - User Sign Out
 - User Login By Google Account
 - Adding SHA to firebase
+- fetching user data from google account and stored in realtime database
+- sending verification email on new signup
+
