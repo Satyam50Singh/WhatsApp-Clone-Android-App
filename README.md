@@ -25,4 +25,10 @@
 - Adding SHA to firebase
 - fetching user data from google account and stored in realtime database
 - sending verification email on new signup
-
+- Showing user list in chats fragment
+    - sample layout for recyclerview
+    - adding recyclerview inside chat fragment
+    - adapter for recyclerview
+    - fetching user records from firebase
+    - setting recyclerview adapter
+    
