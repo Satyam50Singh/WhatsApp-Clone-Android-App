@@ -38,7 +38,9 @@
     - RecyclerView
     - Drawables for rounded edittext & imageview
 - Setting References, Data to the toolbar
-- Adding sender & receiver bubbles layouts
-- 
+- Sender & Receiver bubbles layouts
+- Sender & Receiver bubbles layouts For RecyclerView
+- Model Class for Chat Message
+- Adapter Class for Chat
 
    
