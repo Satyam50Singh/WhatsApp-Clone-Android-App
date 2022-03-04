@@ -1,16 +1,26 @@
 package com.example.whatsappclone.utils;
+
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.whatsappclone.R;
+
 public class NetworkManager {
 
-    public static void checkNetworkConnectedStatus(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(content.CONNECTIVITY_SERVICE);
-        NetworkInfo activeInfo = connectivityManager.getActiveNetworkInfo();
-        if(!activeInfo.isConnected()){
-            Utils.showToast(context, "No Internet Connection!");
+    public static void checkNetworkConnectedStatus(Context context, ConstraintLayout view) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        boolean isConnected = wifi != null && wifi.isConnectedOrConnecting() ||
+                mobile != null && mobile.isConnectedOrConnecting();
+        if(!isConnected){
+            Utils.snackBar(view, context.getString(R.string.you_are_currently_offline));
         }else{
-            Utils.showLog("Network Status : ", "Yes");
+            Utils.showLog("Network Status : ", "No");
         }
     }
 }

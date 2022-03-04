@@ -5,10 +5,15 @@ import static android.provider.Settings.System.getString;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whatsappclone.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class Utils {
@@ -23,7 +28,7 @@ public class Utils {
     public static void showProgressDialog(Context context, String title, String message) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(context);
-            if(title.length() > 0 )
+            if (title.length() > 0)
                 progressDialog.setTitle(title);
             progressDialog.setMessage(message);
             progressDialog.setCancelable(false);
@@ -78,4 +83,15 @@ public class Utils {
     public static void showLog(String tag, String message) {
         Log.d(tag, message);
     }
+
+    // method to show snackBar
+    public static void snackBar(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
+        View snackBarView = snackbar.getView();
+        TextView snackBarTextView  = snackBarView.findViewById(R.id.snackbar_text);
+        snackBarTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_wifi_off,0);
+        snackBarTextView.setGravity(Gravity.CENTER);
+        snackbar.show();
+    }
+
 }
