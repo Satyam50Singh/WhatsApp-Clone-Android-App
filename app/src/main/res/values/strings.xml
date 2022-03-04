@@ -49,4 +49,9 @@
     <string name="email_not_verified">Your email is not verified</string>
     <string name="no_record_found">No Records Found</string>
     <string name="you_are_currently_offline">You are currently offline!</string>
+    <string name="last_message">last message</string>
+    <string name="userId">userId</string>
+    <string name="username">userName</string>
+    <string name="profileImage">profileImage</string>
+    <string name="message">Message</string>
 </resources>

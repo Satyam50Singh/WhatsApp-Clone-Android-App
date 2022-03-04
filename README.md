@@ -32,4 +32,11 @@
     - fetching user records from firebase
     - setting recyclerview adapter
 - Check Network Status
+- SnackBar with Drawable added
+- Chat Activity Layout Design Ready
+    - Custom Toolbar
+    - RecyclerView
+    - Drawables for rounded edittext & imageview
+- Setting References, Data to the toolbar
+
    

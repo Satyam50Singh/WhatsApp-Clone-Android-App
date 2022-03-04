@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -60,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
                 email = etEmail.getText().toString().trim();
                 password = etPassword.getText().toString().trim();
                 firebaseAuth = FirebaseAuth.getInstance();
-                firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
+                firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
 
                 Utils.showProgressDialog(SignUpActivity.this, getString(R.string.creating_account), getString(R.string.creating_your_account));
 
@@ -74,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 UserModel userModel = new UserModel(username, email, password);
                                 String id = task.getResult().getUser().getUid();
-                                firebaseDatabase.getReference().child("Users").child(id).setValue(userModel); // storing values in realtime database
+                                firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(id).setValue(userModel); // storing values in realtime database
                                 Utils.hideProgressDialog();
                                 Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
                                 startActivity(new Intent(SignUpActivity.this, MainActivity.class));

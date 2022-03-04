@@ -61,7 +61,7 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
+        firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
         // Configure Google Sign In
         googleSignInClient = GoogleSignIn.getClient(this, Auth.getGoogleSignInOptions(this));
     }
@@ -136,7 +136,7 @@ public class SignInActivity extends AppCompatActivity {
                                 userModel.setUserId(firebaseUser.getUid());
                                 userModel.setUsername(firebaseUser.getDisplayName());
                                 userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
-                                firebaseDatabase.getReference().child("Users").child(task.getResult().getUser().getUid()).setValue(userModel);
+                                firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 finish();
                             } catch (Exception e) {

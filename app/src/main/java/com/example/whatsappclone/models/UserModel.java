@@ -25,6 +25,11 @@ public class UserModel {
     }
 
     // getters and setters
+
+    public String getUserId() {
+        return userId;
+    }
+
     public String getUserId(String key) {
         return userId;
     }

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.whatsappclone">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,14 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappClone">
         <activity
+            android:name=".ui.activities.ChatDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.SignUpActivity"
-            android:exported="false"/>
-        <activity 
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.SignInActivity"
-            android:exported="false"/>
-        <activity 
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.HomeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false" />
@@ -28,6 +31,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -24,6 +24,7 @@
             android:src="@drawable/user"/>
 
         <LinearLayout
+            android:id="@+id/ll_user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -38,7 +39,7 @@
                 android:id="@+id/tv_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="2dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="18sp" />
