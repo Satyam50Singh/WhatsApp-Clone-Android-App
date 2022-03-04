@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.186" />
+        <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_receiver_bubble.xml" value="0.1" />
+        <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sender_bubblr.xml" value="0.1" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sent_btn.xml" value="0.2775" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sent_message_edit_text.xml" value="0.1" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/ic_person.xml" value="0.1" />

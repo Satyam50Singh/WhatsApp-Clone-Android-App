@@ -38,5 +38,7 @@
     - RecyclerView
     - Drawables for rounded edittext & imageview
 - Setting References, Data to the toolbar
+- Adding sender & receiver bubbles layouts
+- 
 
    
