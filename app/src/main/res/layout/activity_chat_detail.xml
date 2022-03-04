@@ -35,9 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginBottom="2dp"
                 tools:layout_editor_absoluteX="157dp" />
 
             <TextView
@@ -67,16 +67,18 @@
         android:id="@+id/rcv_user_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/linear_layout"
         android:layout_below="@+id/toolbar" />
 
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/et_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"

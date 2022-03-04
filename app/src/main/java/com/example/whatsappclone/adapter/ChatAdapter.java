@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
+import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     Context context;
     ArrayList<MessageModel> localDataSet;
     int SENDER_VIEW_TYPE = 1;
-    int RECEIVER_VIEW_TYPE = 1;
+    int RECEIVER_VIEW_TYPE = 2;
 
     public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet) {
         this.context = context;
