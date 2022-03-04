@@ -37,9 +37,9 @@ public class ChatFragment extends Fragment {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (!firebaseUser.isEmailVerified()) {
-            Utils.showToastMessage(getContext(), getString(R.string.email_not_verified));
-        }
+        // if (!firebaseUser.isEmailVerified()) {
+        //     Utils.showToastMessage(getContext(), getString(R.string.email_not_verified));
+        // }
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -59,8 +59,7 @@ public class ChatFragment extends Fragment {
     // fetching users from firebase
     private void loadUserRecord() {
         try {
-            FirebaseDatabase firebaseDatabase;
-            firebaseDatabase = FirebaseDatabase.getInstance("https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app");
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
             firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

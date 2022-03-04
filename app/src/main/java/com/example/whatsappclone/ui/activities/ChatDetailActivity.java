@@ -37,7 +37,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
-    private String senderId, receiverId, username, profileImage;
+    private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom;
     private Toolbar toolbar;
     private ImageView ivBackArrow;
     private TextView tvReceiverName;
@@ -69,73 +69,108 @@ public class ChatDetailActivity extends AppCompatActivity {
         rcvUserChat = findViewById(R.id.rcv_user_chat);
         llSentBtn = findViewById(R.id.ll_send_btn);
         etMessage = findViewById(R.id.et_message);
+        etMessage.requestFocus();
 
         // getting values by intent
-        senderId = firebaseAuth.getUid();
-        receiverId = getIntent().getStringExtra(getString(R.string.userId));
-        username = getIntent().getStringExtra(getString(R.string.username));
-        profileImage = getIntent().getStringExtra(getString(R.string.profileImage));
+        getIntentValues();
 
         // setting user details in toolbar
-        Picasso.with(getApplicationContext()).load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
-        tvReceiverName.setText(username);
-        ivBackArrow.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        });
+        setUserDetailsOnToolbar();
+
+        // click listeners
+        ivBackArrow.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+
+        // fetching chat and storing in chatRecord ArrayList
+        Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
+        loadChatMessages();
 
         chatAdapter = new ChatAdapter(ChatDetailActivity.this, chatRecord);
         rcvUserChat.setLayoutManager(new LinearLayoutManager(ChatDetailActivity.this));
         rcvUserChat.setAdapter(chatAdapter);
 
-        final String senderRoom = senderId + receiverId;
-        final String receiverRoom = receiverId + senderId;
-
-        firebaseDatabase.getReference()
-                .child("Chats")
-                .child(senderRoom)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        chatRecord.clear();
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            MessageModel message = snapshot1.getValue(MessageModel.class);
-                            Utils.showToastMessage(getApplicationContext(), "Loading" + message.getMessageText());
-                            chatRecord.add(message);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
         llSentBtn.setOnClickListener(view -> {
-            String message = etMessage.getText().toString();
-            etMessage.setText("");
-            final MessageModel model = new MessageModel(senderId, message);
-            model.setMessageTime(new Date().getTime());
+            storingMessagesInFirebaseDatabase();
+        });
+    }
 
+    private void getIntentValues() {
+        try {
+            senderId = firebaseAuth.getUid();
+            receiverId = getIntent().getStringExtra(getString(R.string.userId));
+            username = getIntent().getStringExtra(getString(R.string.username));
+            profileImage = getIntent().getStringExtra(getString(R.string.profileImage));
+            if(senderId != null && receiverId != null){
+                senderRoom = senderId + receiverId;
+                receiverRoom = receiverId + senderId;
+            }
+        } catch(Exception e) {
+            Utils.showLog("Error : ", e.getMessage());
+        }
+    }    
 
+    private void setUserDetailsOnToolbar() {
+        Picasso.with(getApplicationContext()).load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
+        tvReceiverName.setText(username);
+    }
+
+    private void loadChatMessages() {
+        try {
             firebaseDatabase.getReference()
                     .child("Chats")
-                    .child(senderRoom)
-                    .push()
-                    .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    firebaseDatabase.getReference()
-                            .child("Chats")
-                            .child(receiverRoom)
-                            .push()
-                            .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    .child(senderId+receiverId)
+                    .addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onSuccess(Void unused) {
-                            chatAdapter.notifyDataSetChanged();
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            chatRecord.clear();
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                MessageModel message = snapshot1.getValue(MessageModel.class);
+                                message.getMessageId(dataSnapshot.getKey());
+                                chatRecord.add(message);
+                        }
+                        chatAdapter.notifyDataSetChanged();
+                        Utils.hideProgressDialog();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Utils.hideProgressDialog();
                         }
                     });
-                }
-            });
-        });
+        } catch(Exception e) {
+            Utils.showLog("Error : ", e.getMessage());
+        }
+    }
+
+    private void storingMessagesInFirebaseDatabase() {
+        try {
+            String message = etMessage.getText().toString();
+            etMessage.setText("");
+            etMessage.requestFocus();
+            MessageModel model = new MessageModel(senderId, message, new Date().getTime());
+            if(senderId != null && receiverId != null){
+                firebaseDatabase.getReference()
+                        .child("Chats")
+                        .child(senderId + receiverId)
+                        .push()
+                        .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        firebaseDatabase.getReference()
+                                .child("Chats")
+                                .child(receiverRoom)
+                                .push()
+                                .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                            }
+                        });
+                    }
+                });
+            } else {
+                Utils.showLog("Ids", "senderId : " + senderId + " receiverId : " + receiverId);
+            }
+        } catch(Exception e) {
+            Utils.showLog("Error : ", e.getMessage());
+        }
     }
 }
