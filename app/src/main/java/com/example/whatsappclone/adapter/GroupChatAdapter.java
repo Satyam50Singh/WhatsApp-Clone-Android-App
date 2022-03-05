@@ -51,7 +51,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(context).inflate(R.layout.sample_sender_layout, parent, false);
             return new GroupChatAdapter.SenderViewHolder(view);
         } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.sample_receiver_layout, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.sample_receiver_group_chat_layout, parent, false);
             return new GroupChatAdapter.ReceiverViewHolder(view);
         }
     }
@@ -83,7 +83,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
             ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
             for (int i = 0; i < groupChatUsers.size() - 1; i++) {
                 if (messageModel.getMessageId().equals(groupChatUsers.get(i).getUserId())) {
-                    ((ReceiverViewHolder) holder).tvReceiverTime.setText(groupChatUsers.get(i).getUsername());
+                    ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(i).getUsername());
                     break;
                 }
             }
@@ -97,13 +97,13 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
 
     public static class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvReceiverMessage, tvReceiverTime;
+        TextView tvReceiverMessage, tvReceiverTime, tvReceiverName;
 
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message);
-            tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time);
-
+            tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message_gc);
+            tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time_gc);
+            tvReceiverName = itemView.findViewById(R.id.tv_receiver_name_gc);
         }
     }
 
