@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappClone">
         <activity
-            android:name=".ui.activities.ViewProfilePictureActivity"
-            android:parentActivityName=".ui.activities.MainActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.activities.ViewProfilePictureActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.GroupChatActivity"
             android:exported="false" />
