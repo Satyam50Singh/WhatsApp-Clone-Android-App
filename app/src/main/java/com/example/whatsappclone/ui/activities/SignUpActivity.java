@@ -73,8 +73,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 // sending email for verification
                                 sentVerificationEmail(firebaseAuth.getCurrentUser());
 
-                                UserModel userModel = new UserModel(username, email, password);
                                 String id = task.getResult().getUser().getUid();
+                                UserModel userModel = new UserModel(id, username, email, password);
                                 firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(id).setValue(userModel); // storing values in realtime database
                                 Utils.hideProgressDialog();
                                 Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));

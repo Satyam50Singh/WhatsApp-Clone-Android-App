@@ -81,7 +81,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         ivBackArrow.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
 
         // fetching chat and storing in chatRecord ArrayList
-        Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
+        Utils.showProgressDialog(ChatDetailActivity.this, "", getString(R.string.please_wait));
         loadChatMessages();
 
         chatAdapter = new ChatAdapter(ChatDetailActivity.this, chatRecord);
@@ -124,7 +124,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                             chatRecord.clear();
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 MessageModel message = snapshot1.getValue(MessageModel.class);
-                                message.getMessageId(dataSnapshot.getKey());
+                                message.getMessageId(snapshot.getKey());
                                 chatRecord.add(message);
                         }
                         chatAdapter.notifyDataSetChanged();

@@ -18,7 +18,8 @@ public class UserModel {
     }
 
     // constructor for sign up
-    public UserModel(String username, String email, String password) {
+    public UserModel(String userId, String username, String email, String password) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;

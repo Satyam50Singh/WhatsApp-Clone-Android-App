@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.UserListAdapter;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,14 +61,21 @@ public class ChatFragment extends Fragment {
     private void loadUserRecord() {
         try {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UserModel userModel = dataSnapshot.getValue(UserModel.class);
                         userModel.getUserId(dataSnapshot.getKey());
-                        userList.add(userModel);
+                        try{
+                            if(!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid()) && userModel != null){
+                                userList.add(userModel);
+                            }
+                        }catch (Exception e) {
+                            Utils.showLog(getString(R.string.error), e.getMessage());
+                        }
+
                     }
                     userListAdapter.notifyDataSetChanged();
                     Utils.hideProgressDialog();
