@@ -1,5 +1,6 @@
 package com.example.whatsappclone.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -44,7 +45,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.tvUsername.setText(localDataSet.get(position).getUsername());
         holder.tvLastMessage.setText(R.string.last_message);
         holder.civProfileImage.setOnClickListener(view -> {
-
+            Dialog dialog = new Dialog(context);
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.custom_profile_dialog);
+            ImageView imageView = dialog.findViewById(R.id.iv_dialog_profile);
+            TextView textView = dialog.findViewById(R.id.tv_dialog_username);
+            Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
+            textView.setText(localDataSet.get(position).getUsername());
+            dialog.show();
         });
         holder.llUserList.setOnClickListener(view -> {
             Intent intent = new Intent(context, ChatDetailActivity.class);

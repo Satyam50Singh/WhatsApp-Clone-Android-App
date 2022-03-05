@@ -44,6 +44,6 @@
 - Adapter Class for Chat
 - Fetching & storing Chat messages
 - converting timestamp to date
-
+- Profile Picture Dialog Added
 
    
