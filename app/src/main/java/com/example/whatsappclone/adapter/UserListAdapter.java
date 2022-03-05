@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
+import com.example.whatsappclone.ui.activities.ViewProfilePictureActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,17 +42,30 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        int pos = position;
         Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
         holder.tvUsername.setText(localDataSet.get(position).getUsername());
         holder.tvLastMessage.setText(R.string.last_message);
         holder.civProfileImage.setOnClickListener(view -> {
+
             Dialog dialog = new Dialog(context);
             dialog.setCancelable(true);
             dialog.setContentView(R.layout.custom_profile_dialog);
             ImageView imageView = dialog.findViewById(R.id.iv_dialog_profile);
             TextView textView = dialog.findViewById(R.id.tv_dialog_username);
+
             Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
             textView.setText(localDataSet.get(position).getUsername());
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ViewProfilePictureActivity.class);
+                    intent.putExtra(context.getResources().getString(R.string.username), localDataSet.get(pos).getUsername());
+                    intent.putExtra(context.getResources().getString(R.string.profileImage), localDataSet.get(pos).getProfilePicture());
+                    context.startActivity(intent);
+                }
+            });
             dialog.show();
         });
         holder.llUserList.setOnClickListener(view -> {

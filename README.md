@@ -46,5 +46,7 @@
 - converting timestamp to date
 - Profile Picture Dialog Added
 - Group Chat Activity Added
+- ViewProfilePictureActivity Added
+
 
    

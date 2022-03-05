@@ -111,7 +111,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                 receiverRoom = receiverId + senderId;
             }
         } catch (Exception e) {
-            Utils.showLog("Error : ", e.getMessage());
+            Utils.showLog(getString(R.string.error), e.getMessage());
         }
     }
 

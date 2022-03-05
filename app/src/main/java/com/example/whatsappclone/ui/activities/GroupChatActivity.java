@@ -71,12 +71,7 @@ public class GroupChatActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(GroupChatActivity.this);
         rcvUserChatGC.setLayoutManager(layoutManager);
         rcvUserChatGC.setAdapter(groupChatAdapter);
-        rcvUserChatGC.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rcvUserChatGC.scrollToPosition(rcvUserChatGC.getAdapter().getItemCount() - 1);
-            }
-        }, 1000);
+        rcvUserChatGC.postDelayed(() -> rcvUserChatGC.scrollToPosition(rcvUserChatGC.getAdapter().getItemCount() - 1), 1000);
 
         llSentBtnGC.setOnClickListener(view -> {
             sendMessageToGroup();
@@ -93,9 +88,6 @@ public class GroupChatActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             MessageModel message = dataSnapshot.getValue(MessageModel.class);
                             groupChatRecord.add(message);
-                            String userid = message.getMessageId();
-
-
                         }
                         groupChatAdapter.notifyDataSetChanged();
                     }
@@ -106,6 +98,7 @@ public class GroupChatActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void loadGroupChatUsers() {
         firebaseDatabase.getReference()
                 .child("Users")
@@ -135,7 +128,10 @@ public class GroupChatActivity extends AppCompatActivity {
                 .child("Group Chats")
                 .push()
                 .setValue(message)
-                .addOnSuccessListener(unused -> Utils.showLog("Send Status : ", "Success"))
-                .addOnFailureListener(e -> Utils.showLog("Send Status : ", "Failure"));
+                .addOnSuccessListener(unused -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.success)))
+                .addOnFailureListener(e -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.failure)));
+        rcvUserChatGC.scrollToPosition(rcvUserChatGC.getAdapter().getItemCount() - 1);
+
+
     }
 }

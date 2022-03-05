@@ -81,9 +81,9 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
         } else {
             ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
             ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
-            for (int i = 0; i < groupChatUsers.size() - 1; i++) {
-                if (messageModel.getMessageId().equals(groupChatUsers.get(i).getUserId())) {
-                    ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(i).getUsername());
+            for (int chatUserCounter = 0; chatUserCounter < groupChatUsers.size(); chatUserCounter++) {
+                if (messageModel.getMessageId().equals(groupChatUsers.get(chatUserCounter).getUserId())) {
+                    ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(chatUserCounter).getUsername());
                     break;
                 }
             }
