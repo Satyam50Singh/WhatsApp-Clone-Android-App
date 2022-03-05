@@ -85,8 +85,15 @@ public class ChatDetailActivity extends AppCompatActivity {
         loadChatMessages();
 
         chatAdapter = new ChatAdapter(ChatDetailActivity.this, chatRecord, receiverId);
-        rcvUserChat.setLayoutManager(new LinearLayoutManager(ChatDetailActivity.this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ChatDetailActivity.this);
+        rcvUserChat.setLayoutManager(layoutManager);
         rcvUserChat.setAdapter(chatAdapter);
+        rcvUserChat.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1);
+            }
+        }, 1000);
 
         llSentBtn.setOnClickListener(view -> {
             storingMessagesInFirebaseDatabase();
@@ -99,14 +106,14 @@ public class ChatDetailActivity extends AppCompatActivity {
             receiverId = getIntent().getStringExtra(getString(R.string.userId));
             username = getIntent().getStringExtra(getString(R.string.username));
             profileImage = getIntent().getStringExtra(getString(R.string.profileImage));
-            if(senderId != null && receiverId != null){
+            if (senderId != null && receiverId != null) {
                 senderRoom = senderId + receiverId;
                 receiverRoom = receiverId + senderId;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Utils.showLog("Error : ", e.getMessage());
         }
-    }    
+    }
 
     private void setUserDetailsOnToolbar() {
         Picasso.with(getApplicationContext()).load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
@@ -117,7 +124,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         try {
             firebaseDatabase.getReference()
                     .child("Chats")
-                    .child(senderId+receiverId)
+                    .child(senderId + receiverId)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,9 +133,9 @@ public class ChatDetailActivity extends AppCompatActivity {
                                 MessageModel message = snapshot1.getValue(MessageModel.class);
                                 message.getMessageId(snapshot.getKey());
                                 chatRecord.add(message);
-                        }
-                        chatAdapter.notifyDataSetChanged();
-                        Utils.hideProgressDialog();
+                            }
+                            chatAdapter.notifyDataSetChanged();
+                            Utils.hideProgressDialog();
                         }
 
                         @Override
@@ -136,7 +143,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                             Utils.hideProgressDialog();
                         }
                     });
-        } catch(Exception e) {
+        } catch (Exception e) {
             Utils.showLog("Error : ", e.getMessage());
         }
     }
@@ -147,7 +154,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             etMessage.setText("");
             etMessage.requestFocus();
             MessageModel model = new MessageModel(senderId, message, new Date().getTime());
-            if(senderId != null && receiverId != null){
+            if (senderId != null && receiverId != null) {
                 firebaseDatabase.getReference()
                         .child("Chats")
                         .child(senderId + receiverId)
@@ -162,6 +169,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                                 .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1);
                             }
                         });
                     }
@@ -169,7 +177,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             } else {
                 Utils.showLog("Ids", "senderId : " + senderId + " receiverId : " + receiverId);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Utils.showLog("Error : ", e.getMessage());
         }
     }
