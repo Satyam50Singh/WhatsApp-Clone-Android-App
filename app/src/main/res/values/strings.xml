@@ -18,7 +18,7 @@
     <string name="chats_tab">CHATS</string>
     <string name="status_tab">STATUS</string>
     <string name="calls_tab">CALLS</string>
-    <string name="action_new_group">New Group</string>
+    <string name="action_group_chat">Group Chat</string>
     <string name="action_new_broadcast">New Broadcast</string>
     <string name="action_linked_devices">Linked Devices</string>
     <string name="action_starred_messages">Starred messages</string>

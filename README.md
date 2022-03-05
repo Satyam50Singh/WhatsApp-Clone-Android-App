@@ -45,5 +45,6 @@
 - Fetching & storing Chat messages
 - converting timestamp to date
 - Profile Picture Dialog Added
+- Group Chat Activity Added
 
    

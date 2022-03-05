@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_search:
                 return true;
-            case R.id.new_group:
-                Toast.makeText(getApplicationContext(), "New Group", Toast.LENGTH_SHORT).show();
+            case R.id.group_chat:
+                startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
                 return true;
             case R.id.new_broadcast:
                 Toast.makeText(getApplicationContext(), "New BroadCast", Toast.LENGTH_SHORT).show();
