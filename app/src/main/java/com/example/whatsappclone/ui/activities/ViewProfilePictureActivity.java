@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 
 import com.example.whatsappclone.R;
@@ -37,5 +38,11 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_view_profile_picture, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

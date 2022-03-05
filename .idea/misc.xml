@@ -8,7 +8,9 @@
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sender_bubblr.xml" value="0.1" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sent_btn.xml" value="0.2775" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/bg_sent_message_edit_text.xml" value="0.1" />
+        <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/ic_edit.xml" value="0.186" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/ic_person.xml" value="0.1" />
+        <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/drawable/ic_share.xml" value="0.1355" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/layout/activity_chat_detail.xml" value="0.24104234527687296" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/layout/activity_group_chat.xml" value="0.19882246376811594" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/layout/activity_home.xml" value="0.2" />
@@ -29,6 +31,7 @@
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/layout/user_list_layout.xml" value="0.27291666666666664" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/menu-v26/main_menu.xml" value="0.12604166666666666" />
         <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/menu/main_menu.xml" value="0.33" />
+        <entry key="..\:/Satyam_Singh/ANDRIOD_PROJECTS/WhatsappClone/app/src/main/res/menu/menu_view_profile_picture.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>

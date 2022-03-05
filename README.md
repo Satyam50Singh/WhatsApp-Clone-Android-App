@@ -47,6 +47,7 @@
 - Profile Picture Dialog Added
 - Group Chat Activity Added
 - ViewProfilePictureActivity Added
+- ViewProfilePictureActivity's Menu Added
 
 
    
