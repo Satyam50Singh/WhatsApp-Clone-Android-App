@@ -1,6 +1,8 @@
 package com.example.whatsappclone.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
     Context context;
     ArrayList<MessageModel> localDataSet;
+    String receiverId;
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
 
-    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet) {
+    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, String receiverId) {
         this.context = context;
         this.localDataSet = localDataSet;
+        this.receiverId = receiverId;
     }
 
     @Override
@@ -40,10 +50,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == SENDER_VIEW_TYPE){
+        if (viewType == SENDER_VIEW_TYPE) {
             View view = LayoutInflater.from(context).inflate(R.layout.sample_sender_layout, parent, false);
             return new SenderViewHolder(view);
-        }else {
+        } else {
             View view = LayoutInflater.from(context).inflate(R.layout.sample_receiver_layout, parent, false);
             return new ReceiverViewHolder(view);
         }
@@ -52,10 +62,38 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MessageModel messageModel = localDataSet.get(position);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.delete)
+                        .setMessage(R.string.delete_message)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                            String senderRoom = FirebaseAuth.getInstance().getUid() + receiverId;
+                            FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.DB_PATH);
+
+//                            database.getReference()
+//                                    .child("Chats")
+//                                    .child(senderRoom)
+//                                    .child(messageModel.getMessageId())
+//                                    .setValue(null)
+//                                    .addOnSuccessListener(unused -> Utils.showToastMessage(context, "Deleted"))
+//                                    .addOnFailureListener(e -> Utils.showToastMessage(context, "Not Deleted"));
+                        })
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                        .show();
+                return false;
+            }
+        });
+        Date date = new Date(messageModel.getMessageTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
+        String messageTime = dateFormat.format(date);
         if (holder.getClass() == SenderViewHolder.class) {
-            ((SenderViewHolder)holder).tvSenderMessage.setText(messageModel.getMessageText());
+            ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
+            ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
         } else {
-            ((ReceiverViewHolder)holder).tvReceiverMessage.setText(messageModel.getMessageText());
+            ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
+            ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
         }
     }
 

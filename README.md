@@ -42,5 +42,8 @@
 - Sender & Receiver bubbles layouts For RecyclerView
 - Model Class for Chat Message
 - Adapter Class for Chat
+- Fetching & storing Chat messages
+- converting timestamp to date
+
 
    
