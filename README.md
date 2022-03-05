@@ -48,6 +48,7 @@
 - Group Chat Activity Added
 - ViewProfilePictureActivity Added
 - ViewProfilePictureActivity's Menu Added
+- Adding BottomSheet Inside ViewProfilePictureActivity 
 
 
    

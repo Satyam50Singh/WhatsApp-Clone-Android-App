@@ -1,16 +1,20 @@
 package com.example.whatsappclone.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
+import com.example.whatsappclone.utils.Utils;
 import com.squareup.picasso.Picasso;
 
-public class ViewProfilePictureActivity extends AppCompatActivity {
+public class ViewProfilePictureActivity extends AppCompatActivity implements BottomSheetUpdateProfileFragment.BottomSheetListener {
 
     private ImageView ivViewProfilePicture;
 
@@ -44,5 +48,26 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_view_profile_picture, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit_profile:
+                openBottomSheet();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openBottomSheet() {
+        BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
+        bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
+    }
+
+    @Override
+    public void onOptionClick(String text) {
+        Utils.showToastMessage(ViewProfilePictureActivity.this, text);
     }
 }
