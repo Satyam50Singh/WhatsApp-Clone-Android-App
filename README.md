@@ -49,6 +49,7 @@
 - ViewProfilePictureActivity Added
 - ViewProfilePictureActivity's Menu Added
 - Adding BottomSheet Inside ViewProfilePictureActivity 
+- Showing last Message in Chat Fragments Using UserAdapter
 
 
    

@@ -17,6 +17,12 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.ui.activities.ViewProfilePictureActivity;
+import com.example.whatsappclone.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,10 +33,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     Context context;
     ArrayList<UserModel> localDataSet;
+    FirebaseDatabase firebaseDatabase;
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
         this.localDataSet = localDataSet;
+        firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
     }
 
     @NonNull
@@ -45,7 +53,29 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         int pos = position;
         Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
         holder.tvUsername.setText(localDataSet.get(position).getUsername());
-        holder.tvLastMessage.setText(R.string.last_message);
+        // showing last message
+        String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(pos).getUserId();
+        firebaseDatabase.getReference()
+                .child("Chats")
+                .child(senderRoom)
+                .orderByChild("messageTime")
+                .limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChildren()){
+                    for(DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        holder.tvLastMessage.setText(snapshot1.child("messageText").getValue().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         holder.civProfileImage.setOnClickListener(view -> {
 
             Dialog dialog = new Dialog(context);
