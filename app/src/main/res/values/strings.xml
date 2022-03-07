@@ -60,6 +60,9 @@
     <string name="cancel">Cancel</string>
     <string name="sent_message_status">"Sent Message Status : "</string>
     <string name="failure">Failure</string>
-    <string name="choose_option">Choose Option</string>
+    <string name="profile_photo">Profile Photo</string>
     <string name="bottom_sheet_tag">Bottom Sheet Tag</string>
+    <string name="profile_setting">Profile Settings</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save">Save</string>
 </resources>

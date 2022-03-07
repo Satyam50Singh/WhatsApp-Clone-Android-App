@@ -13,7 +13,9 @@
         android:theme="@style/Theme.WhatsappClone">
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/profile_setting"
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.ViewProfilePictureActivity"
             android:exported="false"

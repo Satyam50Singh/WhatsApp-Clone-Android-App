@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.utils.Utils;
@@ -21,6 +22,7 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
 
     private BottomSheetListener bottomSheetListener;
     CircleImageView civActionCamera, civActionGallery;
+    ImageView ivRemoveProfileApp;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,21 +30,18 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
         View view = inflater.inflate(R.layout.fragment_bottom_sheet_update_profile, container, false);
         civActionCamera = view.findViewById(R.id.civ_action_camera);
         civActionGallery = view.findViewById(R.id.civ_action_gallery);
+        ivRemoveProfileApp = view.findViewById(R.id.iv_remove_profile_app);
 
-        civActionCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetListener.onOptionClick("Camera Clicked");
-                dismiss();
-            }
+        civActionCamera.setOnClickListener(view1 -> {
+            bottomSheetListener.onOptionClick("Camera Clicked");
+            dismiss();
         });
-        civActionGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetListener.onOptionClick("Gallery Clicked");
-                dismiss();
-            }
+        civActionGallery.setOnClickListener(view12 -> {
+            bottomSheetListener.onOptionClick("Gallery Clicked");
+            dismiss();
         });
+        ivRemoveProfileApp.setOnClickListener(view13 -> Utils.showToastMessage(getContext(), "Remove Profile"));
+
         return view;
     }
 
