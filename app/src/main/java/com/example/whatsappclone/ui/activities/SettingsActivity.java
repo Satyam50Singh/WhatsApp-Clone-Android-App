@@ -2,6 +2,7 @@ package com.example.whatsappclone.ui.activities;
 
 import static com.example.whatsappclone.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.whatsappclone.utils.Utils.PICK_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.whatsappclone.utils.Utils.encodeImage;
 import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
 import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
 import static com.example.whatsappclone.utils.Utils.takePictureFromGallery;
@@ -52,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
     CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
+    private String profileEncodedString;
 
 
     @Override
@@ -150,7 +152,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         String fullName = etFullName.getText().toString().trim();
         if (validateUsername(SettingsActivity.this, etFullName)) {
             String userAbout = etUserAbout.getText().toString().trim();
-            Utils.showToastMessage(SettingsActivity.this, fullName + " " + userAbout + " " + selectedBitmap);
+            profileEncodedString = encodeImage(selectedBitmap);
+            Utils.showToastMessage(SettingsActivity.this, fullName + " " + userAbout + " " + profileEncodedString);
         }
     }
 }

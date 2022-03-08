@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.example.whatsappclone.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -151,4 +153,36 @@ public class Utils {
         return selectedBitmap;
     }
 
+    // converting Bitmap to base64 string
+    public static String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, getFileQuality(bm), baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encImage;
+    }
+
+    // setting image/file quality
+    public static int getFileQuality(Bitmap bm) {
+
+        int fileSize = 0;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
+            fileSize = bm.getRowBytes() * bm.getHeight();
+        } else {
+            fileSize = bm.getByteCount();
+        }
+
+        if (fileSize > 0 && fileSize < 1000)
+            return 50;
+        else if (fileSize > 1000 && fileSize < 2000)
+            return 40;
+        else if (fileSize > 2000 && fileSize < 4000)
+            return 30;
+        else if (fileSize > 4000 && fileSize < 10000)
+            return 25;
+        else
+            return 10;
+
+    }
 }
