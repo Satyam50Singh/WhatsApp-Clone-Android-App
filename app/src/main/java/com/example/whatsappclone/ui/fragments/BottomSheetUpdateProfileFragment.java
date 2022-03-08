@@ -1,5 +1,8 @@
 package com.example.whatsappclone.ui.fragments;
 
+import static com.example.whatsappclone.utils.Utils.checkAndRequestPermission;
+import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,8 +24,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment {
 
     private BottomSheetListener bottomSheetListener;
-    CircleImageView civActionCamera, civActionGallery;
-    ImageView ivRemoveProfileApp;
+    private CircleImageView civActionCamera, civActionGallery;
+    private ImageView ivRemoveProfileApp;
+
+    public interface BottomSheetListener {
+        void onOptionClick(String text);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,11 +40,13 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
         ivRemoveProfileApp = view.findViewById(R.id.iv_remove_profile_app);
 
         civActionCamera.setOnClickListener(view1 -> {
-            bottomSheetListener.onOptionClick("Camera Clicked");
+            if (checkAndRequestPermission(getActivity())) {
+                bottomSheetListener.onOptionClick(getString(R.string.camera));
+            }
             dismiss();
         });
         civActionGallery.setOnClickListener(view12 -> {
-            bottomSheetListener.onOptionClick("Gallery Clicked");
+            bottomSheetListener.onOptionClick(getString(R.string.gallery));
             dismiss();
         });
         ivRemoveProfileApp.setOnClickListener(view13 -> Utils.showToastMessage(getContext(), "Remove Profile"));
@@ -45,9 +54,6 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
         return view;
     }
 
-    public interface BottomSheetListener {
-        void onOptionClick(String text);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +61,7 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
 
         try {
             bottomSheetListener = (BottomSheetListener) context;
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
             Utils.showToastMessage(getContext(), e.getMessage());
             throw new ClassCastException();
         }

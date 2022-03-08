@@ -2,21 +2,39 @@ package com.example.whatsappclone.utils;
 
 import static android.provider.Settings.System.getString;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.example.whatsappclone.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class Utils {
+    public static final int PICK_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1889;
+
     // method to show toast message
     public static void showToastMessage(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -88,10 +106,49 @@ public class Utils {
     public static void snackBar(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
         View snackBarView = snackbar.getView();
-        TextView snackBarTextView  = snackBarView.findViewById(R.id.snackbar_text);
-        snackBarTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_wifi_off,0);
+        TextView snackBarTextView = snackBarView.findViewById(R.id.snackbar_text);
+        snackBarTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_wifi_off, 0);
         snackBarTextView.setGravity(Gravity.CENTER);
         snackbar.show();
+    }
+
+    // camera permission and picking images from camera and gallery
+    public static boolean checkAndRequestPermission(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int cameraPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA);
+            if (cameraPermission == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 21);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void takePictureFromCamera(Activity activity) {
+        Intent pickPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (pickPhoto.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivityForResult(pickPhoto, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    public static void takePictureFromGallery(Activity activity) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        activity.startActivityForResult(intent,
+                PICK_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    public static Bitmap getBitmapFromUri(Uri uri, Context context) {
+        Bitmap selectedBitmap = null;
+        final InputStream imageStream;
+        try {
+            imageStream = context.getContentResolver().openInputStream(uri);
+            selectedBitmap = BitmapFactory.decodeStream(imageStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return selectedBitmap;
     }
 
 }
