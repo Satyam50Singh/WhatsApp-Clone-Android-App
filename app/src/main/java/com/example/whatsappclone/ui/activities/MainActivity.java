@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,8 +29,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-    TabLayout tabLayout;
-    ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     private FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
@@ -122,21 +123,27 @@ public class MainActivity extends AppCompatActivity {
     // method for user log out
     private void userLogOut() {
         try {
-            firebaseAuth.signOut();
-            googleSignInClient.signOut()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
-                            }
-                        }
-                    });
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
-            Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.user_log_out)
+                    .setMessage(R.string.user_log_out_message)
+                    .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                        firebaseAuth.signOut();
+                        googleSignInClient.signOut()
+                                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
+                                        }
+                                    }
+                                });
+                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
+                    })
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                    .show();
         } catch (Exception e) {
             Utils.showLog(getString(R.string.error), getString(R.string.google_sign_out_failed) + e.getMessage());
-
         }
     }
 }

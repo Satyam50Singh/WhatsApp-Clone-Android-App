@@ -85,13 +85,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                 fabEditProfilePicture.setVisibility(View.VISIBLE);
                 btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
             } else {
-                btnEditProfile.setText(getString(R.string.edit_profile));
-                etUserAbout.setEnabled(false);
-                etFullName.setEnabled(false);
-                etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-                etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-                fabEditProfilePicture.setVisibility(View.GONE);
-                btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
                 updateProfile();
             }
         });
@@ -152,7 +145,16 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         String fullName = etFullName.getText().toString().trim();
         if (validateUsername(SettingsActivity.this, etFullName)) {
             String userAbout = etUserAbout.getText().toString().trim();
-            profileEncodedString = encodeImage(selectedBitmap);
+            profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
+            // debug line 148 
+            Utils.showToastMessage(MainActivity.this, profileEncodedString);
+            btnEditProfile.setText(getString(R.string.edit_profile));
+            etUserAbout.setEnabled(false);
+            etFullName.setEnabled(false);
+            etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+            etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+            fabEditProfilePicture.setVisibility(View.GONE);
+            btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
             Utils.showToastMessage(SettingsActivity.this, fullName + " " + userAbout + " " + profileEncodedString);
         }
     }

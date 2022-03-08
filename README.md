@@ -50,6 +50,8 @@
 - ViewProfilePictureActivity's Menu Added
 - Adding BottomSheet Inside ViewProfilePictureActivity 
 - Showing last Message in Chat Fragments Using UserAdapter
-
-
+- Profile Setting Layout Added
+- Picking Profile Picture Code Completed in Settings Activity
+- Converting Bitmap to Base64String
+-
    

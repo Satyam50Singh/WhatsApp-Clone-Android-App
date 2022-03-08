@@ -67,4 +67,5 @@
     <string name="save">Save</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="user_log_out_message">Do you really want to do log out ?</string>
 </resources>
