@@ -72,4 +72,7 @@
     <string name="http">http</string>
     <string name="remove_profile">Remove Profile</string>
     <string name="remove_profile_photo">Remove Profile Photo ?</string>
+    <string name="receiver_id">receiverId</string>
+    <string name="profile_picture_removed">Profile Picture Removed</string>
+    <string name="profile_picture_updated">Profile Picture Updated</string>
 </resources>

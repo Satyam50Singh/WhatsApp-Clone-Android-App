@@ -4,6 +4,7 @@ import static android.provider.Settings.System.getString;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,8 +27,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.ui.activities.MainActivity;
+import com.example.whatsappclone.ui.activities.SettingsActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -190,5 +196,25 @@ public class Utils {
         byte[] decodedString = Base64.decode(img, Base64.DEFAULT);
         Bitmap decodeByteImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodeByteImage;
+    }
+
+    // method to remove image
+    public static void removeProfilePicture(Activity context, String userId) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.remove_profile_photo)
+                .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
+                    firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(userId)
+                            .child("profilePicture").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Utils.showToastMessage(context, context.getString(R.string.profile_picture_removed));
+                        }
+                    });
+
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
+
     }
 }

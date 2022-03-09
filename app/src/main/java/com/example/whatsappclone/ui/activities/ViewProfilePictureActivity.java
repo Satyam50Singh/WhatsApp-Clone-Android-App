@@ -1,22 +1,36 @@
 package com.example.whatsappclone.ui.activities;
 
+import static com.example.whatsappclone.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.whatsappclone.utils.Utils.PICK_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.whatsappclone.utils.Utils.decodeImage;
+import static com.example.whatsappclone.utils.Utils.encodeImage;
+import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
+import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
+import static com.example.whatsappclone.utils.Utils.takePictureFromGallery;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-public class ViewProfilePictureActivity extends AppCompatActivity implements BottomSheetUpdateProfileFragment.BottomSheetListener {
+public class ViewProfilePictureActivity extends AppCompatActivity {
 
     private ImageView ivViewProfilePicture;
 
@@ -56,21 +70,12 @@ public class ViewProfilePictureActivity extends AppCompatActivity implements Bot
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_edit_profile:
-                openBottomSheet();
+            case R.id.action_share:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void openBottomSheet() {
-        BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
-        bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
-    }
 
-    @Override
-    public void onOptionClick(String text) {
-        Utils.showToastMessage(ViewProfilePictureActivity.this, text);
-    }
 }

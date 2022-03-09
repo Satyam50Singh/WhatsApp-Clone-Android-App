@@ -132,7 +132,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     @Override
     public void onOptionClick(String text) {
         if (text.equals(getString(R.string.remove_profile))) {
-            removeProfilePicture();
+            Utils.removeProfilePicture(SettingsActivity.this, FirebaseAuth.getInstance().getUid());
+            changeScreenState();
         } else if (text.equals(getString(R.string.camera))) {
             takePictureFromCamera(this);
         } else {
@@ -210,21 +211,15 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     private void insertProfileImage() {
         if (profileEncodedString != null) {
             firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
-                    .child("profilePicture").setValue(profileEncodedString);
+                    .child("profilePicture").setValue(profileEncodedString).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated));
+                }
+            });
         }
     }
 
-    // method to remove image
-    private void removeProfilePicture() {
-        new AlertDialog.Builder(SettingsActivity.this)
-                .setTitle(R.string.remove_profile_photo)
-                .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
-                    firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
-                            .child("profilePicture").setValue(null);
-                    changeScreenState();
-                })
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                .show();
-    }
+
 
 }
