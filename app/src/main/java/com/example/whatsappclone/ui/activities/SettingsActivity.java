@@ -193,14 +193,18 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
                     .updateChildren(objectHashMap);
 
-            btnEditProfile.setText(getString(R.string.edit_profile));
-            etUserAbout.setEnabled(false);
-            etFullName.setEnabled(false);
-            etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-            etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-            fabEditProfilePicture.setVisibility(View.GONE);
-            btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
+            changeScreenState();
         }
+    }
+
+    private void changeScreenState() {
+        btnEditProfile.setText(getString(R.string.edit_profile));
+        etUserAbout.setEnabled(false);
+        etFullName.setEnabled(false);
+        etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+        etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+        fabEditProfilePicture.setVisibility(View.GONE);
+        btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
     }
 
     private void insertProfileImage() {
@@ -216,16 +220,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                 .setTitle(R.string.remove_profile_photo)
                 .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
                     firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
-                            .child("profilePicture").setValue(null)
-                            .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
-                                    }
-                                }
-                            });
-                    Utils.showToastMessage(SettingsActivity.this, getString(R.string.remove_profile) + "d");
+                            .child("profilePicture").setValue(null);
+                    changeScreenState();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
