@@ -40,8 +40,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     Context context;
     ArrayList<UserModel> localDataSet;
     FirebaseDatabase firebaseDatabase;
-    Bitmap decodeByteImage;
-
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;

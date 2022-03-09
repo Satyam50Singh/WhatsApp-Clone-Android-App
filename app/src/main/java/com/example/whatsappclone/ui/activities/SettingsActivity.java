@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,7 +31,9 @@ import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,7 +131,9 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
     @Override
     public void onOptionClick(String text) {
-        if (text.equals(getString(R.string.camera))) {
+        if (text.equals(getString(R.string.remove_profile))) {
+            removeProfilePicture();
+        } else if (text.equals(getString(R.string.camera))) {
             takePictureFromCamera(this);
         } else {
             takePictureFromGallery(this);
@@ -203,7 +208,27 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
                     .child("profilePicture").setValue(profileEncodedString);
         }
+    }
 
+    // method to remove image
+    private void removeProfilePicture() {
+        new AlertDialog.Builder(SettingsActivity.this)
+                .setTitle(R.string.remove_profile_photo)
+                .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
+                    firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+                            .child("profilePicture").setValue(null)
+                            .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
+                                    }
+                                }
+                            });
+                    Utils.showToastMessage(SettingsActivity.this, getString(R.string.remove_profile) + "d");
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
     }
 
 }

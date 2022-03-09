@@ -49,7 +49,10 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
             bottomSheetListener.onOptionClick(getString(R.string.gallery));
             dismiss();
         });
-        ivRemoveProfileApp.setOnClickListener(view13 -> Utils.showToastMessage(getContext(), "Remove Profile"));
+        ivRemoveProfileApp.setOnClickListener(view13 -> {
+            bottomSheetListener.onOptionClick(getString(R.string.remove_profile));
+            dismiss();
+        });
 
         return view;
     }

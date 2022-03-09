@@ -56,4 +56,5 @@
 - Storing Image Into Users Collection
 - Syncing Profile
 - Updating Profile Data
+- Removing Profile Picture in Setting Activity
    
