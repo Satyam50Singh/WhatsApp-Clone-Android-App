@@ -53,5 +53,7 @@
 - Profile Setting Layout Added
 - Picking Profile Picture Code Completed in Settings Activity
 - Converting Bitmap to Base64String
-- Storing Image Into Users Database
+- Storing Image Into Users Collection
+- Syncing Profile
+- Updating Profile Data
    

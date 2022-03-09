@@ -61,8 +61,7 @@
             android:padding="10dp"
             android:text="Satyam Singh"
             android:textColor="@color/black"
-            android:textSize="26sp"
-            android:textStyle="bold"></com.google.android.material.textfield.TextInputEditText>
+            android:textSize="26sp"></com.google.android.material.textfield.TextInputEditText>
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_user_about"
@@ -75,8 +74,7 @@
             android:padding="10dp"
             android:text="Hi I am Software Developer"
             android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"></com.google.android.material.textfield.TextInputEditText>
+            android:textSize="22sp"></com.google.android.material.textfield.TextInputEditText>
 
         <View
             android:layout_width="wrap_content"

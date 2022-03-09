@@ -2,12 +2,14 @@ package com.example.whatsappclone.ui.activities;
 
 import static com.example.whatsappclone.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.whatsappclone.utils.Utils.PICK_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.whatsappclone.utils.Utils.decodeImage;
 import static com.example.whatsappclone.utils.Utils.encodeImage;
 import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
 import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
 import static com.example.whatsappclone.utils.Utils.takePictureFromGallery;
 import static com.example.whatsappclone.utils.Utils.validateUsername;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
@@ -31,13 +34,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
     CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
-    private String profileEncodedString;
+    private String profileEncodedString, userAbout;
 
 
     @Override
@@ -75,6 +83,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
 
+        // profile syncing
+        syncProfile();
         btnEditProfile.setOnClickListener(view -> {
             if (btnEditProfile.getText().toString().equals(getString(R.string.edit_profile))) {
                 btnEditProfile.setText(R.string.save);
@@ -93,6 +103,27 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
             bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
         });
+    }
+
+    private void syncProfile() {
+        firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        etFullName.setText(userModel.getUsername());
+                        etUserAbout.setText(userModel.getStatus());
+                        if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
+                            civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
+                        } else {
+                            Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     @Override
@@ -144,11 +175,18 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     private void updateProfile() {
         String fullName = etFullName.getText().toString().trim();
         if (validateUsername(SettingsActivity.this, etFullName)) {
-            String userAbout = etUserAbout.getText().toString().trim();
-            profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
+            userAbout = etUserAbout.getText().toString().trim();
+            if (selectedBitmap != null) {
+                profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
+            }
 
             // update/insert image in users database
             insertProfileImage();
+            HashMap<String, Object> objectHashMap = new HashMap<>();
+            objectHashMap.put("username", fullName);
+            objectHashMap.put("status", userAbout);
+            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+                    .updateChildren(objectHashMap);
 
             btnEditProfile.setText(getString(R.string.edit_profile));
             etUserAbout.setEnabled(false);
@@ -161,8 +199,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void insertProfileImage() {
-        firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
-                .child("profilePicture").setValue(profileEncodedString);
+        if (profileEncodedString != null) {
+            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+                    .child("profilePicture").setValue(profileEncodedString);
+        }
+
     }
 
 }

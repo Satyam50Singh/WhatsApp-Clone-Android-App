@@ -156,7 +156,7 @@ public class Utils {
     // converting Bitmap to base64 string
     public static String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, getFileQuality(bm), baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
         return encImage;
