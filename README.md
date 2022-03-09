@@ -69,4 +69,5 @@
 - Syncing Profile
 - Updating Profile Data
 - Removing Profile Picture in Setting Activity
+- NO Internet Connection Fragment Added
    

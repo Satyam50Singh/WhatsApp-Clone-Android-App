@@ -18,8 +18,10 @@ import com.example.whatsappclone.adapter.ViewPagerAdapter;
 import com.example.whatsappclone.ui.fragments.CallsFragment;
 import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
+import com.example.whatsappclone.ui.fragments.NoNetworkFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
 import com.example.whatsappclone.utils.Auth;
+import com.example.whatsappclone.utils.NetworkManager;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -110,14 +112,21 @@ public class MainActivity extends AppCompatActivity {
     private void settingViewPagerAdapter() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        viewPagerAdapter.addFragment(new CameraFragment(), "");
-        viewPagerAdapter.addFragment(new ChatFragment(), getString(R.string.chats_tab));
-        viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
-        viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
-
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_photo_camera);
-        tabLayout.getTabAt(1).select();
+        boolean connStatus = NetworkManager.checkNetworkConnectedStatus(MainActivity.this);
+        if (connStatus) {
+            viewPagerAdapter.addFragment(new CameraFragment(), "");
+            viewPagerAdapter.addFragment(new ChatFragment(), getString(R.string.chats_tab));
+            viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
+            viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
+            viewPager.setAdapter(viewPagerAdapter);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_photo_camera);
+            tabLayout.getTabAt(1).select();
+        } else {
+            viewPagerAdapter.addFragment(new NoNetworkFragment(), "");
+            viewPager.setAdapter(viewPagerAdapter);
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_wifi_off);
+            tabLayout.getTabAt(0).select();
+        }
     }
 
     // method for user log out

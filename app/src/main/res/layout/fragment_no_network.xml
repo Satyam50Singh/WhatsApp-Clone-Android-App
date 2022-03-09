@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center|center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.NoNetworkFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:singleLine="true"
+        android:text="@string/no_internet_tab"
+        android:textColor="@color/purple_700"
+        android:textSize="26dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:singleLine="true"
+        android:text="@string/try_these_steps_to_get_back_online"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/ic_check_circle"
+        android:drawablePadding="10dp"
+        android:paddingLeft="65dp"
+        android:singleLine="true"
+        android:text="@string/check_your_modem_and_router"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/ic_check_circle"
+        android:drawablePadding="10dp"
+        android:paddingLeft="65dp"
+        android:singleLine="true"
+        android:text="@string/reconnect_to_wifi"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+    <Button
+        android:id="@+id/btn_reload"
+        style="@style/ShapeAppearanceOverlay.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reload" />
+</LinearLayout>

@@ -10,17 +10,13 @@ import com.example.whatsappclone.R;
 
 public class NetworkManager {
 
-    public static void checkNetworkConnectedStatus(Context context, ConstraintLayout view) {
+    public static boolean checkNetworkConnectedStatus(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo mobile = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
         boolean isConnected = wifi != null && wifi.isConnectedOrConnecting() ||
                 mobile != null && mobile.isConnectedOrConnecting();
-        if(!isConnected){
-            Utils.snackBar(view, context.getString(R.string.you_are_currently_offline));
-        }else{
-            Utils.showLog("Network Status : ", "No");
-        }
+        return isConnected;
     }
 }
