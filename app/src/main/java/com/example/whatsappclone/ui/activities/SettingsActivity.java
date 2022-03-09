@@ -146,8 +146,10 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         if (validateUsername(SettingsActivity.this, etFullName)) {
             String userAbout = etUserAbout.getText().toString().trim();
             profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
-            // debug line 148 
-            Utils.showToastMessage(MainActivity.this, profileEncodedString);
+
+            // update/insert image in users database
+            insertProfileImage();
+
             btnEditProfile.setText(getString(R.string.edit_profile));
             etUserAbout.setEnabled(false);
             etFullName.setEnabled(false);
@@ -155,7 +157,12 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
             fabEditProfilePicture.setVisibility(View.GONE);
             btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
-            Utils.showToastMessage(SettingsActivity.this, fullName + " " + userAbout + " " + profileEncodedString);
         }
     }
+
+    private void insertProfileImage() {
+        firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                .child("profilePicture").setValue(profileEncodedString);
+    }
+
 }

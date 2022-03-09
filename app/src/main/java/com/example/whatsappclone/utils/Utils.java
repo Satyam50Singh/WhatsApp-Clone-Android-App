@@ -183,6 +183,12 @@ public class Utils {
             return 25;
         else
             return 10;
+    }
 
+    // converting base64 string to Bitmap
+    public static Bitmap decodeImage(String img) {
+        byte[] decodedString = Base64.decode(img, Base64.DEFAULT);
+        Bitmap decodeByteImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodeByteImage;
     }
 }

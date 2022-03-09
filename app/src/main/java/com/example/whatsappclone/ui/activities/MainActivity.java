@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     // method for user log out
     private void userLogOut() {
         try {
-            new AlertDialog.Builder(context)
+            new AlertDialog.Builder(MainActivity.this)
                     .setTitle(R.string.user_log_out)
                     .setMessage(R.string.user_log_out_message)
                     .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        finish();
                         Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
                     })
                     .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())

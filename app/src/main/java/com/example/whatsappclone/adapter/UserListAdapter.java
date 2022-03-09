@@ -1,8 +1,13 @@
 package com.example.whatsappclone.adapter;
 
+import static com.example.whatsappclone.utils.Utils.decodeImage;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,7 @@ import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.ui.activities.ViewProfilePictureActivity;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +40,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     Context context;
     ArrayList<UserModel> localDataSet;
     FirebaseDatabase firebaseDatabase;
+    Bitmap decodeByteImage;
+
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
@@ -51,7 +59,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int pos = position;
-        Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
+        if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
+            holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
+        } else {
+            Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
+        }
         holder.tvUsername.setText(localDataSet.get(position).getUsername());
         // showing last message
         String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(pos).getUserId();
@@ -62,8 +74,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 .limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChildren()){
-                    for(DataSnapshot snapshot1 : snapshot.getChildren()) {
+                if (snapshot.hasChildren()) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         holder.tvLastMessage.setText(snapshot1.child("messageText").getValue().toString());
                     }
                 }
@@ -83,18 +95,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             dialog.setContentView(R.layout.custom_profile_dialog);
             ImageView imageView = dialog.findViewById(R.id.iv_dialog_profile);
             TextView textView = dialog.findViewById(R.id.tv_dialog_username);
-
-            Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
+            if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
+                imageView.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
+            } else {
+                Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
+            }
             textView.setText(localDataSet.get(position).getUsername());
 
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, ViewProfilePictureActivity.class);
-                    intent.putExtra(context.getResources().getString(R.string.username), localDataSet.get(pos).getUsername());
-                    intent.putExtra(context.getResources().getString(R.string.profileImage), localDataSet.get(pos).getProfilePicture());
-                    context.startActivity(intent);
-                }
+            imageView.setOnClickListener(view1 -> {
+                Intent intent = new Intent(context, ViewProfilePictureActivity.class);
+                intent.putExtra(context.getResources().getString(R.string.username), localDataSet.get(pos).getUsername());
+                intent.putExtra(context.getResources().getString(R.string.profileImage), localDataSet.get(pos).getProfilePicture());
+                context.startActivity(intent);
             });
             dialog.show();
         });

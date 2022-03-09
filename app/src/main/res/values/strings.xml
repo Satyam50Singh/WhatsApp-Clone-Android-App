@@ -38,7 +38,7 @@
     <string name="login_to_your_account">Login to your Account</string>
     <string name="login">Login</string>
     <string name="action_log_out">Log out</string>
-    <string name="user_log_out">User Log out</string>
+    <string name="user_log_out">User Log Out</string>
     <string name="request_token_id">150087040940-0otnuhbqmjvskhdvp2geqojku3uee9cq.apps.googleusercontent.com</string>
     <string name="error">Error : </string>
     <string name="google_sign_in_failed">Google sign in failed</string>
@@ -68,4 +68,5 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="user_log_out_message">Do you really want to do log out ?</string>
+    <string name="http">http</string>
 </resources>

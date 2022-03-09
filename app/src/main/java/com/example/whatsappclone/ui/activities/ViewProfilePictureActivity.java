@@ -1,5 +1,7 @@
 package com.example.whatsappclone.ui.activities;
 
+import static com.example.whatsappclone.utils.Utils.decodeImage;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,10 +36,11 @@ public class ViewProfilePictureActivity extends AppCompatActivity implements Bot
         Intent intent = getIntent();
         String username = intent.getStringExtra(getString(R.string.username));
         getSupportActionBar().setTitle(username);
-        Picasso.with(ViewProfilePictureActivity.this)
-                .load(intent.getStringExtra(getString(R.string.profileImage)))
-                .placeholder(R.drawable.man)
-                .into(ivViewProfilePicture);
+        if (intent.getStringExtra(getString(R.string.profileImage)) != null && !intent.getStringExtra(getString(R.string.profileImage)).startsWith(getString(R.string.http))) {
+            ivViewProfilePicture.setImageBitmap(decodeImage(intent.getStringExtra(getString(R.string.profileImage))));
+        } else {
+            Picasso.with(this).load(intent.getStringExtra(getString(R.string.profileImage))).placeholder(R.drawable.man).into(ivViewProfilePicture);
+        }
     }
 
     @Override
