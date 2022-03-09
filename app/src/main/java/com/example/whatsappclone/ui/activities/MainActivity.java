@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
 
+    private boolean connStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,21 +52,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+        if (connStatus) {
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+            MenuItem item = menu.findItem(R.id.action_search);
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                Toast.makeText(getApplicationContext(), "Search : " + s, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    Toast.makeText(getApplicationContext(), "Search : " + s, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void settingViewPagerAdapter() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
-        boolean connStatus = NetworkManager.checkNetworkConnectedStatus(MainActivity.this);
+        connStatus = NetworkManager.checkNetworkConnectedStatus(MainActivity.this);
         if (connStatus) {
             viewPagerAdapter.addFragment(new CameraFragment(), "");
             viewPagerAdapter.addFragment(new ChatFragment(), getString(R.string.chats_tab));
