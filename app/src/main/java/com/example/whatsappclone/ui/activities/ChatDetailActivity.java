@@ -151,6 +151,9 @@ public class ChatDetailActivity extends AppCompatActivity {
     private void storingMessagesInFirebaseDatabase() {
         try {
             String message = etMessage.getText().toString();
+            if(message.isEmpty()) {
+                return;
+            }
             etMessage.setText("");
             etMessage.requestFocus();
             MessageModel model = new MessageModel(senderId, message, new Date().getTime());
@@ -178,7 +181,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                 Utils.showLog("Ids", "senderId : " + senderId + " receiverId : " + receiverId);
             }
         } catch (Exception e) {
-            Utils.showLog("Error : ", e.getMessage());
+            Utils.showLog(getString(R.string.error), e.getMessage());
         }
     }
 }

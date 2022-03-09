@@ -1,8 +1,20 @@
 # WhatsApp Clone Project
+![This is an image](./app/src/main/res/drawable/whatsapp.png)
 
 ## Developer :: Satyam Singh
 
 ### Date of Start : Saturday, 12 February 2022
+
+## Links
+
+- **Android Documentation**
+>  https://developer.android.com/docs
+- **Firebase**
+>  https://firebase.google.com/docs
+- **Tutorial Link (Hindi)**
+>  https://www.youtube.com/watch?v=d2_bcbUbCtc
+- **Tutorial Link (English)**
+>  https://www.youtube.com/watch?v=lJfMvLTKnwI  
 
 ## Steps involved
 

@@ -75,4 +75,5 @@
     <string name="receiver_id">receiverId</string>
     <string name="profile_picture_removed">Profile Picture Removed</string>
     <string name="profile_picture_updated">Profile Picture Updated</string>
+    <string name="SimpleDateFormat">HH:mm</string>
 </resources>
