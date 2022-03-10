@@ -94,5 +94,6 @@
     <string name="please_check_connection">Please Check Connection</string>
     <string name="incorrect_otp">Incorrect OTP</string>
     <string name="verification_successful">Verification successful</string>
+    <string name="skip_for_now">Skip for now</string>
 
 </resources>

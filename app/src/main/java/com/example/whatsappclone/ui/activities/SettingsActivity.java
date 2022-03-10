@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -65,7 +66,14 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
     private String profileEncodedString, userAbout;
+    private TextView tvSkipForNow;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +93,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         etFullName = findViewById(R.id.et_full_name);
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
+        tvSkipForNow = findViewById(R.id.tv_skip_for_now);
 
         // profile syncing
         syncProfile();
@@ -106,6 +115,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
             bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
         });
+
+        tvSkipForNow.setOnClickListener(view -> {
+            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+            finish();
+        });
     }
 
     private void syncProfile() {
@@ -122,8 +136,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                             } else {
                                 Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
                             }
+                        } else {
                         }
-
                     }
 
                     @Override
