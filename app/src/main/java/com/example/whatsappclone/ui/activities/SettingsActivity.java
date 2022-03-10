@@ -114,13 +114,16 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserModel userModel = snapshot.getValue(UserModel.class);
-                        etFullName.setText(userModel.getUsername());
-                        etUserAbout.setText(userModel.getStatus());
-                        if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
-                            civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
-                        } else {
-                            Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+                        if (userModel != null) {
+                            etFullName.setText(userModel.getUsername());
+                            etUserAbout.setText(userModel.getStatus());
+                            if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
+                                civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
+                            } else {
+                                Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+                            }
                         }
+
                     }
 
                     @Override
@@ -219,7 +222,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             });
         }
     }
-
 
 
 }

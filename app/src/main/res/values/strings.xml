@@ -90,5 +90,8 @@
     <string name="country_code">+91</string>
     <string name="enter_valid_number">Enter Valid Number</string>
     <string name="verify_otp">Verify OTP</string>
+    <string name="please_enter_otp">Please Enter OTP</string>
+    <string name="please_check_connection">Please Check Connection</string>
+    <string name="incorrect_otp">Incorrect OTP</string>
 
 </resources>
