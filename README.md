@@ -72,5 +72,6 @@
 - NO Internet Connection Fragment Added
 - LoginWithPhoneActivity Added & Layout Ready
 - Send and Verify OTP using Firebase
+- Resend OTP functionality Added
 
    

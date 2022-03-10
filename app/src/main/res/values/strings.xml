@@ -93,5 +93,6 @@
     <string name="please_enter_otp">Please Enter OTP</string>
     <string name="please_check_connection">Please Check Connection</string>
     <string name="incorrect_otp">Incorrect OTP</string>
+    <string name="verification_successful">Verification successful</string>
 
 </resources>

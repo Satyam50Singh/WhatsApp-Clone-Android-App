@@ -67,32 +67,33 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    if (llOTP.getVisibility() == View.GONE) {
-                        // send OTP code
-                        String mobileNumber = etMobileNo.getText().toString().trim();
-                        if (mobileNumber.length() < 10) {
-                            etMobileNo.setError(getString(R.string.enter_valid_number));
-                            etMobileNo.requestFocus();
-                            return;
-                        }
-
-                        // login with phone number
-                        loginWithPhoneNumber(mobileNumber);
-
-                        llOTP.setVisibility(View.VISIBLE);
-                        btnLogin.setText(R.string.verify_otp);
-                    } else {
-                        // verify OTP code
-                        verifyOTP();
+        btnLogin.setOnClickListener(view -> {
+            try {
+                if (llOTP.getVisibility() == View.GONE) {
+                    // send OTP code
+                    String mobileNumber = etMobileNo.getText().toString().trim();
+                    if (mobileNumber.length() < 10) {
+                        etMobileNo.setError(getString(R.string.enter_valid_number));
+                        etMobileNo.requestFocus();
+                        return;
                     }
-                } catch (Exception e) {
-                    Utils.showLog(getString(R.string.error), e.getMessage());
+
+                    // login with phone number
+                    loginWithPhoneNumber(mobileNumber);
+
+                    llOTP.setVisibility(View.VISIBLE);
+                    btnLogin.setText(R.string.verify_otp);
+                } else {
+                    // verify OTP code
+                    verifyOTP();
                 }
+            } catch (Exception e) {
+                Utils.showLog(getString(R.string.error), e.getMessage());
             }
+        });
+        tvResend.setOnClickListener(view -> {
+            loginWithPhoneNumber(etMobileNo.getText().toString().trim());
+            verifyOTP();
         });
     }
 
@@ -190,8 +191,6 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
     }
 
     private void loginWithPhoneNumber(String phoneNumber) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + phoneNumber,
                 60,
@@ -200,8 +199,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        Utils.showLog(getString(R.string.success), "Verification successfull");
-
+                        Utils.showLog(getString(R.string.success), getString(R.string.verification_successful));
                     }
 
                     @Override
