@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ import java.util.Objects;
 public class SignInActivity extends AppCompatActivity {
 
     TextInputEditText etEmail, etPassword;
-    TextView tvCreateAnAccount;
+    TextView tvCreateAnAccount, tvLoginWithPhone;
     Button btnSignIn, btnGoogle;
 
     private FirebaseAuth firebaseAuth;
@@ -53,11 +54,13 @@ public class SignInActivity extends AppCompatActivity {
 
     private void init() {
         tvCreateAnAccount = findViewById(R.id.tv_create_an_account);
+        tvLoginWithPhone = findViewById(R.id.tv_login_with_phone);
         btnSignIn = findViewById(R.id.btn_sign_in);
         etEmail = findViewById(R.id.et_email_sign_in);
         etPassword = findViewById(R.id.et_password_sign_in);
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         tvCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, SignUpActivity.class)));
+        tvLoginWithPhone.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, LoginWithPhoneActivity.class)));
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
         firebaseAuth = FirebaseAuth.getInstance();
@@ -116,7 +119,7 @@ public class SignInActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed));
+                Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed));
             }
         }
     }
@@ -140,12 +143,12 @@ public class SignInActivity extends AppCompatActivity {
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 finish();
                             } catch (Exception e) {
-                                Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed)+ e.getMessage());
+                                Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed) + e.getMessage());
                             }
                         } else {
                             // If sign in fails, display a message to the user.
                             Utils.hideProgressDialog();
-                            Utils.showLog(getString(R.string.error),getString(R.string.google_sign_in_failed));
+                            Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed));
                         }
                     }
                 });

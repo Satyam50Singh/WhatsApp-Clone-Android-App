@@ -81,4 +81,14 @@
     <string name="check_your_modem_and_router">Check your Modem and Router</string>
     <string name="reconnect_to_wifi">Reconnect to Wifi</string>
     <string name="reload">Reload</string>
+    <string name="login_with_phone">Login with Phone</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="so_we_know_you_are_real">so we know you are real</string>
+    <string name="add_your_phone_number_we_ll_send_you_a_verification_code">Add your phone number, we\'ll send you a verification code</string>
+    <string name="country_code">+91</string>
+    <string name="enter_valid_number">Enter Valid Number</string>
+    <string name="verify_otp">Verify OTP</string>
+
 </resources>

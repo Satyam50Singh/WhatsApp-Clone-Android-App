@@ -22,4 +22,5 @@
     <color name="grayBackground">#BCBCBC</color>
     <color name="chatbackground">#AAAAAA</color>
     <color name="darkGray">#888888</color>
+    <color name="login_with_phone">#4E4C4C</color>
 </resources>

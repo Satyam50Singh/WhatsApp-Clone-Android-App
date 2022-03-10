@@ -109,4 +109,22 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/tv_login_with_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_local_phone"
+        android:drawablePadding="10dp"
+        android:gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="@string/login_with_phone"
+        android:textColor="@color/login_with_phone" />
 </LinearLayout>

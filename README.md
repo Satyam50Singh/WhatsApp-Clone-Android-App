@@ -70,4 +70,5 @@
 - Updating Profile Data
 - Removing Profile Picture in Setting Activity
 - NO Internet Connection Fragment Added
+- LoginWithPhoneActivity Added & Layout Ready
    
