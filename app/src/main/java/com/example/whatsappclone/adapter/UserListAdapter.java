@@ -149,7 +149,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // search Functionality
     @Override
     public Filter getFilter() {
-        localDataSetFull = new ArrayList<>(localDataSet);
+//        localDataSetFull = new ArrayList<>(localDataSet);
 
         return userDataFilter;
     }
@@ -157,7 +157,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     private Filter userDataFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            Utils.showLog("Tag", (String) charSequence);
+            Utils.showLog("Tag", (String) charSequence + " " +localDataSetFull.size() + "     " + localDataSet.size());
 
             List<UserModel> filterLocalDataSet = new ArrayList<>();
 

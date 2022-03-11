@@ -1,5 +1,7 @@
 package com.example.whatsappclone.ui.activities;
 
+import static com.example.whatsappclone.utils.Utils.decodeImage;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.view.ActionMode;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.ChatAdapter;
 import com.example.whatsappclone.models.MessageModel;
+import com.example.whatsappclone.models.StarredMessageModel;
+import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +62,8 @@ public class ChatDetailActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
 
     private static android.view.ActionMode mActionMode = null;
+
+    StarredMessageModel starredMessageModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +222,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             // this method is called when menu item is clicked
             switch (menuItem.getItemId()) {
                 case R.id.action_starred:
+                    addToStaredMessagesBox();
                     Utils.showToastMessage(ChatDetailActivity.this, "Star menu item clicked");
                     return true;
                 case R.id.action_delete:
@@ -244,4 +252,44 @@ public class ChatDetailActivity extends AppCompatActivity {
         return true;
     }
 
+    private void addToStaredMessagesBox() {
+        firebaseDatabase.getReference().child("Starred Messages")
+                .child(receiverId)
+                .push()
+                .setValue(starredMessageModel);
+    }
+
+    public void sendMessageDetailMode(MessageModel messageModel) {
+        final String[] loggedInUser = new String[1];
+        starredMessageModel = new StarredMessageModel();
+        starredMessageModel.setMessageText(messageModel.getMessageText());
+        starredMessageModel.setMessageTime(messageModel.getMessageTime());
+        starredMessageModel.setSenderProfilePicture(profileImage);
+
+        firebaseDatabase.getReference()
+                .child(Constants.COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        if (userModel != null) {
+                            if (messageModel.getMessageId().equals(FirebaseAuth.getInstance().getUid())) {
+                                starredMessageModel.setSenderName(userModel.getUsername());
+                                starredMessageModel.setReceiverName(username);
+                            } else {
+                                starredMessageModel.setSenderName(username);
+                                starredMessageModel.setReceiverName(userModel.getUsername());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
+
+
+    }
 }

@@ -72,6 +72,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             @Override
             public boolean onLongClick(View view) {
                 ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
                 return false;
             }
         });
