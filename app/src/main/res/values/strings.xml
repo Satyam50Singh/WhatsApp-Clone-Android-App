@@ -98,5 +98,6 @@
     <string name="whatsapp">whatsapp</string>
     <string name="verification">Verification</string>
     <string name="enter_otp_value">Enter OTP Value</string>
+    <string name="starred_messages">Starred Messages</string>
 
 </resources>

@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Payments", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.starred_messages:
-                Toast.makeText(getApplicationContext(), "Starred Messages", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, StarredMessageActivity.class));
+
                 return true;
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));

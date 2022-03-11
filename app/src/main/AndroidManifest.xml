@@ -13,6 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsappClone">
         <activity
+            android:name=".ui.activities.ReceiverUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.StarredMessageActivity"
+            android:exported="false"
+            android:label="@string/starred_messages"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
             android:name=".ui.activities.LoginWithPhoneActivity"
             android:exported="false" />
         <activity

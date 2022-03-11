@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -113,6 +114,15 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         llSentBtn.setOnClickListener(view -> {
             storingMessagesInFirebaseDatabase();
+        });
+
+        tvReceiverName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatDetailActivity.this, ReceiverUserProfile.class);
+                intent.putExtra("ReceiverName", username);
+                startActivity(intent);
+            }
         });
     }
 
@@ -288,7 +298,6 @@ public class ChatDetailActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
-
 
 
     }

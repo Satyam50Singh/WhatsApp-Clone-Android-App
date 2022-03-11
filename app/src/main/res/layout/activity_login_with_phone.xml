@@ -47,7 +47,7 @@
         android:singleLine="true"
         android:text="@string/add_your_phone_number_we_ll_send_you_a_verification_code"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_heading" />
@@ -61,7 +61,7 @@
         android:singleLine="true"
         android:text="@string/so_we_know_you_are_real"
         android:textColor="@color/black"
-        android:textSize="12sp"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/rounded_bg"
         android:elevation="10dp"
         android:orientation="vertical"
@@ -84,7 +84,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="66dp"
             android:baselineAligned="false"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal">
@@ -92,41 +92,33 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
-                android:layout_height="62dp"
-                android:layout_marginBottom="5dp"
-                android:elevation="10dp"
-                android:enabled="false">
+                android:layout_height="60dp"
+                android:layout_marginRight="5dp"
+                android:textColorHint="@color/purple_700"
+                app:boxStrokeColor="@color/purple_700">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
-                    android:background="@null"
-                    android:text="+91"
-                    android:textColor="@color/purple_700"
-                    android:textSize="19sp" />
+                    android:layout_height="wrap_content"
+                    android:text="@string/country_code"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="wrap_content"
-                android:layout_height="67dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:hint="@string/mobile_number"
-                android:padding="3dp"
                 android:textColorHint="@color/purple_700"
                 app:boxStrokeColor="@color/purple_700">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_enter_mobile_no"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
+                    android:layout_height="wrap_content"
                     android:inputType="phone"
                     android:maxLength="10"
-                    android:selectAllOnFocus="true"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -275,10 +267,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_phone_login"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_margin="5dp"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:background="@drawable/rounded_bg"
             android:backgroundTint="@color/purple_700"
             android:text="@string/send_otp"
