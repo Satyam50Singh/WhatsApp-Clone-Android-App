@@ -11,6 +11,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,18 +34,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements Filterable {
 
     Context context;
     ArrayList<UserModel> localDataSet;
+    private List<UserModel> localDataSetFull;
     FirebaseDatabase firebaseDatabase;
+
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
         this.localDataSet = localDataSet;
+        localDataSetFull = new ArrayList<>(localDataSet);
+        Utils.showLog("Tag", localDataSetFull.toString());
+
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
     }
 
@@ -137,4 +145,41 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         }
     }
+
+    // search Functionality
+    @Override
+    public Filter getFilter() {
+        localDataSetFull = new ArrayList<>(localDataSet);
+
+        return userDataFilter;
+    }
+
+    private Filter userDataFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            Utils.showLog("Tag", (String) charSequence);
+
+            List<UserModel> filterLocalDataSet = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filterLocalDataSet.addAll(localDataSetFull);
+            } else {
+                String pattern = charSequence.toString().toLowerCase().trim();
+                for (UserModel res : localDataSet) {
+                    if (res.getUsername().toLowerCase().contains(pattern)) {
+                        filterLocalDataSet.add(res);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filterLocalDataSet;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            localDataSet.clear();
+            localDataSet.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

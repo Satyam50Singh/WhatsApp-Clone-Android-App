@@ -74,4 +74,5 @@
 - Send and Verify OTP using Firebase
 - Resend OTP functionality Added
 - Enabling Contextual Action Mode ChatDetailActivity
+- Search User Functionality Added
    

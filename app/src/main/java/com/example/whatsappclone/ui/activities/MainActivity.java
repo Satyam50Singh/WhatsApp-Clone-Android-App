@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.adapter.ChatAdapter;
 import com.example.whatsappclone.adapter.ViewPagerAdapter;
 import com.example.whatsappclone.ui.fragments.CallsFragment;
 import com.example.whatsappclone.ui.fragments.CameraFragment;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
-
+    private ChatFragment chatFragment;
     private boolean connStatus;
 
     @Override
@@ -64,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    Toast.makeText(getApplicationContext(), "Search : " + s, Toast.LENGTH_SHORT).show();
-                    return false;
+                    ((ChatFragment)chatFragment).searchUser(s);
+                            return false;
                 }
             });
         }
@@ -118,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
         connStatus = NetworkManager.checkNetworkConnectedStatus(MainActivity.this);
         if (connStatus) {
+            chatFragment = new ChatFragment();
             viewPagerAdapter.addFragment(new CameraFragment(), "");
-            viewPagerAdapter.addFragment(new ChatFragment(), getString(R.string.chats_tab));
+            viewPagerAdapter.addFragment(chatFragment, getString(R.string.chats_tab));
             viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
             viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
             viewPager.setAdapter(viewPagerAdapter);

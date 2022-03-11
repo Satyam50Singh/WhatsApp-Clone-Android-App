@@ -92,4 +92,8 @@ public class ChatFragment extends Fragment {
         }
 
     }
+
+    public void searchUser(String s) {
+        userListAdapter.getFilter().filter(s);
+    }
 }
