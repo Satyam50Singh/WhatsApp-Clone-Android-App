@@ -73,6 +73,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override

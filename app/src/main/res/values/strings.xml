@@ -95,5 +95,8 @@
     <string name="incorrect_otp">Incorrect OTP</string>
     <string name="verification_successful">Verification successful</string>
     <string name="skip_for_now">Skip for now</string>
+    <string name="whatsapp">whatsapp</string>
+    <string name="verification">Verification</string>
+    <string name="enter_otp_value">Enter OTP Value</string>
 
 </resources>

@@ -1,18 +1,22 @@
 package com.example.whatsappclone.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
+import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,9 +35,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
     String receiverId;
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
+    private Activity activity;
 
-    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, String receiverId) {
+    public ChatAdapter(Activity activity, Context context, ArrayList<MessageModel> localDataSet, String receiverId) {
         this.context = context;
+        this.activity = activity;
         this.localDataSet = localDataSet;
         this.receiverId = receiverId;
     }
@@ -65,23 +71,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle(R.string.delete)
-                        .setMessage(R.string.delete_message)
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                            String senderRoom = FirebaseAuth.getInstance().getUid() + receiverId;
-                            FirebaseDatabase database = FirebaseDatabase.getInstance(Constants.DB_PATH);
-
-//                            database.getReference()
-//                                    .child("Chats")
-//                                    .child(senderRoom)
-//                                    .child(messageModel.getMessageId())
-//                                    .setValue(null)
-//                                    .addOnSuccessListener(unused -> Utils.showToastMessage(context, "Deleted"))
-//                                    .addOnFailureListener(e -> Utils.showToastMessage(context, "Not Deleted"));
-                        })
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                        .show();
+                ((ChatDetailActivity) activity).showActionMode();
                 return false;
             }
         });

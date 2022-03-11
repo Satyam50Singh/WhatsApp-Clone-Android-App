@@ -60,7 +60,10 @@ public class SignInActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password_sign_in);
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         tvCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, SignUpActivity.class)));
-        tvLoginWithPhone.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, LoginWithPhoneActivity.class)));
+        tvLoginWithPhone.setOnClickListener(view -> {
+            startActivity(new Intent(SignInActivity.this, LoginWithPhoneActivity.class));
+            finish();
+        });
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
         firebaseAuth = FirebaseAuth.getInstance();

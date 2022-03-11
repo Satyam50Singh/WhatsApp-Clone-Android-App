@@ -29,7 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.ChatDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.WhatsappClone.NoActionBar" />
         <activity
             android:name=".ui.activities.SignUpActivity"
             android:exported="false" />

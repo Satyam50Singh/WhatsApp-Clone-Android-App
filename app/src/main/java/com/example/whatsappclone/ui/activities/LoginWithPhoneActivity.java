@@ -86,11 +86,15 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
                         return;
                     }
                     etMobileNo.setEnabled(false);
+                    edtOTP1.requestFocus();
                     // login with phone number
                     loginWithPhoneNumber(mobileNumber);
 
                     llOTP.setVisibility(View.VISIBLE);
                     btnLogin.setText(R.string.verify_otp);
+                    tvHeading.setText(R.string.verification);
+                    tvDescription2.setVisibility(View.GONE);
+                    tvDescription.setText(R.string.enter_otp_value);
                 } else {
                     // verify OTP code
                     verifyOTP();
@@ -268,8 +272,12 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
                                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                 UserModel userModel = new UserModel();
                                 userModel.setUserId(firebaseUser.getUid());
+                                userModel.setPhone(getString(R.string.country_code) + etMobileNo.getText().toString().trim());
 
-                                firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
+                                firebaseDatabase.getReference()
+                                        .child(Constants.COLLECTION_NAME)
+                                        .child(task.getResult().getUser().getUid())
+                                        .setValue(userModel);
 
                                 startActivity(new Intent(LoginWithPhoneActivity.this, SettingsActivity.class));
                                 finish();

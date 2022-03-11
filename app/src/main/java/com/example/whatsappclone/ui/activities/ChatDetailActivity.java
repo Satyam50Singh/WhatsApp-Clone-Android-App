@@ -3,13 +3,20 @@ package com.example.whatsappclone.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,11 +56,12 @@ public class ChatDetailActivity extends AppCompatActivity {
     private ArrayList<MessageModel> chatRecord = new ArrayList<>();
     ChatAdapter chatAdapter;
 
+    private static android.view.ActionMode mActionMode = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_detail);
-        getSupportActionBar().hide();
         init();
     }
 
@@ -63,6 +71,7 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         // reference to controls
         toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow);
         civProfileImage = toolbar.findViewById(R.id.civ_chat_profile_image);
         tvReceiverName = toolbar.findViewById(R.id.tv_receiver_name);
@@ -84,7 +93,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         Utils.showProgressDialog(ChatDetailActivity.this, "", getString(R.string.please_wait));
         loadChatMessages();
 
-        chatAdapter = new ChatAdapter(ChatDetailActivity.this, chatRecord, receiverId);
+        chatAdapter = new ChatAdapter(ChatDetailActivity.this, getApplicationContext(), chatRecord, receiverId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatDetailActivity.this);
         rcvUserChat.setLayoutManager(layoutManager);
         rcvUserChat.setAdapter(chatAdapter);
@@ -151,7 +160,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private void storingMessagesInFirebaseDatabase() {
         try {
             String message = etMessage.getText().toString();
-            if(message.isEmpty()) {
+            if (message.isEmpty()) {
                 return;
             }
             etMessage.setText("");
@@ -184,4 +193,55 @@ public class ChatDetailActivity extends AppCompatActivity {
             Utils.showLog(getString(R.string.error), e.getMessage());
         }
     }
+
+    public ActionMode.Callback callback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            /* when you start action mode by calling action mode method,
+             * system will call this method */
+            // inflate menu item here
+            actionMode.getMenuInflater().inflate(R.menu.chat_menu, menu);
+            actionMode.setTitle(username);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            // this method is called when menu item is clicked
+            switch (menuItem.getItemId()) {
+                case R.id.action_starred:
+                    Utils.showToastMessage(ChatDetailActivity.this, "Star menu item clicked");
+                    return true;
+                case R.id.action_delete:
+                    Utils.showToastMessage(ChatDetailActivity.this, "Delete menu item clicked");
+                    return true;
+                default:
+                    return false;
+
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            // when user leave contextual action mode, system call this method
+            mActionMode = null;
+        }
+    };
+
+
+    // method for active action contextual mode
+    public boolean showActionMode() {
+        if (mActionMode != null) {
+            return false;
+        }
+
+        mActionMode = toolbar.startActionMode(callback);
+        return true;
+    }
+
 }
