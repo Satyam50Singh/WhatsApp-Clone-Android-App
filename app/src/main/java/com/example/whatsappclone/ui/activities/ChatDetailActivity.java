@@ -271,7 +271,6 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private void addToStaredMessagesBox() {
         firebaseDatabase.getReference().child("Starred Messages")
-                .child(receiverId)
                 .push()
                 .setValue(starredMessageModel);
     }
@@ -279,6 +278,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     public void sendMessageDetailMode(MessageModel messageModel) {
         final String[] loggedInUser = new String[1];
         starredMessageModel = new StarredMessageModel();
+        starredMessageModel.setId(receiverId);
         starredMessageModel.setMessageText(messageModel.getMessageText());
         starredMessageModel.setMessageTime(messageModel.getMessageTime());
         starredMessageModel.setSenderProfilePicture(profileImage);

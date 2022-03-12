@@ -1,18 +1,31 @@
 package com.example.whatsappclone.models;
 
 public class StarredMessageModel {
-    private String senderName, receiverName,  senderProfilePicture, messageText;
+    private String id, senderName, receiverName,  senderProfilePicture, messageText;
     Long messageTime;
 
     public StarredMessageModel() {
     }
 
-    public StarredMessageModel(String senderName, String receiverName, Long messageTime, String senderProfilePicture, String messageText) {
+    public StarredMessageModel(String id, String senderName, String receiverName, Long messageTime, String senderProfilePicture, String messageText) {
+        this.id = id;
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.messageTime = messageTime;
         this.senderProfilePicture = senderProfilePicture;
         this.messageText = messageText;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getId(String key) {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSenderName() {
