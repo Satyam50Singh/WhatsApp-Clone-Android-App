@@ -239,6 +239,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             // this method is called when menu item is clicked
             switch (menuItem.getItemId()) {
                 case R.id.action_starred:
+                    mActionMode.finish();
                     addToStaredMessagesBox();
                     Utils.showToastMessage(ChatDetailActivity.this, "Star menu item clicked");
                     return true;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,17 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.StarredMessageModel;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<StarredMessageModel> localDataSet;
+    private final Context context;
+    private final ArrayList<StarredMessageModel> localDataSet;
 
     public StarredMessageAdapter(Context context, ArrayList<StarredMessageModel> data) {
         this.context = context;
@@ -32,7 +33,7 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.sample_receiver_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.starred_message_layout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,10 +41,20 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Utils.showLog("tag",localDataSet.get(position).getMessageText());
         holder.tvReceiverMessage.setText(localDataSet.get(position).getMessageText());
+        holder.tvSenderName.setText(localDataSet.get(position).getSenderName());
+        holder.tvReceiverName.setText(localDataSet.get(position).getReceiverName());
         Date date = new Date(localDataSet.get(position).getMessageTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
         String messageTime = dateFormat.format(date);
         holder.tvReceiverTime.setText(messageTime);
+
+        holder.ivRemoveStar.setOnClickListener(view -> {
+//            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+//            firebaseDatabase.getReference().child("Starred Messages")
+//                    .child(localDataSet.get(position).getId())
+//                    .setValue(null);
+            Utils.showToastMessage(context, "Star Button Clicks!");
+        });
     }
 
     @Override
@@ -52,12 +63,16 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvReceiverMessage, tvReceiverTime;
+        TextView tvReceiverMessage, tvReceiverTime, tvSenderName, tvReceiverName;
+        ImageView ivRemoveStar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message);
-            tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time);
+            tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message_starred);
+            tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time_starred);
+            tvSenderName = itemView.findViewById(R.id.tv_sender_name_starred);
+            tvReceiverName = itemView.findViewById(R.id.tv_receiver_name_starred);
+            ivRemoveStar = itemView.findViewById(R.id.iv_remove_star);
         }
     }
 }
