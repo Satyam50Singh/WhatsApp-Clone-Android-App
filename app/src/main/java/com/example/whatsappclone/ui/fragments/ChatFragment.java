@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.UserListAdapter;
@@ -18,7 +17,6 @@ import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +26,6 @@ import java.util.ArrayList;
 
 public class ChatFragment extends Fragment {
 
-    private RecyclerView rcvUserList;
     ArrayList<UserModel> userList = new ArrayList<>();
     UserListAdapter userListAdapter;
 
@@ -37,7 +34,6 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         // if (!firebaseUser.isEmailVerified()) {
         //     Utils.showToastMessage(getContext(), getString(R.string.email_not_verified));
         // }
@@ -49,7 +45,7 @@ public class ChatFragment extends Fragment {
     }
 
     private void init(View rootView) {
-        rcvUserList = rootView.findViewById(R.id.rcv_user_list);
+        RecyclerView rcvUserList = rootView.findViewById(R.id.rcv_user_list);
         Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
         loadUserRecord();
         userListAdapter = new UserListAdapter(getContext(), userList);
@@ -61,7 +57,7 @@ public class ChatFragment extends Fragment {
     private void loadUserRecord() {
         try {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).addValueEventListener(new ValueEventListener() {
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userList.clear();
@@ -69,7 +65,7 @@ public class ChatFragment extends Fragment {
                         UserModel userModel = dataSnapshot.getValue(UserModel.class);
                         userModel.getUserId(dataSnapshot.getKey());
                         try{
-                            if(!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid()) && userModel != null){
+                            if(!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())){
                                 userList.add(userModel);
                             }
                         }catch (Exception e) {

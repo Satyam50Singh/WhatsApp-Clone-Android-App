@@ -5,11 +5,7 @@ import static com.example.whatsappclone.utils.Utils.decodeImage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,14 +48,12 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom;
     private Toolbar toolbar;
-    private ImageView ivBackArrow;
     private TextView tvReceiverName;
     private CircleImageView civProfileImage;
     private RecyclerView rcvUserChat;
-    private LinearLayout llSentBtn;
     private EditText etMessage;
 
-    private ArrayList<MessageModel> chatRecord = new ArrayList<>();
+    private final ArrayList<MessageModel> chatRecord = new ArrayList<>();
     ChatAdapter chatAdapter;
 
     private static android.view.ActionMode mActionMode = null;
@@ -80,11 +74,11 @@ public class ChatDetailActivity extends AppCompatActivity {
         // reference to controls
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow);
+        ImageView ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow);
         civProfileImage = toolbar.findViewById(R.id.civ_chat_profile_image);
         tvReceiverName = toolbar.findViewById(R.id.tv_receiver_name);
         rcvUserChat = findViewById(R.id.rcv_user_chat);
-        llSentBtn = findViewById(R.id.ll_send_btn);
+        LinearLayout llSentBtn = findViewById(R.id.ll_send_btn);
         etMessage = findViewById(R.id.et_message);
         etMessage.requestFocus();
 
@@ -105,26 +99,16 @@ public class ChatDetailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatDetailActivity.this);
         rcvUserChat.setLayoutManager(layoutManager);
         rcvUserChat.setAdapter(chatAdapter);
-        rcvUserChat.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1);
-            }
-        }, 1000);
+        rcvUserChat.postDelayed(() -> rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1), 1000);
 
-        llSentBtn.setOnClickListener(view -> {
-            storingMessagesInFirebaseDatabase();
-        });
+        llSentBtn.setOnClickListener(view -> storingMessagesInFirebaseDatabase());
 
-        tvReceiverName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChatDetailActivity.this, ReceiverUserProfile.class);
-                intent.putExtra(getString(R.string.receiver_id), receiverId);
-                intent.putExtra(getString(R.string.receiver_name), username);
-                intent.putExtra(getString(R.string.profileImage), profileImage);
-                startActivity(intent);
-            }
+        tvReceiverName.setOnClickListener(view -> {
+            Intent intent = new Intent(ChatDetailActivity.this, ReceiverUserProfile.class);
+            intent.putExtra(getString(R.string.receiver_id), receiverId);
+            intent.putExtra(getString(R.string.receiver_name), username);
+            intent.putExtra(getString(R.string.profileImage), profileImage);
+            startActivity(intent);
         });
     }
 
@@ -156,7 +140,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private void loadChatMessages() {
         try {
             firebaseDatabase.getReference()
-                    .child("Chats")
+                    .child(Constants.CHAT_COLLECTION_NAME)
                     .child(senderId + receiverId)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
@@ -192,24 +176,16 @@ public class ChatDetailActivity extends AppCompatActivity {
             MessageModel model = new MessageModel(senderId, message, new Date().getTime());
             if (senderId != null && receiverId != null) {
                 firebaseDatabase.getReference()
-                        .child("Chats")
+                        .child(Constants.CHAT_COLLECTION_NAME)
                         .child(senderId + receiverId)
                         .push()
-                        .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        firebaseDatabase.getReference()
-                                .child("Chats")
+                        .setValue(model)
+                        .addOnSuccessListener(unused -> firebaseDatabase.getReference()
+                                .child(Constants.CHAT_COLLECTION_NAME)
                                 .child(receiverRoom)
                                 .push()
-                                .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1);
-                            }
-                        });
-                    }
-                });
+                                .setValue(model)
+                                .addOnSuccessListener(unused1 -> rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1)));
             } else {
                 Utils.showLog("Ids", "senderId : " + senderId + " receiverId : " + receiverId);
             }
@@ -261,23 +237,21 @@ public class ChatDetailActivity extends AppCompatActivity {
 
 
     // method for active action contextual mode
-    public boolean showActionMode() {
+    public void showActionMode() {
         if (mActionMode != null) {
-            return false;
+            return;
         }
 
         mActionMode = toolbar.startActionMode(callback);
-        return true;
     }
 
     private void addToStaredMessagesBox() {
-        firebaseDatabase.getReference().child("Starred Messages")
+        firebaseDatabase.getReference().child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
                 .push()
                 .setValue(starredMessageModel);
     }
 
     public void sendMessageDetailMode(MessageModel messageModel) {
-        final String[] loggedInUser = new String[1];
         starredMessageModel = new StarredMessageModel();
         starredMessageModel.setId(receiverId);
         starredMessageModel.setMessageText(messageModel.getMessageText());
@@ -285,7 +259,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         starredMessageModel.setSenderProfilePicture(profileImage);
 
         firebaseDatabase.getReference()
-                .child(Constants.COLLECTION_NAME)
+                .child(Constants.USER_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override

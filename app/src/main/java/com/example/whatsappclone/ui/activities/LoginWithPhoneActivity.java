@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,7 +18,6 @@ import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
@@ -28,12 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicMarkableReference;
 
 public class LoginWithPhoneActivity extends AppCompatActivity {
 
@@ -42,7 +37,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvResend, tvHeading, tvDescription, tvDescription2;
     private LinearLayout llOTP;
-    String OTPValue, backendOTPValue;
+    String backendOTPValue;
     private FirebaseDatabase firebaseDatabase;
 
     @Override
@@ -265,31 +260,22 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
                     backendOTPValue, OTPValue
             );
             FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                UserModel userModel = new UserModel();
-                                userModel.setUserId(firebaseUser.getUid());
-                                userModel.setPhone(getString(R.string.country_code) + etMobileNo.getText().toString().trim());
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            UserModel userModel = new UserModel();
+                            userModel.setUserId(firebaseUser.getUid());
+                            userModel.setPhone(getString(R.string.country_code) + etMobileNo.getText().toString().trim());
 
-                                firebaseDatabase.getReference()
-                                        .child(Constants.COLLECTION_NAME)
-                                        .child(task.getResult().getUser().getUid())
-                                        .setValue(userModel);
+                            firebaseDatabase.getReference()
+                                    .child(Constants.USER_COLLECTION_NAME)
+                                    .child(task.getResult().getUser().getUid())
+                                    .setValue(userModel);
 
-                                startActivity(new Intent(LoginWithPhoneActivity.this, SettingsActivity.class));
-                                finish();
-                            } else {
-                                Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.incorrect_otp));
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
+                            startActivity(new Intent(LoginWithPhoneActivity.this, SettingsActivity.class));
+                            finish();
+                        } else {
+                            Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.incorrect_otp));
                         }
                     });
         } else {

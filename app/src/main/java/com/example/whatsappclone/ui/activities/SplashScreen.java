@@ -17,7 +17,6 @@ import java.util.Objects;
 public class SplashScreen extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void init() {
-        constraintLayout = findViewById(R.id.constraint_layout);
+        ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
         firebaseAuth = FirebaseAuth.getInstance();
         // checking is internet available or not.
         boolean connStatus = NetworkManager.checkNetworkConnectedStatus(SplashScreen.this);

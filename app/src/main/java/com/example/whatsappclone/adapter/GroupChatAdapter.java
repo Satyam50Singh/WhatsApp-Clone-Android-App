@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.models.UserModel;
-import com.example.whatsappclone.utils.Constants;
-import com.example.whatsappclone.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

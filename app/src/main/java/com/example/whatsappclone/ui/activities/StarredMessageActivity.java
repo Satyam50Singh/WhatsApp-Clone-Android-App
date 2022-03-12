@@ -10,10 +10,8 @@ import android.os.Bundle;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.StarredMessageAdapter;
 import com.example.whatsappclone.models.StarredMessageModel;
-import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 
 public class StarredMessageActivity extends AppCompatActivity {
 
-    private RecyclerView rcvStarredMessages;
     ArrayList<StarredMessageModel> data;
     StarredMessageAdapter starredMessageAdapter;
 
@@ -35,7 +32,7 @@ public class StarredMessageActivity extends AppCompatActivity {
     }
 
     private void init() {
-        rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
+        RecyclerView rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
 //        if (data.size() != 0) {
             loadDataSet();
             rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
@@ -49,7 +46,7 @@ public class StarredMessageActivity extends AppCompatActivity {
         try {
             data = new ArrayList<>();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child("Starred Messages")
+            firebaseDatabase.getReference().child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

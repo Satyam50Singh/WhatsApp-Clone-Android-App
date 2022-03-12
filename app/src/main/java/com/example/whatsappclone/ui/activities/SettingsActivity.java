@@ -14,17 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.whatsappclone.R;
@@ -32,9 +28,6 @@ import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,13 +35,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,13 +47,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     private TextInputEditText etUserAbout, etFullName;
     private FloatingActionButton fabEditProfilePicture;
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private FirebaseStorage firebaseStorage;
 
     CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
-    private String profileEncodedString, userAbout;
+    private String profileEncodedString;
     private TextView tvSkipForNow;
 
 
@@ -84,8 +70,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void init() {
-        firebaseStorage = FirebaseStorage.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
 
         btnEditProfile = findViewById(R.id.btn_edit_profile);
@@ -124,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void syncProfile() {
-        firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+        firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,7 +121,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                             } else {
                                 Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
                             }
-                        } else {
                         }
                     }
 
@@ -165,8 +148,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         switch (requestCode) {
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
                 try {
-                    if (resultCode == Activity.RESULT_OK && requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-                        Bundle bundle = data.getExtras();
+                    if (resultCode == Activity.RESULT_OK) {
+                        Bundle bundle = null;
+                        if (data != null) {
+                            bundle = data.getExtras();
+                        }
                         Bitmap bitmap = (Bitmap) bundle.get("data");
                         selectedBitmap = bitmap;
                         Glide.with(SettingsActivity.this)
@@ -191,15 +177,13 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                     }
                 }
                 break;
-            default:
-                return;
         }
     }
 
     private void updateProfile() {
         String fullName = etFullName.getText().toString().trim();
         if (validateUsername(SettingsActivity.this, etFullName)) {
-            userAbout = etUserAbout.getText().toString().trim();
+            String userAbout = etUserAbout.getText().toString().trim();
             if (selectedBitmap != null) {
                 profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
             }
@@ -209,7 +193,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             HashMap<String, Object> objectHashMap = new HashMap<>();
             objectHashMap.put("username", fullName);
             objectHashMap.put("status", userAbout);
-            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
                     .updateChildren(objectHashMap);
 
             changeScreenState();
@@ -228,13 +212,10 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
     private void insertProfileImage() {
         if (profileEncodedString != null) {
-            firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
-                    .child("profilePicture").setValue(profileEncodedString).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated));
-                }
-            });
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+                    .child(getString(R.string.profilePicture))
+                    .setValue(profileEncodedString)
+                    .addOnSuccessListener(unused -> Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated)));
         }
     }
 

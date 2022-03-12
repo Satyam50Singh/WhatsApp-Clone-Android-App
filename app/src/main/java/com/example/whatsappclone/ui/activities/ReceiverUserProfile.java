@@ -6,18 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whatsappclone.R;
-import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,7 +52,7 @@ public class ReceiverUserProfile extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
 
         firebaseDatabase.getReference()
-                .child(Constants.COLLECTION_NAME)
+                .child(Constants.USER_COLLECTION_NAME)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -92,21 +88,13 @@ public class ReceiverUserProfile extends AppCompatActivity {
     }
 
     private void listeners() {
-        ivBackArrowReceiverProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ReceiverUserProfile.this, MainActivity.class));
-            }
-        });
+        ivBackArrowReceiverProfile.setOnClickListener(view -> startActivity(new Intent(ReceiverUserProfile.this, MainActivity.class)));
 
-        civReceiverProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ReceiverUserProfile.this, ViewProfilePictureActivity.class);
-                intent.putExtra(getString(R.string.username), username);
-                intent.putExtra(getString(R.string.profileImage), profilePicture);
-                startActivity(intent);
-            }
+        civReceiverProfilePicture.setOnClickListener(view -> {
+            Intent intent = new Intent(ReceiverUserProfile.this, ViewProfilePictureActivity.class);
+            intent.putExtra(getString(R.string.username), username);
+            intent.putExtra(getString(R.string.profileImage), profilePicture);
+            startActivity(intent);
         });
     }
 }

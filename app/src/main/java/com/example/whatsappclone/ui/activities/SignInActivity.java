@@ -1,11 +1,9 @@
 package com.example.whatsappclone.ui.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,13 +15,10 @@ import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -82,17 +77,14 @@ public class SignInActivity extends AppCompatActivity {
 
                 // this signInWithEmailAndPassword() is used for user login
                 firebaseAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Utils.hideProgressDialog();
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                    finish();
-                                } else {
-                                    Utils.showToastMessage(SignInActivity.this, task.getException().getMessage());
-                                    Utils.hideProgressDialog();
-                                }
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Utils.hideProgressDialog();
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                Utils.showToastMessage(SignInActivity.this, task.getException().getMessage());
+                                Utils.hideProgressDialog();
                             }
                         });
 
@@ -130,34 +122,31 @@ public class SignInActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Utils.hideProgressDialog();
-                            try {
-                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                UserModel userModel = new UserModel();
-                                userModel.setUserId(firebaseUser.getUid());
-                                userModel.setUsername(firebaseUser.getDisplayName());
-                                if (firebaseUser.getEmail() != null) {
-                                    userModel.setEmail(firebaseUser.getEmail());
-                                } else {
-                                    userModel.setPhone(firebaseUser.getPhoneNumber());
-                                }
-                                userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
-                                firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
-                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                finish();
-                            } catch (Exception e) {
-                                Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed) + e.getMessage());
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Utils.hideProgressDialog();
+                        try {
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            UserModel userModel = new UserModel();
+                            userModel.setUserId(firebaseUser.getUid());
+                            userModel.setUsername(firebaseUser.getDisplayName());
+                            if (firebaseUser.getEmail() != null) {
+                                userModel.setEmail(firebaseUser.getEmail());
+                            } else {
+                                userModel.setPhone(firebaseUser.getPhoneNumber());
                             }
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Utils.hideProgressDialog();
-                            Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed));
+                            userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
+                            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
+                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                            finish();
+                        } catch (Exception e) {
+                            Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed) + e.getMessage());
                         }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Utils.hideProgressDialog();
+                        Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed));
                     }
                 });
     }

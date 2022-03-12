@@ -1,14 +1,11 @@
 package com.example.whatsappclone.ui.fragments;
 
 import static com.example.whatsappclone.utils.Utils.checkAndRequestPermission;
-import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment {
 
     private BottomSheetListener bottomSheetListener;
-    private CircleImageView civActionCamera, civActionGallery;
-    private ImageView ivRemoveProfileApp;
 
     public interface BottomSheetListener {
         void onOptionClick(String text);
@@ -35,9 +30,9 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bottom_sheet_update_profile, container, false);
-        civActionCamera = view.findViewById(R.id.civ_action_camera);
-        civActionGallery = view.findViewById(R.id.civ_action_gallery);
-        ivRemoveProfileApp = view.findViewById(R.id.iv_remove_profile_app);
+        CircleImageView civActionCamera = view.findViewById(R.id.civ_action_camera);
+        CircleImageView civActionGallery = view.findViewById(R.id.civ_action_gallery);
+        ImageView ivRemoveProfileApp = view.findViewById(R.id.iv_remove_profile_app);
 
         civActionCamera.setOnClickListener(view1 -> {
             if (checkAndRequestPermission(getActivity())) {

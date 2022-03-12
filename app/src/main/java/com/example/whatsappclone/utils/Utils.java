@@ -1,7 +1,5 @@
 package com.example.whatsappclone.utils;
 
-import static android.provider.Settings.System.getString;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,10 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -24,15 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import com.example.whatsappclone.R;
-import com.example.whatsappclone.ui.activities.MainActivity;
-import com.example.whatsappclone.ui.activities.SettingsActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
@@ -204,7 +196,7 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.remove_profile_photo)
                 .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
-                    firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(userId)
+                    firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(userId)
                             .child("profilePicture").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {

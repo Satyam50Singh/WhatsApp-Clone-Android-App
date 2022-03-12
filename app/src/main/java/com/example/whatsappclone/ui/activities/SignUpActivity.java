@@ -1,6 +1,5 @@
 package com.example.whatsappclone.ui.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,11 +11,7 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -75,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 String id = task.getResult().getUser().getUid();
                                 UserModel userModel = new UserModel(id, username, email, password);
-                                firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(id).setValue(userModel); // storing values in realtime database
+                                firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(id).setValue(userModel); // storing values in realtime database
                                 Utils.hideProgressDialog();
                                 Utils.showToastMessage(SignUpActivity.this, getString(R.string.user_created_successfully));
                                 startActivity(new Intent(SignUpActivity.this, MainActivity.class));

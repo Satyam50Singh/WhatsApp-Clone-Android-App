@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.whatsappclone.R;
-import com.example.whatsappclone.adapter.ChatAdapter;
 import com.example.whatsappclone.adapter.ViewPagerAdapter;
 import com.example.whatsappclone.ui.fragments.CallsFragment;
 import com.example.whatsappclone.ui.fragments.CameraFragment;
@@ -26,8 +26,6 @@ import com.example.whatsappclone.utils.NetworkManager;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    ((ChatFragment)chatFragment).searchUser(s);
+                    chatFragment.searchUser(s);
                             return false;
                 }
             });
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -145,12 +144,9 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
                         firebaseAuth.signOut();
                         googleSignInClient.signOut()
-                                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
-                                        }
+                                .addOnCompleteListener(this, task -> {
+                                    if (task.isSuccessful()) {
+                                        Utils.showLog(getString(R.string.success), getString(R.string.logout_successfully));
                                     }
                                 });
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
