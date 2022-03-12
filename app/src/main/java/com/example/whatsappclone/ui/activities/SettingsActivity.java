@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -27,10 +30,12 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.NetworkManager;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -52,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
     private String profileEncodedString;
-    private TextView tvSkipForNow;
+    private TextView tvSkipForNow, tvAccountVerificationStatus;
 
 
     @Override
@@ -79,6 +84,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
         tvSkipForNow = findViewById(R.id.tv_skip_for_now);
+        tvAccountVerificationStatus = findViewById(R.id.tv_account_verification_status);
 
         // profile syncing
         syncProfile();
@@ -108,6 +114,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void syncProfile() {
+        checkVerificationStatus();
         firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -128,6 +135,19 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void checkVerificationStatus() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (!firebaseUser.isEmailVerified()) {
+            tvAccountVerificationStatus.setText(R.string.not_verified);
+            tvAccountVerificationStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9F0B0B")));
+        } else {
+            tvAccountVerificationStatus.setText(R.string.verified);
+            tvAccountVerificationStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#095049")));
+
+        }
     }
 
     @Override

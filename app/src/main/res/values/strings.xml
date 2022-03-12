@@ -102,5 +102,7 @@
     <string name="starred_messages">Starred Messages</string>
     <string name="hey_there_i_am_using_whatsapp">Hey there! I am using WhatsApp</string>
     <string name="profilePicture">profilePicture</string>
+    <string name="not_verified">Not Verified</string>
+    <string name="verified">Verified</string>
 
 </resources>

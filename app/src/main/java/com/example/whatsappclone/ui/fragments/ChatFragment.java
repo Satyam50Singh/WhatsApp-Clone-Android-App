@@ -33,11 +33,6 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        // if (!firebaseUser.isEmailVerified()) {
-        //     Utils.showToastMessage(getContext(), getString(R.string.email_not_verified));
-        // }
-
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         init(rootView);
