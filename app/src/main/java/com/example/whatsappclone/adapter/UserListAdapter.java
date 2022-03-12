@@ -95,7 +95,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
 
         holder.civProfileImage.setOnClickListener(view -> {
-
             Dialog dialog = new Dialog(context);
             dialog.setCancelable(true);
             dialog.setContentView(R.layout.custom_profile_dialog);
@@ -116,6 +115,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             });
             dialog.show();
         });
+
         holder.llUserList.setOnClickListener(view -> {
             Intent intent = new Intent(context, ChatDetailActivity.class);
             intent.putExtra(context.getResources().getString(R.string.userId), localDataSet.get(position).getUserId());

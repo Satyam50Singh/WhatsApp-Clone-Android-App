@@ -75,4 +75,5 @@
 - Resend OTP functionality Added
 - Enabling Contextual Action Mode ChatDetailActivity
 - Search User Functionality Added
+- ReceiverUserProfile Added 
    

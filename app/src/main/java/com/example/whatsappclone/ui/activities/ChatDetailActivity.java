@@ -120,7 +120,9 @@ public class ChatDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChatDetailActivity.this, ReceiverUserProfile.class);
-                intent.putExtra("ReceiverName", username);
+                intent.putExtra(getString(R.string.receiver_id), receiverId);
+                intent.putExtra(getString(R.string.receiver_name), username);
+                intent.putExtra(getString(R.string.profileImage), profileImage);
                 startActivity(intent);
             }
         });
@@ -143,6 +145,11 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private void setUserDetailsOnToolbar() {
         Picasso.with(getApplicationContext()).load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
+        if (profileImage != null && !profileImage.startsWith(getString(R.string.http))) {
+            civProfileImage.setImageBitmap(decodeImage(profileImage));
+        } else {
+            Picasso.with(ChatDetailActivity.this).load(profileImage).placeholder(R.drawable.man).into(civProfileImage);
+        }
         tvReceiverName.setText(username);
     }
 

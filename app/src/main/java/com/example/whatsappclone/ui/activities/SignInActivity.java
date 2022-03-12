@@ -141,6 +141,11 @@ public class SignInActivity extends AppCompatActivity {
                                 UserModel userModel = new UserModel();
                                 userModel.setUserId(firebaseUser.getUid());
                                 userModel.setUsername(firebaseUser.getDisplayName());
+                                if (firebaseUser.getEmail() != null) {
+                                    userModel.setEmail(firebaseUser.getEmail());
+                                } else {
+                                    userModel.setPhone(firebaseUser.getPhoneNumber());
+                                }
                                 userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
                                 firebaseDatabase.getReference().child(Constants.COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
                                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
