@@ -45,19 +45,4 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_view_profile_picture, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_share) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }

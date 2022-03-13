@@ -88,6 +88,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
         // profile syncing
         syncProfile();
+        
+        // listeners
         btnEditProfile.setOnClickListener(view -> {
             if (btnEditProfile.getText().toString().equals(getString(R.string.edit_profile))) {
                 btnEditProfile.setText(R.string.save);
@@ -115,7 +117,9 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
 
     private void syncProfile() {
         checkVerificationStatus();
-        firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+        firebaseDatabase.getReference()
+            .child(Constants.USER_COLLECTION_NAME)
+            .child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -213,8 +217,10 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             HashMap<String, Object> objectHashMap = new HashMap<>();
             objectHashMap.put("username", fullName);
             objectHashMap.put("status", userAbout);
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
-                    .updateChildren(objectHashMap);
+            firebaseDatabase.getReference()
+                .child(Constants.USER_COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
+                .updateChildren(objectHashMap);
 
             changeScreenState();
         }

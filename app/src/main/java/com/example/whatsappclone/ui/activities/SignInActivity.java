@@ -139,7 +139,7 @@ public class SignInActivity extends AppCompatActivity {
                             userModel.setProfilePicture(firebaseUser.getPhotoUrl().toString());
                             firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(task.getResult().getUser().getUid()).setValue(userModel);
                             startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            finish();
+                            finishAffinity();
                         } catch (Exception e) {
                             Utils.showLog(getString(R.string.error), getString(R.string.google_sign_in_failed) + e.getMessage());
                         }

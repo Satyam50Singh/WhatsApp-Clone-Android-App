@@ -15,43 +15,10 @@
         android:title="@string/action_group_chat"
         app:showAsAction="never" />
     <item
-        android:id="@+id/new_broadcast"
-        android:iconTint="@color/white"
-        android:title="@string/action_new_broadcast"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/linked_devices"
-        android:iconTint="@color/white"
-        android:title="@string/action_linked_devices"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/starred_messages"
         android:iconTint="@color/white"
         android:title="@string/action_starred_messages"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/payments"
-        android:iconTint="@color/white"
-        android:title="@string/action_payments"
-        app:showAsAction="never">
-        <menu>
-            <item
-                android:id="@+id/debit_card"
-                android:iconTint="@color/white"
-                android:title="@string/action_debit_card"
-                app:showAsAction="never"></item>
-            <item
-                android:id="@+id/credit_card"
-                android:iconTint="@color/white"
-                android:title="@string/action_credit_card"
-                app:showAsAction="never"></item>
-            <item
-                android:id="@+id/net_banking"
-                android:iconTint="@color/white"
-                android:title="@string/action_net_banking"
-                app:showAsAction="never"></item>
-        </menu>
-    </item>
     <item
         android:id="@+id/settings"
         android:iconTint="@color/white"

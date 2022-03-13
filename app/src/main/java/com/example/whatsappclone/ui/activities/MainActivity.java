@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     private FirebaseAuth firebaseAuth;
-    GoogleSignInClient googleSignInClient;
+    private GoogleSignInClient googleSignInClient;
     private ChatFragment chatFragment;
     private boolean connStatus;
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String s) {
                     chatFragment.searchUser(s);
-                            return false;
+                    return false;
                 }
             });
         }
@@ -80,18 +80,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.group_chat:
                 startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
                 return true;
-            case R.id.new_broadcast:
-                Toast.makeText(getApplicationContext(), "New BroadCast", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.linked_devices:
-                Toast.makeText(getApplicationContext(), "Linked Devices", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.payments:
-                Toast.makeText(getApplicationContext(), "Payments", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.starred_messages:
                 startActivity(new Intent(MainActivity.this, StarredMessageActivity.class));
-
                 return true;
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -120,13 +110,11 @@ public class MainActivity extends AppCompatActivity {
         connStatus = NetworkManager.checkNetworkConnectedStatus(MainActivity.this);
         if (connStatus) {
             chatFragment = new ChatFragment();
-            viewPagerAdapter.addFragment(new CameraFragment(), "");
             viewPagerAdapter.addFragment(chatFragment, getString(R.string.chats_tab));
             viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
             viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
             viewPager.setAdapter(viewPagerAdapter);
-            tabLayout.getTabAt(0).setIcon(R.drawable.ic_photo_camera);
-            tabLayout.getTabAt(1).select();
+            tabLayout.getTabAt(0).select();
         } else {
             viewPagerAdapter.addFragment(new NoNetworkFragment(), "");
             viewPager.setAdapter(viewPagerAdapter);
@@ -150,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
                         startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                        finish();
+                        finishAffinity();
                         Utils.showToastMessage(MainActivity.this, getString(R.string.user_log_out));
                     })
                     .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())

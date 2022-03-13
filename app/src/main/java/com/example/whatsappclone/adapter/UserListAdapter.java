@@ -47,8 +47,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         this.context = context;
         this.localDataSet = localDataSet;
         localDataSetFull = new ArrayList<>(localDataSet);
-        Utils.showLog("Tag", localDataSetFull.toString());
-
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
     }
 
@@ -146,18 +144,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // search Functionality
     @Override
     public Filter getFilter() {
-//        localDataSetFull = new ArrayList<>(localDataSet);
-
         return userDataFilter;
     }
 
     private Filter userDataFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            Utils.showLog("Tag", (String) charSequence + " " +localDataSetFull.size() + "     " + localDataSet.size());
-
             List<UserModel> filterLocalDataSet = new ArrayList<>();
-
             if (charSequence == null || charSequence.length() == 0) {
                 filterLocalDataSet.addAll(localDataSetFull);
             } else {
