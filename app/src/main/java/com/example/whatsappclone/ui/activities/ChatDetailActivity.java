@@ -149,7 +149,6 @@ public class ChatDetailActivity extends AppCompatActivity {
                             chatRecord.clear();
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 MessageModel message = snapshot1.getValue(MessageModel.class);
-                                message.getMessageId(snapshot.getKey());
                                 chatRecord.add(message);
                             }
                             chatAdapter.notifyDataSetChanged();
@@ -269,7 +268,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserModel userModel = snapshot.getValue(UserModel.class);
                         if (userModel != null) {
-                            if (messageModel.getMessageId().equals(FirebaseAuth.getInstance().getUid())) {
+                            if (messageModel.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                                 starredMessageModel.setSenderName(userModel.getUsername());
                                 starredMessageModel.setReceiverName(username);
                             } else {

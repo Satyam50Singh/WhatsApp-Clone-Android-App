@@ -26,10 +26,6 @@ public class MessageModel {
         return messageId;
     }
 
-    public String getMessageId(String key) {
-        return messageId;
-    }
-
     public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
@@ -51,6 +47,10 @@ public class MessageModel {
     }
 
     public String getUserId() {
+        return userId;
+    }
+
+    public String getUserId(String key) {
         return userId;
     }
 

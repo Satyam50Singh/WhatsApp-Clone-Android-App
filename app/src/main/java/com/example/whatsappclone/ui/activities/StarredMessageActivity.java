@@ -44,14 +44,14 @@ public class StarredMessageActivity extends AppCompatActivity {
             Utils.showProgressDialog(StarredMessageActivity.this, "", getString(R.string.please_wait));
             data = new ArrayList<>();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
+            firebaseDatabase.getReference()
+                    .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             data.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 StarredMessageModel starredMessageModel = dataSnapshot.getValue(StarredMessageModel.class);
-                                starredMessageModel.getId(dataSnapshot.getKey());
                                 data.add(starredMessageModel);
                             }
                             starredMessageAdapter.notifyDataSetChanged();
