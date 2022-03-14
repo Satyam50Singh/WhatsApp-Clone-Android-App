@@ -59,13 +59,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MessageModel messageModel = localDataSet.get(position);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                return false;
-            }
+        holder.itemView.setOnLongClickListener(view -> {
+            ((ChatDetailActivity) activity).showActionMode();
+            ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+            return false;
         });
         Date date = new Date(messageModel.getMessageTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));

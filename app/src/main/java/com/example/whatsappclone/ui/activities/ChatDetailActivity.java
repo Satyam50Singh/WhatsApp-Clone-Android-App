@@ -173,7 +173,8 @@ public class ChatDetailActivity extends AppCompatActivity {
             }
             etMessage.setText("");
             etMessage.requestFocus();
-            MessageModel model = new MessageModel(senderId, message, new Date().getTime());
+            String randomKey = firebaseDatabase.getReference().push().getKey();
+            MessageModel model = new MessageModel(randomKey, senderId, message, new Date().getTime());
             if (senderId != null && receiverId != null) {
                 firebaseDatabase.getReference()
                         .child(Constants.CHAT_COLLECTION_NAME)
@@ -183,7 +184,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                         .addOnSuccessListener(unused -> firebaseDatabase.getReference()
                                 .child(Constants.CHAT_COLLECTION_NAME)
                                 .child(receiverRoom)
-                                .push()
+                                .child(randomKey)
                                 .setValue(model)
                                 .addOnSuccessListener(unused1 -> rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1)));
             } else {

@@ -59,11 +59,11 @@ public class ChatFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UserModel userModel = dataSnapshot.getValue(UserModel.class);
                         userModel.getUserId(dataSnapshot.getKey());
-                        try{
-                            if(!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())){
+                        try {
+                            if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
                                 userList.add(userModel);
                             }
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             Utils.showLog(getString(R.string.error), e.getMessage());
                         }
 
@@ -85,6 +85,8 @@ public class ChatFragment extends Fragment {
     }
 
     public void searchUser(String s) {
-        userListAdapter.getFilter().filter(s);
+        if (s != null || s.length() > 0) {
+            userListAdapter.getFilter().filter(s);
+        }
     }
 }

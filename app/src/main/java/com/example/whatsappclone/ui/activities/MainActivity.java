@@ -12,12 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.ViewPagerAdapter;
 import com.example.whatsappclone.ui.fragments.CallsFragment;
-import com.example.whatsappclone.ui.fragments.CameraFragment;
 import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.ui.fragments.NoNetworkFragment;
 import com.example.whatsappclone.ui.fragments.StatusFragment;
@@ -75,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
             case R.id.group_chat:
                 startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
                 return true;
@@ -114,12 +110,10 @@ public class MainActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(new StatusFragment(), getString(R.string.status_tab));
             viewPagerAdapter.addFragment(new CallsFragment(), getString(R.string.calls_tab));
             viewPager.setAdapter(viewPagerAdapter);
-            tabLayout.getTabAt(0).select();
         } else {
             viewPagerAdapter.addFragment(new NoNetworkFragment(), "");
             viewPager.setAdapter(viewPagerAdapter);
             tabLayout.getTabAt(0).setIcon(R.drawable.ic_wifi_off);
-            tabLayout.getTabAt(0).select();
         }
     }
 

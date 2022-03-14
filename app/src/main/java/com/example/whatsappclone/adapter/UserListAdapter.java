@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
+import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.ui.activities.ViewProfilePictureActivity;
@@ -30,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -66,7 +69,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
         }
         holder.tvUsername.setText(localDataSet.get(position).getUsername());
-        // showing last message
+        // showing last message & message Time
         String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(pos).getUserId();
         firebaseDatabase.getReference()
                 .child("Chats")
@@ -77,7 +80,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()) {
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                        holder.tvLastMessage.setText(snapshot1.child("messageText").getValue().toString());
+                        String lastMessageText = snapshot1.child("messageText").getValue().toString();
+                        Date date = new Date((Long) snapshot1.child("messageTime").getValue());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
+                        String messageTime = dateFormat.format(date);
+                        if(lastMessageText.length() >0){
+                            holder.tvLastMessage.setText(lastMessageText);
+                        }
+                        if(lastMessageText.length() >0){
+                            holder.tvTime.setText(messageTime);
+                        }
                     }
                 }
             }
@@ -127,7 +139,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView civProfileImage;
-        TextView tvUsername, tvLastMessage;
+        TextView tvUsername, tvLastMessage, tvTime;
         LinearLayout llUserList;
 
         public ViewHolder(@NonNull View itemView) {
@@ -137,6 +149,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             civProfileImage = itemView.findViewById(R.id.civ_profile_image);
             tvUsername = itemView.findViewById(R.id.tv_username);
             tvLastMessage = itemView.findViewById(R.id.tv_last_message);
+            tvTime = itemView.findViewById(R.id.tv_time);
 
         }
     }

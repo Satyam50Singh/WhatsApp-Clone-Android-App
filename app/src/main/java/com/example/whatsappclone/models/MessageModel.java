@@ -2,16 +2,17 @@ package com.example.whatsappclone.models;
 
 public class MessageModel {
 
-    private String messageId, messageText;
+    private String messageId, messageText, userId;
     Long messageTime;
 
     // constructors
     public MessageModel() {
     }
 
-    public MessageModel(String messageId, String messageText, Long messageTime) {
+    public MessageModel(String messageId, String userId, String messageText, Long messageTime) {
         this.messageId = messageId;
         this.messageText = messageText;
+        this.userId = userId;
         this.messageTime = messageTime;
     }
 
@@ -47,5 +48,13 @@ public class MessageModel {
 
     public void setMessageTime(Long messageTime) {
         this.messageTime = messageTime;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

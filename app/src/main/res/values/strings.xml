@@ -104,5 +104,9 @@
     <string name="profilePicture">profilePicture</string>
     <string name="not_verified">Not Verified</string>
     <string name="verified">Verified</string>
+    <string name="phone">Phone</string>
+    <string name="tap_to_chat">Tap to Chat</string>
+    <string name="satyam_singh">Satyam Singh</string>
+    <string name="developer">Developer</string>
 
 </resources>

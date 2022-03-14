@@ -113,11 +113,11 @@ public class GroupChatActivity extends AppCompatActivity {
         String messageText = etMessageGC.getText().toString();
         etMessageGC.setText("");
         etMessageGC.requestFocus();
-
-        MessageModel message = new MessageModel(senderId, messageText, new Date().getTime());
+        String randomKey = firebaseDatabase.getReference().push().getKey();
+        MessageModel message = new MessageModel(randomKey, senderId, messageText, new Date().getTime());
         firebaseDatabase.getReference()
                 .child(Constants.GROUP_CHAT_COLLECTION_NAME)
-                .push()
+                .child(randomKey)
                 .setValue(message)
                 .addOnSuccessListener(unused -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.success)))
                 .addOnFailureListener(e -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.failure)));

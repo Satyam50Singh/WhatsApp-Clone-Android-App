@@ -29,8 +29,8 @@ import java.util.Objects;
 public class SignInActivity extends AppCompatActivity {
 
     TextInputEditText etEmail, etPassword;
-    TextView tvCreateAnAccount, tvLoginWithPhone;
-    Button btnSignIn, btnGoogle;
+    TextView tvCreateAnAccount;
+    Button btnSignIn, btnGoogle, btnLoginWithPhone;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -49,16 +49,13 @@ public class SignInActivity extends AppCompatActivity {
 
     private void init() {
         tvCreateAnAccount = findViewById(R.id.tv_create_an_account);
-        tvLoginWithPhone = findViewById(R.id.tv_login_with_phone);
+        btnLoginWithPhone = findViewById(R.id.btn_login_with_phone);
         btnSignIn = findViewById(R.id.btn_sign_in);
         etEmail = findViewById(R.id.et_email_sign_in);
         etPassword = findViewById(R.id.et_password_sign_in);
         btnGoogle = findViewById(R.id.btn_google_sign_in);
         tvCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, SignUpActivity.class)));
-        tvLoginWithPhone.setOnClickListener(view -> {
-            startActivity(new Intent(SignInActivity.this, LoginWithPhoneActivity.class));
-            finish();
-        });
+        btnLoginWithPhone.setOnClickListener(view -> Auth.navigateToLoginWithPhoneActivity(SignInActivity.this));
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
         firebaseAuth = FirebaseAuth.getInstance();

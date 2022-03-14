@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Auth;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    TextView tvAlreadyHaveAccount;
+    TextView tvAlreadyHaveAccount, tvLoginWithForm;
     Button btnSignUp;
     TextInputEditText etUsername, etEmail, etPassword;
 
@@ -44,8 +45,11 @@ public class SignUpActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
+        tvLoginWithForm = findViewById(R.id.tv_login_with_phone_sign_up);
         tvAlreadyHaveAccount.setOnClickListener(view -> startActivity(new Intent(SignUpActivity.this, SignInActivity.class)));
         btnSignUp.setOnClickListener(view -> userSignUp());
+        tvLoginWithForm.setOnClickListener(view -> Auth.navigateToLoginWithPhoneActivity(SignUpActivity.this));
+
     }
 
     // method for user signup

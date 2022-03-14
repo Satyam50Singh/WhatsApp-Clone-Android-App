@@ -33,17 +33,15 @@ public class StarredMessageActivity extends AppCompatActivity {
 
     private void init() {
         RecyclerView rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
-//        if (data.size() != 0) {
-            loadDataSet();
-            rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
-            starredMessageAdapter = new StarredMessageAdapter(StarredMessageActivity.this, this.data);
-            rcvStarredMessages.setAdapter(starredMessageAdapter);
-//        }
-
+        loadDataSet();
+        rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
+        starredMessageAdapter = new StarredMessageAdapter(StarredMessageActivity.this, this.data);
+        rcvStarredMessages.setAdapter(starredMessageAdapter);
     }
 
     private void loadDataSet() {
         try {
+            Utils.showProgressDialog(StarredMessageActivity.this, "", getString(R.string.please_wait));
             data = new ArrayList<>();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
             firebaseDatabase.getReference().child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
@@ -57,11 +55,13 @@ public class StarredMessageActivity extends AppCompatActivity {
                                 data.add(starredMessageModel);
                             }
                             starredMessageAdapter.notifyDataSetChanged();
+                            Utils.hideProgressDialog();
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             Utils.showToastMessage(StarredMessageActivity.this, getString(R.string.no_record_found));
+                            Utils.hideProgressDialog();
                         }
                     });
         } catch (Exception e) {

@@ -76,4 +76,5 @@
 - Enabling Contextual Action Mode ChatDetailActivity
 - Search User Functionality Added
 - ReceiverUserProfile Added 
+- Account verification Status Added In User Settings Activity
    

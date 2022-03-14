@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="164dp"
-        android:layout_height="142dp"
+        android:layout_width="132dp"
+        android:layout_height="132dp"
         android:layout_marginTop="84dp"
         android:src="@drawable/whatsapp"
         app:layout_constraintEnd_toEndOf="parent"
