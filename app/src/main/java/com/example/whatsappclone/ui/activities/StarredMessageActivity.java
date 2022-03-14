@@ -55,6 +55,9 @@ public class StarredMessageActivity extends AppCompatActivity {
                                 data.add(starredMessageModel);
                             }
                             starredMessageAdapter.notifyDataSetChanged();
+                            if(data.size() == 0) {
+                                Utils.showToastMessage(StarredMessageActivity.this, getString(R.string.no_star_message));
+                            }
                             Utils.hideProgressDialog();
                         }
 

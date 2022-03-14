@@ -246,9 +246,11 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     private void addToStaredMessagesBox() {
+        String randomKey = firebaseDatabase.getReference().push().getKey();
+        starredMessageModel.setMessageId(randomKey);
         firebaseDatabase.getReference()
                 .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
-                .push()
+                .child(randomKey)
                 .setValue(starredMessageModel);
     }
 

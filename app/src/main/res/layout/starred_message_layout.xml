@@ -50,7 +50,7 @@
             android:id="@+id/iv_remove_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_star_white"
+            android:src="@drawable/ic_star_outline"
             app:tint="@color/purple_700" />
     </LinearLayout>
 

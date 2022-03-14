@@ -109,5 +109,7 @@
     <string name="satyam_singh">Satyam Singh</string>
     <string name="developer">Developer</string>
     <string name="message_deleted_successfully">Message Deleted Successfully</string>
+    <string name="message_removed_successfully">Message Removed Successfully</string>
+    <string name="no_star_message">No Star Message</string>
 
 </resources>

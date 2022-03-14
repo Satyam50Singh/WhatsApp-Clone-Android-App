@@ -1,5 +1,6 @@
 package com.example.whatsappclone.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.StarredMessageModel;
+import com.example.whatsappclone.ui.activities.ChatDetailActivity;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +42,7 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Utils.showLog("tag",localDataSet.get(position).getMessageText());
+        Utils.showLog("tag", localDataSet.get(position).getMessageText());
         holder.tvReceiverMessage.setText(localDataSet.get(position).getMessageText());
         holder.tvSenderName.setText(localDataSet.get(position).getSenderName());
         holder.tvReceiverName.setText(localDataSet.get(position).getReceiverName());
@@ -47,11 +52,12 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
         holder.tvReceiverTime.setText(messageTime);
 
         holder.ivRemoveStar.setOnClickListener(view -> {
-//            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-//            firebaseDatabase.getReference().child("Starred Messages")
-//                    .child(localDataSet.get(position).getId())
-//                    .setValue(null);
-            Utils.showToastMessage(context, "Star Button Clicks!");
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+            firebaseDatabase.getReference()
+                    .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
+                    .child(localDataSet.get(position).getMessageId())
+                    .removeValue()
+                    .addOnSuccessListener(unused -> Utils.showToastMessage(context, context.getString(R.string.message_removed_successfully)));
         });
     }
 

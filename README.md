@@ -78,4 +78,5 @@
 - ReceiverUserProfile Added 
 - Account verification Status Added In User Settings Activity
 - Deleting Message From User Chat and Group Chat
+- Remove Message From Starred Messages
    
