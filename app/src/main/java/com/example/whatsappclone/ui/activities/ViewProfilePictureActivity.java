@@ -2,13 +2,10 @@ package com.example.whatsappclone.ui.activities;
 
 import static com.example.whatsappclone.utils.Utils.decodeImage;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.whatsappclone.R;
@@ -22,6 +19,7 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile_picture);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         getSetValues();
     }
@@ -43,6 +41,12 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
 }

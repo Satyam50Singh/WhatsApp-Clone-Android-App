@@ -5,6 +5,7 @@ import static com.example.whatsappclone.utils.Utils.decodeImage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -46,7 +47,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
-    private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom;
+    private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom, messageId;
     private Toolbar toolbar;
     private TextView tvReceiverName;
     private CircleImageView civProfileImage;
@@ -179,7 +180,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                 firebaseDatabase.getReference()
                         .child(Constants.CHAT_COLLECTION_NAME)
                         .child(senderId + receiverId)
-                        .push()
+                        .child(randomKey)
                         .setValue(model)
                         .addOnSuccessListener(unused -> firebaseDatabase.getReference()
                                 .child(Constants.CHAT_COLLECTION_NAME)
@@ -218,10 +219,10 @@ public class ChatDetailActivity extends AppCompatActivity {
                 case R.id.action_starred:
                     mActionMode.finish();
                     addToStaredMessagesBox();
-                    Utils.showToastMessage(ChatDetailActivity.this, "Star menu item clicked");
                     return true;
                 case R.id.action_delete:
-                    Utils.showToastMessage(ChatDetailActivity.this, "Delete menu item clicked");
+                    mActionMode.finish();
+                    deleteMessage();
                     return true;
                 default:
                     return false;
@@ -236,7 +237,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         }
     };
 
-
     // method for active action contextual mode
     public void showActionMode() {
         if (mActionMode != null) {
@@ -247,12 +247,14 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     private void addToStaredMessagesBox() {
-        firebaseDatabase.getReference().child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
+        firebaseDatabase.getReference()
+                .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
                 .push()
                 .setValue(starredMessageModel);
     }
 
     public void sendMessageDetailMode(MessageModel messageModel) {
+        messageId = messageModel.getMessageId();
         starredMessageModel = new StarredMessageModel();
         starredMessageModel.setId(receiverId);
         starredMessageModel.setMessageText(messageModel.getMessageText());
@@ -281,7 +283,28 @@ public class ChatDetailActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+    }
 
+    // deleting message
+    private void deleteMessage() {
+        new AlertDialog.Builder(ChatDetailActivity.this)
+                .setTitle(R.string.delete)
+                .setMessage(R.string.delete_message)
+                .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                    firebaseDatabase.getReference()
+                            .child(Constants.CHAT_COLLECTION_NAME)
+                            .child(senderRoom)
+                            .child(messageId)
+                            .removeValue()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Utils.showToastMessage(ChatDetailActivity.this, getString(R.string.message_deleted_successfully));
+                                }
+                            });
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .show();
 
     }
 }

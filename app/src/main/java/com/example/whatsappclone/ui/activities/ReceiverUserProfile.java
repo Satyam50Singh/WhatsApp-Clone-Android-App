@@ -28,6 +28,7 @@ public class ReceiverUserProfile extends AppCompatActivity {
     private TextView tvReceiverNameUserProfile, tvAccountLogin, tvReceiverStatus;
     private ImageView ivBackArrowReceiverProfile;
     private String profilePicture, username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +43,9 @@ public class ReceiverUserProfile extends AppCompatActivity {
         tvReceiverNameUserProfile = findViewById(R.id.tv_receiver_name_user_profile);
         tvAccountLogin = findViewById(R.id.tv_account_login);
         ivBackArrowReceiverProfile = findViewById(R.id.iv_back_arrow_receiver_profile);
+        // show Data
         getIntentValues();
         listeners();
-        // show Data
     }
 
     private void getIntentValues() {
@@ -82,13 +83,12 @@ public class ReceiverUserProfile extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
     }
 
     private void listeners() {
-        ivBackArrowReceiverProfile.setOnClickListener(view -> startActivity(new Intent(ReceiverUserProfile.this, MainActivity.class)));
+        ivBackArrowReceiverProfile.setOnClickListener(view -> onSupportNavigateUp());
 
         civReceiverProfilePicture.setOnClickListener(view -> {
             Intent intent = new Intent(ReceiverUserProfile.this, ViewProfilePictureActivity.class);
@@ -96,5 +96,11 @@ public class ReceiverUserProfile extends AppCompatActivity {
             intent.putExtra(getString(R.string.profileImage), profilePicture);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }

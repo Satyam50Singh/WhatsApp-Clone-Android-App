@@ -108,5 +108,6 @@
     <string name="tap_to_chat">Tap to Chat</string>
     <string name="satyam_singh">Satyam Singh</string>
     <string name="developer">Developer</string>
+    <string name="message_deleted_successfully">Message Deleted Successfully</string>
 
 </resources>

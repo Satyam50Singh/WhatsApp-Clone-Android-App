@@ -13,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,18 +60,26 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MessageModel messageModel = localDataSet.get(position);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle(R.string.delete)
-                        .setMessage(R.string.delete_message)
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                        })
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                        .show();
-                return false;
-            }
+        holder.itemView.setOnLongClickListener(view -> {
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.delete)
+                    .setMessage(R.string.delete_message)
+                    .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+                        firebaseDatabase.getReference()
+                                .child(Constants.GROUP_CHAT_COLLECTION_NAME)
+                                .child(messageModel.getMessageId())
+                                .removeValue()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Utils.showToastMessage(context, context.getString(R.string.message_deleted_successfully));
+                                    }
+                                });
+                    })
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                    .show();
+            return false;
         });
         Date date = new Date(messageModel.getMessageTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
@@ -79,7 +91,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
             ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
             ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
             for (int chatUserCounter = 0; chatUserCounter < groupChatUsers.size(); chatUserCounter++) {
-                if (messageModel.getMessageId().equals(groupChatUsers.get(chatUserCounter).getUserId())) {
+                if (messageModel.getUserId().equals(groupChatUsers.get(chatUserCounter).getUserId())) {
                     ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(chatUserCounter).getUsername());
                     break;
                 }
