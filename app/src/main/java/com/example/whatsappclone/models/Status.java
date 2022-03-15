@@ -14,6 +14,11 @@ public class Status {
         this.timeStamp = timeStamp;
     }
 
+    public Status(String imageUrl, long lastUpdated) {
+        this.imageUrl = imageUrl;
+        this.timeStamp = lastUpdated;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,27 +17,41 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.StatusAdapter;
+import com.example.whatsappclone.models.Status;
 import com.example.whatsappclone.models.StatusModel;
-import com.example.whatsappclone.ui.activities.SettingsActivity;
+import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class StatusFragment extends Fragment {
 
-    RecyclerView gvStatus;
+    RecyclerView rcvStatusLists;
     TextView tvNoRecordFound;
     FloatingActionButton fabAddStatus;
     StatusAdapter statusAdapter;
-    ArrayList<StatusModel> statusModels = new ArrayList<>();
+    ArrayList<StatusModel> userStatuses = new ArrayList<>();
     Bitmap selectedBitmap;
+    private UserModel userModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,20 +63,14 @@ public class StatusFragment extends Fragment {
     }
 
     private void initUi(View rootView) {
-        gvStatus = rootView.findViewById(R.id.rcv_status_list);
+        rcvStatusLists = rootView.findViewById(R.id.rcv_status_list);
         tvNoRecordFound = rootView.findViewById(R.id.tv_no_record);
         fabAddStatus = rootView.findViewById(R.id.fab_add_status);
 
-        StatusModel statusModel = new StatusModel();
-        statusModel.setName("Satya Singh");
-        statusModels.add(statusModel);
-        statusModels.add(statusModel);
-        statusModels.add(statusModel);
-        statusModels.add(statusModel);
-        statusModels.add(statusModel);
-        statusAdapter = new StatusAdapter(getContext(), statusModels);
-        gvStatus.setLayoutManager(new LinearLayoutManager(getContext()));
-        gvStatus.setAdapter(statusAdapter);
+        loadStatusData();
+        statusAdapter = new StatusAdapter(getContext(), userStatuses);
+        rcvStatusLists.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvStatusLists.setAdapter(statusAdapter);
 
         fabAddStatus.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -71,18 +80,104 @@ public class StatusFragment extends Fragment {
         });
     }
 
+    private void loadStatusData() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseDatabase.getReference().child("User Status").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    StatusModel status = new StatusModel();
+                    status.setName(dataSnapshot.child("name").getValue(String.class));
+                    status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
+                    ArrayList<Status> statuses = new ArrayList<>();
+                    for(DataSnapshot statusSnapshot: dataSnapshot.child("statuses").getChildren()){
+                        Status status1 = statusSnapshot.getValue(Status.class);
+                        statuses.add(status1);
+                    }
+                    status.setStatuses(statuses);
+                    userStatuses.add(status);
+                }
+                statusAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Uri selectedImageUri;
         if (data != null && data.getData() != null) {
+            Utils.showProgressDialog(getContext(), "Uploading Image", getString(R.string.please_wait));
             selectedImageUri = data.getData();
             selectedBitmap = getBitmapFromUri(selectedImageUri, getContext());
             if (selectedBitmap != null) {
                 String profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
-                
+
             }
-            Utils.showToastMessage(getContext(), selectedBitmap.toString());
+            // uploading image to storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            Date date = new Date();
+            StorageReference storageReference = storage.getReference().child("Status").child(date.getTime() + "");
+
+            // fetching current user detail
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+            firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userModel = snapshot.getValue(UserModel.class);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+            storageReference.putFile(selectedImageUri)
+                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                storageReference.getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Utils.hideProgressDialog();
+                                                Utils.showLog("url", uri.toString());
+                                                StatusModel statusModel = new StatusModel();
+                                                statusModel.setName(userModel.getUsername());
+                                                statusModel.setProfileImage(userModel.getProfilePicture());
+                                                statusModel.setLastUpdated(date.getTime());
+
+                                                HashMap<String, Object> obj = new HashMap<>();
+                                                obj.put("name", statusModel.getName());
+                                                obj.put("profileImage", statusModel.getProfileImage());
+                                                obj.put("lastUpdated", statusModel.getLastUpdated());
+
+                                                String imageUrl = selectedImageUri.toString();
+                                                Status status = new Status(imageUrl, statusModel.getLastUpdated());
+                                                firebaseDatabase.getReference()
+                                                        .child("User Status")
+                                                        .child(FirebaseAuth.getInstance().getUid())
+                                                        .updateChildren(obj);
+
+                                                firebaseDatabase.getReference()
+                                                        .child("User Status")
+                                                        .child(FirebaseAuth.getInstance().getUid())
+                                                        .child("statuses")
+                                                        .push()
+                                                        .setValue(status);
+                                            }
+                                        });
+                            }
+                        }
+                    });
         }
     }
 }

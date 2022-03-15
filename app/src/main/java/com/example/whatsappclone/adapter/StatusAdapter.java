@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.StatusModel;
-import com.squareup.picasso.Picasso;
+import com.example.whatsappclone.utils.CircularStatusView;
 
 import java.util.ArrayList;
 
@@ -36,8 +34,8 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvUserName.setText(localDataSet.get(position).getName());
-//        Picasso.with(context).load(localDataSet.get(position).getStatuses().get(0).getImageUrl()).placeholder(R.drawable.man).into(holder.ivImage);
+        StatusModel userStatus = localDataSet.get(position);
+        holder.tvUserName.setText(userStatus.getName());
     }
 
     @Override
@@ -46,12 +44,12 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-//        ImageView ivImage;
         TextView tvUserName;
+        CircularStatusView circularStatusView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //ivImage =  itemView.findViewById(R.id.iv_gallery);
             tvUserName = itemView.findViewById(R.id.tv_status_username);
+            circularStatusView = itemView.findViewById(R.id.circular_status_view);
         }
     }
 }
