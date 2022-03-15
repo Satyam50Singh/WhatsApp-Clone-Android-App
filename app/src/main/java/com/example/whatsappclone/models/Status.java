@@ -1,0 +1,40 @@
+package com.example.whatsappclone.models;
+
+public class Status {
+    private String imageUrl;
+    private String caption;
+    private long timeStamp;
+
+    public Status() {
+    }
+
+    public Status(String imageUrl, String caption, long timeStamp) {
+        this.imageUrl = imageUrl;
+        this.caption = caption;
+        this.timeStamp = timeStamp;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+}

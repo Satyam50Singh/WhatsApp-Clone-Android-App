@@ -54,8 +54,9 @@
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/activity_view_profile_picture.xml" value="0.2164855072463768" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/custom_profile_dialog.xml" value="0.2006340579710145" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/fragment_chat.xml" value="0.2006340579710145" />
-        <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/fragment_status.xml" value="0.2006340579710145" />
+        <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/fragment_status.xml" value="0.25" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/sample_receiver_layout.xml" value="0.2164855072463768" />
+        <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/sample_status_item.xml" value="0.27291666666666664" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/starred_message_layout.xml" value="0.33" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/layout/user_list_layout.xml" value="0.2006340579710145" />
         <entry key="..\:/project/WhatsApp-Clone-Android-App/app/src/main/res/menu/chat_menu.xml" value="0.22" />

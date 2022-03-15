@@ -43,6 +43,7 @@ public class ChatFragment extends Fragment {
         RecyclerView rcvUserList = rootView.findViewById(R.id.rcv_user_list);
         Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
         loadUserRecord();
+
         userListAdapter = new UserListAdapter(getContext(), userList);
         rcvUserList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvUserList.setAdapter(userListAdapter);

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_layout"
+    android:layout_width="match_parent"
+    android:paddingTop="6dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="6dp"
+    android:layout_height="wrap_content"
+    android:textAlignment="center">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:padding="6dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="@+id/circular_status_view"
+        app:layout_constraintEnd_toEndOf="@+id/circular_status_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.whatsappclone.utils.CircularStatusView
+        android:id="@+id/circular_status_view"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerInParent="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:portion_color="@color/purple_200"
+        app:portion_spacing="4dp"
+        app:portion_width="4dp"
+        app:portions_count="8" />
+
+    <TextView
+        android:id="@+id/tv_status_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="11dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.156" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
