@@ -111,5 +111,7 @@
     <string name="message_deleted_successfully">Message Deleted Successfully</string>
     <string name="message_removed_successfully">Message Removed Successfully</string>
     <string name="no_star_message">No Star Message</string>
+    <string name="date_format_ymd">yyyy-MM-dd</string>
+    <string name="date_and_time_format">yyyy-MM-dd HH:mm:ss</string>
 
 </resources>

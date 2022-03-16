@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,8 @@ import com.example.whatsappclone.adapter.StatusAdapter;
 import com.example.whatsappclone.models.Status;
 import com.example.whatsappclone.models.StatusModel;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.storyview.StoryModel;
+import com.example.whatsappclone.storyview.StoryView;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,6 +62,7 @@ public class StatusFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_status, container, false);
         initUi(rootView);
+
         return rootView;
     }
 
@@ -68,7 +72,7 @@ public class StatusFragment extends Fragment {
         fabAddStatus = rootView.findViewById(R.id.fab_add_status);
 
         loadStatusData();
-        statusAdapter = new StatusAdapter(getContext(), userStatuses);
+        statusAdapter = new StatusAdapter(getContext(), userStatuses, getActivity());
         rcvStatusLists.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvStatusLists.setAdapter(statusAdapter);
 
@@ -85,12 +89,14 @@ public class StatusFragment extends Fragment {
         firebaseDatabase.getReference().child("User Status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                userStatuses.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     StatusModel status = new StatusModel();
                     status.setName(dataSnapshot.child("name").getValue(String.class));
                     status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
                     ArrayList<Status> statuses = new ArrayList<>();
-                    for(DataSnapshot statusSnapshot: dataSnapshot.child("statuses").getChildren()){
+                    statuses.clear();
+                    for (DataSnapshot statusSnapshot : dataSnapshot.child("statuses").getChildren()) {
                         Status status1 = statusSnapshot.getValue(Status.class);
                         statuses.add(status1);
                     }
@@ -114,11 +120,6 @@ public class StatusFragment extends Fragment {
         if (data != null && data.getData() != null) {
             Utils.showProgressDialog(getContext(), "Uploading Image", getString(R.string.please_wait));
             selectedImageUri = data.getData();
-            selectedBitmap = getBitmapFromUri(selectedImageUri, getContext());
-            if (selectedBitmap != null) {
-                String profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
-
-            }
             // uploading image to storage
             FirebaseStorage storage = FirebaseStorage.getInstance();
             Date date = new Date();
@@ -160,7 +161,7 @@ public class StatusFragment extends Fragment {
                                                 obj.put("profileImage", statusModel.getProfileImage());
                                                 obj.put("lastUpdated", statusModel.getLastUpdated());
 
-                                                String imageUrl = selectedImageUri.toString();
+                                                String imageUrl = uri.toString();
                                                 Status status = new Status(imageUrl, statusModel.getLastUpdated());
                                                 firebaseDatabase.getReference()
                                                         .child("User Status")
