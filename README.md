@@ -80,4 +80,5 @@
 - Deleting Message From User Chat and Group Chat
 - Remove Message From Starred Messages
 - Adding and Viewing User Status Using StoryView in StatusFragment
+- Added Reactions On Messages using android-reactions library
    

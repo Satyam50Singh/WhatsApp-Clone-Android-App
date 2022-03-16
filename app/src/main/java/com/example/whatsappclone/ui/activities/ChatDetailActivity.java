@@ -96,7 +96,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         Utils.showProgressDialog(ChatDetailActivity.this, "", getString(R.string.please_wait));
         loadChatMessages();
 
-        chatAdapter = new ChatAdapter(ChatDetailActivity.this, getApplicationContext(), chatRecord, receiverId);
+        chatAdapter = new ChatAdapter(getApplicationContext(), chatRecord, receiverId, ChatDetailActivity.this, senderRoom, receiverRoom);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatDetailActivity.this);
         rcvUserChat.setLayoutManager(layoutManager);
         rcvUserChat.setAdapter(chatAdapter);
@@ -244,7 +244,9 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         mActionMode = toolbar.startActionMode(callback);
     }
-
+    public static void hideActionMode() {
+        mActionMode.finish();
+    }
     private void addToStaredMessagesBox() {
         String randomKey = firebaseDatabase.getReference().push().getKey();
         starredMessageModel.setMessageId(randomKey);

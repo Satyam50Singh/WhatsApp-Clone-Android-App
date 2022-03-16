@@ -3,8 +3,10 @@ package com.example.whatsappclone.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
+import com.example.whatsappclone.utils.Constants;
+import com.github.pgreze.reactions.ReactionPopup;
+import com.github.pgreze.reactions.ReactionsConfig;
+import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +34,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
     private Activity activity;
+    private String senderRoom, receiverRoom;
+
+    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, String receiverId, Activity activity, String senderRoom, String receiverRoom) {
+        this.context = context;
+        this.localDataSet = localDataSet;
+        this.receiverId = receiverId;
+        this.activity = activity;
+        this.senderRoom = senderRoom;
+        this.receiverRoom = receiverRoom;
+    }
 
     public ChatAdapter(Activity activity, Context context, ArrayList<MessageModel> localDataSet, String receiverId) {
         this.context = context;
@@ -59,20 +76,82 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MessageModel messageModel = localDataSet.get(position);
-        holder.itemView.setOnLongClickListener(view -> {
-            ((ChatDetailActivity) activity).showActionMode();
-            ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-            return false;
+
+        // configuration for android reactions
+        int[] reactions = new int[]{
+                R.drawable.ic_fb_like,
+                R.drawable.ic_fb_love,
+                R.drawable.ic_fb_laugh,
+                R.drawable.ic_fb_wow,
+                R.drawable.ic_fb_sad,
+                R.drawable.ic_fb_angry
+        };
+        ReactionsConfig config = new ReactionsConfigBuilder(context)
+                .withReactions(reactions)
+                .build();
+
+        ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
+            if (holder.getClass() == SenderViewHolder.class) {
+                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
+                ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
+            } else {
+                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+                ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
+            }
+            messageModel.setFeeling(pos);
+            FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
+                    .child("Chats")
+                    .child(senderRoom)
+                    .child(messageModel.getMessageId())
+                    .setValue(messageModel);
+            FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
+                    .child("Chats")
+                    .child(receiverRoom)
+                    .child(messageModel.getMessageId())
+                    .setValue(messageModel);
+            ChatDetailActivity.hideActionMode();
+            return true; // true is closing popup, false is requesting a new selection
         });
+
+        // --------------------------------------------------------------------
+
         Date date = new Date(messageModel.getMessageTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
         String messageTime = dateFormat.format(date);
         if (holder.getClass() == SenderViewHolder.class) {
             ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
             ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
+            if (messageModel.getFeeling() >= 0) {
+                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
+                ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[messageModel.getFeeling()]);
+            } else {
+                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.GONE);
+            }
+            ((SenderViewHolder) holder).tvSenderMessage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
         } else {
             ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
             ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
+            if (messageModel.getFeeling() >= 0) {
+                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+                ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[messageModel.getFeeling()]);
+            } else {
+                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+            }
+            ((ReceiverViewHolder) holder).tvReceiverMessage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
         }
     }
 
@@ -84,11 +163,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvReceiverMessage, tvReceiverTime;
+        ImageView ivReceiverFeeling;
 
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message);
             tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time);
+            ivReceiverFeeling = itemView.findViewById(R.id.iv_receiver_reaction);
 
         }
     }
@@ -96,11 +177,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static class SenderViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvSenderMessage, tvSenderTime;
+        ImageView ivSenderFeeling;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSenderMessage = itemView.findViewById(R.id.tv_sender_message);
             tvSenderTime = itemView.findViewById(R.id.tv_sender_time);
+            ivSenderFeeling = itemView.findViewById(R.id.iv_sender_reaction);
+
+
         }
     }
 

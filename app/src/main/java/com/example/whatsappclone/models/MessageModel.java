@@ -4,6 +4,7 @@ public class MessageModel {
 
     private String messageId, messageText, userId;
     Long messageTime;
+    int Feeling = -1;
 
     // constructors
     public MessageModel() {
@@ -19,6 +20,14 @@ public class MessageModel {
     public MessageModel(String messageId, String messageText) {
         this.messageId = messageId;
         this.messageText = messageText;
+    }
+
+    public MessageModel(String messageId, String messageText, String userId, Long messageTime, int feeling) {
+        this.messageId = messageId;
+        this.messageText = messageText;
+        this.userId = userId;
+        this.messageTime = messageTime;
+        Feeling = feeling;
     }
 
     // getter and setters
@@ -56,5 +65,13 @@ public class MessageModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getFeeling() {
+        return Feeling;
+    }
+
+    public void setFeeling(int feeling) {
+        Feeling = feeling;
     }
 }

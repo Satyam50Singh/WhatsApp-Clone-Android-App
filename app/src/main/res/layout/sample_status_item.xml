@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:layout_editor_absoluteX="119dp"
             tools:layout_editor_absoluteY="22dp" />
 
