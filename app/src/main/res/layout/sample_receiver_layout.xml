@@ -11,6 +11,17 @@
     android:maxHeight="450dp"
     android:minHeight="30dp">
 
+    <ImageView
+        android:id="@+id/iv_receiver_image"
+        android:layout_width="269dp"
+        android:layout_height="190dp"
+        android:src="@drawable/man"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_receiver_message"
         android:layout_width="wrap_content"
@@ -50,11 +61,11 @@
         app:layout_constraintGuide_begin="12dp" />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/iv_receiver_reaction"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_fb_love"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_receiver_time"
         app:layout_constraintTop_toTopOf="parent"

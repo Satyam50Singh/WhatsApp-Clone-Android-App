@@ -25,6 +25,26 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
 
+        <ImageView
+            android:id="@+id/iv_sender_image"
+            android:layout_width="269dp"
+            android:layout_height="190dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="22dp"
+            android:inputType="textLongMessage|textMultiLine|textNoSuggestions"
+            android:src="@drawable/man"
+            android:text="TextViewTextViewTextViewTextView"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sender_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.054" />
+
         <TextView
             android:id="@+id/tv_sender_message"
             android:layout_width="wrap_content"
@@ -41,10 +61,8 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/tv_sender_time"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintHorizontal_bias="0.025"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.029" />
+            app:layout_constraintHorizontal_bias="0.079"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_sender_time"

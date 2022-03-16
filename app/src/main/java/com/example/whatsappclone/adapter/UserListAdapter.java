@@ -84,10 +84,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                         Date date = new Date((Long) snapshot1.child("messageTime").getValue());
                         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
                         String messageTime = dateFormat.format(date);
-                        if(lastMessageText.length() >0){
+                        if (lastMessageText.length() > 0 && !lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
                             holder.tvLastMessage.setText(lastMessageText);
+                        } else if (lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
+                            holder.tvLastMessage.setText("Photo");
                         }
-                        if(lastMessageText.length() >0){
+                        if (lastMessageText.length() > 0) {
                             holder.tvTime.setText(messageTime);
                         }
                     }
@@ -178,6 +180,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             results.values = filterLocalDataSet;
             return results;
         }
+
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             localDataSet.clear();

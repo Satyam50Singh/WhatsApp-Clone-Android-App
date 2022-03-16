@@ -113,5 +113,6 @@
     <string name="no_star_message">No Star Message</string>
     <string name="date_format_ymd">yyyy-MM-dd</string>
     <string name="date_and_time_format">yyyy-MM-dd HH:mm:ss</string>
+    <string name="firebase_url">https://firebasestorage.googleapis.com/</string>
 
 </resources>

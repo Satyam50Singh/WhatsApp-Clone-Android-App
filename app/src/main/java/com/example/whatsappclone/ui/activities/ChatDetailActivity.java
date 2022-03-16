@@ -3,10 +3,12 @@ package com.example.whatsappclone.ui.activities;
 import static com.example.whatsappclone.utils.Utils.decodeImage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,15 +31,21 @@ import com.example.whatsappclone.models.StarredMessageModel;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +54,7 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseStorage firebaseStorage;
 
     private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom, messageId;
     private Toolbar toolbar;
@@ -61,6 +70,8 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     StarredMessageModel starredMessageModel;
 
+    private ImageView ivSendImageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +82,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseStorage = FirebaseStorage.getInstance();
 
         // reference to controls
         toolbar = findViewById(R.id.toolbar);
@@ -80,6 +92,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         tvReceiverName = toolbar.findViewById(R.id.tv_receiver_name);
         rcvUserChat = findViewById(R.id.rcv_user_chat);
         LinearLayout llSentBtn = findViewById(R.id.ll_send_btn);
+        ivSendImageButton = findViewById(R.id.iv_send_image_button);
         etMessage = findViewById(R.id.et_message);
         etMessage.requestFocus();
 
@@ -110,6 +123,16 @@ public class ChatDetailActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.receiver_name), username);
             intent.putExtra(getString(R.string.profileImage), profileImage);
             startActivity(intent);
+        });
+
+        ivSendImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 8979);
+            }
         });
     }
 
@@ -244,9 +267,11 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         mActionMode = toolbar.startActionMode(callback);
     }
+
     public static void hideActionMode() {
         mActionMode.finish();
     }
+
     private void addToStaredMessagesBox() {
         String randomKey = firebaseDatabase.getReference().push().getKey();
         starredMessageModel.setMessageId(randomKey);
@@ -309,5 +334,62 @@ public class ChatDetailActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && data.getData() != null && requestCode == 8979) {
+            Utils.showProgressDialog(ChatDetailActivity.this, "Uploading", getString(R.string.please_wait));
+            Uri selectedImage = data.getData();
+            Calendar calendar = Calendar.getInstance();
+
+            StorageReference storageReference = firebaseStorage.getReference()
+                    .child("Chats")
+                    .child(calendar.getTimeInMillis() + "");
+            storageReference.putFile(selectedImage)
+                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Utils.hideProgressDialog();
+                                        String filePath = uri.toString();
+                                        try {
+                                            if (filePath.isEmpty()) {
+                                                return;
+                                            }
+                                            etMessage.requestFocus();
+                                            String randomKey = firebaseDatabase.getReference().push().getKey();
+                                            MessageModel model = new MessageModel(randomKey, senderId, filePath, new Date().getTime());
+                                            if (senderId != null && receiverId != null) {
+                                                firebaseDatabase.getReference()
+                                                        .child(Constants.CHAT_COLLECTION_NAME)
+                                                        .child(senderId + receiverId)
+                                                        .child(randomKey)
+                                                        .setValue(model)
+                                                        .addOnSuccessListener(unused -> firebaseDatabase.getReference()
+                                                                .child(Constants.CHAT_COLLECTION_NAME)
+                                                                .child(receiverRoom)
+                                                                .child(randomKey)
+                                                                .setValue(model)
+                                                                .addOnSuccessListener(unused1 -> rcvUserChat.scrollToPosition(rcvUserChat.getAdapter().getItemCount() - 1)));
+                                            } else {
+                                                Utils.showLog("Ids", "senderId : " + senderId + " receiverId : " + receiverId);
+                                            }
+                                        } catch (Exception e) {
+                                            Utils.showLog(getString(R.string.error), e.getMessage());
+                                        }
+
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+        }
     }
 }

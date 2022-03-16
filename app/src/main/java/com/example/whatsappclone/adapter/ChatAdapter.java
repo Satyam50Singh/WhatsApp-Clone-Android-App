@@ -21,6 +21,7 @@ import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -119,7 +120,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
         String messageTime = dateFormat.format(date);
         if (holder.getClass() == SenderViewHolder.class) {
-            ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
+            if (messageModel.getMessageText().startsWith("https://firebasestorage.googleapis.com/")) {
+                ((SenderViewHolder) holder).ivSenderImage.setVisibility(View.VISIBLE);
+                ((SenderViewHolder) holder).tvSenderMessage.setVisibility(View.GONE);
+                Picasso.with(context).load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);
+            } else {
+                ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
+            }
             ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
             if (messageModel.getFeeling() >= 0) {
                 ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
@@ -127,15 +134,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.GONE);
             }
-            ((SenderViewHolder) holder).tvSenderMessage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
-            });
+
         } else {
+            if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
+                ((ReceiverViewHolder) holder).ivReceiverImage.setVisibility(View.VISIBLE);
+                ((ReceiverViewHolder) holder).tvReceiverMessage.setVisibility(View.GONE);
+                Picasso.with(context).load(messageModel.getMessageText()).into(((ReceiverViewHolder) holder).ivReceiverImage);
+            } else {
+                ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
+            }
             ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
             ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
             if (messageModel.getFeeling() >= 0) {
@@ -144,15 +151,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
             }
-            ((ReceiverViewHolder) holder).tvReceiverMessage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
-            });
         }
+        holder.itemView.setOnTouchListener((view, motionEvent) -> {
+            // opening actionbar icons
+            ((ChatDetailActivity) activity).showActionMode();
+            ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+            // opening reaction
+            popup.onTouch(view, motionEvent);
+            return false;
+        });
     }
 
     @Override
@@ -163,28 +170,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvReceiverMessage, tvReceiverTime;
-        ImageView ivReceiverFeeling;
+        ImageView ivReceiverFeeling, ivReceiverImage;
 
         public ReceiverViewHolder(@NonNull View itemView) {
             super(itemView);
             tvReceiverMessage = itemView.findViewById(R.id.tv_receiver_message);
             tvReceiverTime = itemView.findViewById(R.id.tv_receiver_time);
             ivReceiverFeeling = itemView.findViewById(R.id.iv_receiver_reaction);
-
+            ivReceiverImage = itemView.findViewById(R.id.iv_receiver_image);
         }
     }
 
     public static class SenderViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvSenderMessage, tvSenderTime;
-        ImageView ivSenderFeeling;
+        ImageView ivSenderFeeling, ivSenderImage;
 
         public SenderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSenderMessage = itemView.findViewById(R.id.tv_sender_message);
             tvSenderTime = itemView.findViewById(R.id.tv_sender_time);
             ivSenderFeeling = itemView.findViewById(R.id.iv_sender_reaction);
-
+            ivSenderImage = itemView.findViewById(R.id.iv_sender_image);
 
         }
     }
