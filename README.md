@@ -84,4 +84,9 @@
 - Sending Image As Message
 - Online Indicator with Firebase
 - Typing Status of Users
+- Showing user list in call fragment
+  - sample layout for recyclerview
+  - adding recyclerview inside call fragment
+  - adapter for recyclerview
+  - setting recyclerview adapter
    
