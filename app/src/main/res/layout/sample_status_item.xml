@@ -7,15 +7,17 @@
     android:layout_height="wrap_content"
     android:gravity="center|start"
     android:orientation="horizontal"
+    android:background="@color/white"
+    android:layout_marginBottom="3dp"
     android:paddingLeft="10dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
     android:textAlignment="center">
 
     <com.example.whatsappclone.storyview.StoryView
         android:id="@+id/storyView_statuses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
         app:spaceBetweenImageAndIndicator="1dp"
         app:storyImageRadius="8dp"

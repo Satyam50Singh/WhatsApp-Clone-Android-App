@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="7dp"
+    android:paddingTop="3dp"
     android:background="@drawable/bg_receiver_bubble"
     android:maxWidth="310dp"
     android:maxHeight="450dp"
@@ -15,9 +16,9 @@
         android:id="@+id/iv_receiver_image"
         android:layout_width="269dp"
         android:layout_height="190dp"
+        android:layout_marginLeft="6dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="6dp"
         android:scaleType="fitXY"
         android:src="@drawable/man"
         android:visibility="gone"
@@ -68,13 +69,13 @@
 
     <ImageView
         android:id="@+id/iv_receiver_reaction"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_marginBottom="4dp"
         android:src="@drawable/ic_fb_love"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/iv_receiver_image"
+        app:layout_constraintBottom_toTopOf="@+id/tv_receiver_time"
         app:layout_constraintEnd_toEndOf="@+id/tv_receiver_time"
-        app:layout_constraintTop_toBottomOf="@+id/iv_receiver_image"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
