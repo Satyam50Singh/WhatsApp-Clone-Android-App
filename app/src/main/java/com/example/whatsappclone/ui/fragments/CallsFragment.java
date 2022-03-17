@@ -18,6 +18,7 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.CallAdapter;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,7 @@ public class CallsFragment extends Fragment {
     private CallAdapter callAdapter;
     private ArrayList<UserModel> userWithPhoneList = new ArrayList<>();
     private TextView tvNoUserFound;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     private FirebaseDatabase database;
 
@@ -49,6 +51,10 @@ public class CallsFragment extends Fragment {
 
         rcvUserCallList = rootView.findViewById(R.id.rcv_user_call_list);
         tvNoUserFound = rootView.findViewById(R.id.tv_no_user_record);
+        shimmerFrameLayout = rootView.findViewById(R.id.shimmer_user_calls_container);
+
+        rcvUserCallList.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
         loadUsers();
 
         callAdapter = new CallAdapter(getActivity(), getContext(), userWithPhoneList);
@@ -78,6 +84,9 @@ public class CallsFragment extends Fragment {
                             tvNoUserFound.setVisibility(View.GONE);
                         }
                         callAdapter.notifyDataSetChanged();
+                        shimmerFrameLayout.hideShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        rcvUserCallList.setVisibility(View.VISIBLE);
                     }
 
                     @Override

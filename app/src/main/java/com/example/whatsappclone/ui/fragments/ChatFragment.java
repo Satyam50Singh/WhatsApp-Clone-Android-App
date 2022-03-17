@@ -16,6 +16,7 @@ import com.example.whatsappclone.adapter.UserListAdapter;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +29,8 @@ public class ChatFragment extends Fragment {
 
     ArrayList<UserModel> userList = new ArrayList<>();
     UserListAdapter userListAdapter;
-
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private RecyclerView rcvUserList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,8 +42,10 @@ public class ChatFragment extends Fragment {
     }
 
     private void init(View rootView) {
-        RecyclerView rcvUserList = rootView.findViewById(R.id.rcv_user_list);
-        Utils.showProgressDialog(getContext(), "", getString(R.string.please_wait));
+        rcvUserList = rootView.findViewById(R.id.rcv_user_list);
+        shimmerFrameLayout = rootView.findViewById(R.id.shimmer_user_chat_container);
+        rcvUserList.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
         loadUserRecord();
 
         userListAdapter = new UserListAdapter(getContext(), userList);
@@ -70,7 +74,9 @@ public class ChatFragment extends Fragment {
 
                     }
                     userListAdapter.notifyDataSetChanged();
-                    Utils.hideProgressDialog();
+                    shimmerFrameLayout.hideShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    rcvUserList.setVisibility(View.VISIBLE);
                 }
 
                 @Override

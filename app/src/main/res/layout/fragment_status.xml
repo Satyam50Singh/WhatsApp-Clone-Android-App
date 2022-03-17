@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/lightGrey"
     android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.fragments.StatusFragment">
 
@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:visibility="gone"
         tools:listitem="@layout/sample_status_item" />
 
     <TextView
@@ -40,9 +41,44 @@
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         android:src="@drawable/ic_edit"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_user_status_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+
+            <include layout="@layout/shimmer_chat_layout" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,7 @@ import com.example.whatsappclone.storyview.StoryModel;
 import com.example.whatsappclone.storyview.StoryView;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +55,8 @@ public class StatusFragment extends Fragment {
     StatusAdapter statusAdapter;
     ArrayList<StatusModel> userStatuses = new ArrayList<>();
     Bitmap selectedBitmap;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
     private UserModel userModel;
 
     @Override
@@ -70,7 +73,11 @@ public class StatusFragment extends Fragment {
         rcvStatusLists = rootView.findViewById(R.id.rcv_status_list);
         tvNoRecordFound = rootView.findViewById(R.id.tv_no_record);
         fabAddStatus = rootView.findViewById(R.id.fab_add_status);
+        shimmerFrameLayout = rootView.findViewById(R.id.shimmer_user_status_container);
 
+        rcvStatusLists.setVisibility(View.GONE);
+        fabAddStatus.setVisibility(View.GONE);
+        shimmerFrameLayout.startShimmer();
         loadStatusData();
         statusAdapter = new StatusAdapter(getContext(), userStatuses, getActivity());
         rcvStatusLists.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -111,6 +118,10 @@ public class StatusFragment extends Fragment {
                     tvNoRecordFound.setVisibility(View.GONE);
                 }
                 statusAdapter.notifyDataSetChanged();
+                shimmerFrameLayout.hideShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                rcvStatusLists.setVisibility(View.VISIBLE);
+                fabAddStatus.setVisibility(View.VISIBLE);
             }
 
             @Override
