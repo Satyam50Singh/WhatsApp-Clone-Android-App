@@ -96,8 +96,19 @@ public class ChatFragment extends Fragment {
         super.onResume();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
         firebaseDatabase.getReference()
-                .child("Presence")
+                .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
                 .setValue("Online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseDatabase.getReference()
+                .child(Constants.PRESENCE_COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
+                .setValue("Offline");
+
     }
 }

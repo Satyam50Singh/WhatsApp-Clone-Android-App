@@ -8,4 +8,5 @@ public interface Constants {
     String CHAT_COLLECTION_NAME = "Chats";
     String GROUP_CHAT_COLLECTION_NAME = "Group Chats";
     String STARRED_MESSAGES_COLLECTION_NAME = "Starred Messages";
+    String PRESENCE_COLLECTION_NAME = "Presence";
 }

@@ -83,4 +83,5 @@
 - Added Reactions On Messages using android-reactions library
 - Sending Image As Message
 - Online Indicator with Firebase
+- Typing Status of Users
    

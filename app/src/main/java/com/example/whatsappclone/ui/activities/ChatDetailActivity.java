@@ -10,6 +10,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,14 +85,14 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private void checkReceiverPresence() {
         firebaseDatabase.getReference()
-                .child("Presence")
+                .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(receiverId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String presence = snapshot.getValue(String.class);
-                            if(!presence.isEmpty()){
+                            if (!presence.isEmpty()) {
                                 tvReceiverPresence.setText(presence);
                                 tvReceiverPresence.setVisibility(View.VISIBLE);
                             }
@@ -128,7 +131,9 @@ public class ChatDetailActivity extends AppCompatActivity {
         setUserDetailsOnToolbar();
 
         // click listeners
-        ivBackArrow.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MainActivity.class)));
+        ivBackArrow.setOnClickListener(view ->{
+            finish();
+        });
 
         // fetching chat and storing in chatRecord ArrayList
         Utils.showProgressDialog(ChatDetailActivity.this, "", getString(R.string.please_wait));
@@ -158,6 +163,37 @@ public class ChatDetailActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 8979);
             }
+        });
+
+        final Handler handler = new Handler();
+
+        etMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                firebaseDatabase.getReference().child(Constants.PRESENCE_COLLECTION_NAME)
+                        .child(senderId).setValue("typing ...");
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(userStoppedTyping, 1000);
+
+            }
+
+            Runnable userStoppedTyping = new Runnable() {
+                @Override
+                public void run() {
+                    firebaseDatabase.getReference().child(Constants.PRESENCE_COLLECTION_NAME)
+                            .child(senderId).setValue("Online");
+                }
+            };
         });
     }
 
@@ -418,4 +454,24 @@ public class ChatDetailActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseDatabase.getReference()
+                .child(Constants.PRESENCE_COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
+                .setValue("Online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseDatabase.getReference()
+                .child(Constants.PRESENCE_COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
+                .setValue("Offline");
+    }
 }
