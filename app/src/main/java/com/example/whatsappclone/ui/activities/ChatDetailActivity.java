@@ -58,7 +58,7 @@ public class ChatDetailActivity extends AppCompatActivity {
 
     private String senderId, receiverId, username, profileImage, senderRoom, receiverRoom, messageId;
     private Toolbar toolbar;
-    private TextView tvReceiverName;
+    private TextView tvReceiverName, tvReceiverPresence;
     private CircleImageView civProfileImage;
     private RecyclerView rcvUserChat;
     private EditText etMessage;
@@ -77,6 +77,30 @@ public class ChatDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_detail);
         init();
+        checkReceiverPresence();
+    }
+
+    private void checkReceiverPresence() {
+        firebaseDatabase.getReference()
+                .child("Presence")
+                .child(receiverId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String presence = snapshot.getValue(String.class);
+                            if(!presence.isEmpty()){
+                                tvReceiverPresence.setText(presence);
+                                tvReceiverPresence.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void init() {
@@ -90,6 +114,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         ImageView ivBackArrow = toolbar.findViewById(R.id.iv_back_arrow);
         civProfileImage = toolbar.findViewById(R.id.civ_chat_profile_image);
         tvReceiverName = toolbar.findViewById(R.id.tv_receiver_name);
+        tvReceiverPresence = toolbar.findViewById(R.id.tv_receiver_presence);
         rcvUserChat = findViewById(R.id.rcv_user_chat);
         LinearLayout llSentBtn = findViewById(R.id.ll_send_btn);
         ivSendImageButton = findViewById(R.id.iv_send_image_button);
@@ -392,4 +417,5 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         }
     }
+
 }

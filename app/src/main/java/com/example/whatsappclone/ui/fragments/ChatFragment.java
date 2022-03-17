@@ -90,4 +90,14 @@ public class ChatFragment extends Fragment {
             userListAdapter.getFilter().filter(s);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        firebaseDatabase.getReference()
+                .child("Presence")
+                .child(FirebaseAuth.getInstance().getUid())
+                .setValue("Online");
+    }
 }

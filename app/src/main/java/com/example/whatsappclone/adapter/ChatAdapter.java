@@ -92,12 +92,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 .build();
 
         ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
+
             if (holder.getClass() == SenderViewHolder.class) {
                 ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
-                ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
+                if (pos >= 0) {
+                    ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
+                }
             } else {
                 ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
-                ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
+                if (pos >= 0) {
+                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
+                }
             }
             messageModel.setFeeling(pos);
             FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()

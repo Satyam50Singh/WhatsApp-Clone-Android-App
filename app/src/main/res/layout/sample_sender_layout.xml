@@ -32,7 +32,10 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="22dp"
+            android:layout_marginBottom="6dp"
+            android:contentDescription="TODO"
             android:inputType="textLongMessage|textMultiLine|textNoSuggestions"
+            android:scaleType="fitXY"
             android:src="@drawable/man"
             android:text="TextViewTextViewTextViewTextView"
             android:textColor="@color/black"
@@ -77,8 +80,8 @@
 
         <ImageView
             android:id="@+id/iv_sender_reaction"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="4dp"
