@@ -1,8 +1,10 @@
 package com.example.whatsappclone.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +51,7 @@ public class CallsFragment extends Fragment {
         tvNoUserFound = rootView.findViewById(R.id.tv_no_user_record);
         loadUsers();
 
-        callAdapter = new CallAdapter(getContext(), userWithPhoneList);
+        callAdapter = new CallAdapter(getActivity(), getContext(), userWithPhoneList);
         rcvUserCallList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvUserCallList.setAdapter(callAdapter);
     }
@@ -83,5 +85,11 @@ public class CallsFragment extends Fragment {
 
                     }
                 });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

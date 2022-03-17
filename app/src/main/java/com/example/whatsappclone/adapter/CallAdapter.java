@@ -2,7 +2,12 @@ package com.example.whatsappclone.adapter;
 
 import static com.example.whatsappclone.utils.Utils.decodeImage;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.ui.fragments.CallsFragment;
+import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -24,10 +33,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
 
     private Context context;
+    private Activity activity;
     private ArrayList<UserModel> localDataSet;
+    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 010101;
 
-    public CallAdapter(Context context, ArrayList<UserModel> localDataSet) {
+    public CallAdapter(Activity activity, Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
+        this.activity = activity;
         this.localDataSet = localDataSet;
     }
 
@@ -54,10 +66,22 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 // make call
-                Utils.showToastMessage(context, user.getUsername());
+                Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91"+user.getPhone()));// Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                } else {
+                    //You already have permission
+                    try {
+                        context.startActivity(mIntent);
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {
