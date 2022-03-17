@@ -3,14 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/grayBackground"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.fragments.CallsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/rcv_user_call_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/sample_call_layout" />
+
+    <TextView
+        android:id="@+id/tv_no_user_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:singleLine="true"
+        android:text="@string/no_record_found"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 </LinearLayout>

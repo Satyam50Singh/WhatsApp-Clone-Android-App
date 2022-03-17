@@ -43,10 +43,12 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         UserModel user = localDataSet.get(position);
         holder.tvUserName.setText(user.getUsername());
         holder.tvPhone.setText(user.getPhone());
-        if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
-            Picasso.with(context).load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
-        } else {
-            holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
+        if (user.getProfilePicture() != null) {
+            if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
+                Picasso.with(context).load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
+            } else {
+                holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
+            }
         }
         holder.ivCall.setOnClickListener(new View.OnClickListener() {
             @Override

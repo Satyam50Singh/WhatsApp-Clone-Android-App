@@ -132,18 +132,20 @@ public class StoryView extends View {
     }
 
     private void loadFirstImageBitamp() {
-        Glide.with(this)
-                .asBitmap()
-                .circleCrop()
-                .load(storyImageUris.get(0).imageUri)
-                .placeholder(R.drawable.man)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        mIndicatorImageBitmap = resource;
-                        invalidate();
-                    }
-                });
+        if (storyImageUris.size() > 0) {
+            Glide.with(this)
+                    .asBitmap()
+                    .circleCrop()
+                    .load(storyImageUris.get(0).imageUri)
+                    .placeholder(R.drawable.man)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            mIndicatorImageBitmap = resource;
+                            invalidate();
+                        }
+                    });
+        }
 
     }
 

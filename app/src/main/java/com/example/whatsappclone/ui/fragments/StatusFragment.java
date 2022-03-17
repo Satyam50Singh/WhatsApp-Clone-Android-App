@@ -103,6 +103,13 @@ public class StatusFragment extends Fragment {
                     status.setStatuses(statuses);
                     userStatuses.add(status);
                 }
+                if (userStatuses.size() <= 0) {
+                    tvNoRecordFound.setVisibility(View.VISIBLE);
+                    rcvStatusLists.setVisibility(View.GONE);
+                } else {
+                    rcvStatusLists.setVisibility(View.VISIBLE);
+                    tvNoRecordFound.setVisibility(View.GONE);
+                }
                 statusAdapter.notifyDataSetChanged();
             }
 

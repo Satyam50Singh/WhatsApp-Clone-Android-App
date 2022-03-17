@@ -2,6 +2,7 @@ package com.example.whatsappclone.ui.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,10 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.CallAdapter;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -21,6 +29,9 @@ public class CallsFragment extends Fragment {
     private RecyclerView rcvUserCallList;
     private CallAdapter callAdapter;
     private ArrayList<UserModel> userWithPhoneList = new ArrayList<>();
+    private TextView tvNoUserFound;
+
+    private FirebaseDatabase database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,26 +43,45 @@ public class CallsFragment extends Fragment {
     }
 
     private void initUI(View rootView) {
+        database = FirebaseDatabase.getInstance(Constants.DB_PATH);
+
         rcvUserCallList = rootView.findViewById(R.id.rcv_user_call_list);
+        tvNoUserFound = rootView.findViewById(R.id.tv_no_user_record);
         loadUsers();
+
         callAdapter = new CallAdapter(getContext(), userWithPhoneList);
         rcvUserCallList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvUserCallList.setAdapter(callAdapter);
     }
 
     private void loadUsers() {
-        UserModel userModel = new UserModel();
-        userModel.setPhone("+91-7019765765");
-        userModel.setUsername("Thakur Satyam Singh");
-        userModel.setProfilePicture("https://www.flaticon.com/free-sticker/happy_6983864");
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
-        userWithPhoneList.add(userModel);
 
+        database.getReference()
+                .child(Constants.USER_COLLECTION_NAME)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userWithPhoneList.clear();
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            UserModel user = snapshot1.getValue(UserModel.class);
+                            if (!user.getUserId().equals(FirebaseAuth.getInstance().getUid()) && user.getPhone() != null) {
+                                userWithPhoneList.add(user);
+                            }
+                        }
+                        if (userWithPhoneList.size() <= 0) {
+                            tvNoUserFound.setVisibility(View.VISIBLE);
+                            rcvUserCallList.setVisibility(View.GONE);
+                        } else {
+                            rcvUserCallList.setVisibility(View.VISIBLE);
+                            tvNoUserFound.setVisibility(View.GONE);
+                        }
+                        callAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

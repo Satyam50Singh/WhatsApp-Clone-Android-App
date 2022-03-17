@@ -89,4 +89,6 @@
   - adding recyclerview inside call fragment
   - adapter for recyclerview
   - setting recyclerview adapter
+  - fetching user records from firebase in call fragment
+
    
