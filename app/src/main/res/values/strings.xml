@@ -114,5 +114,8 @@
     <string name="date_format_ymd">yyyy-MM-dd</string>
     <string name="date_and_time_format">yyyy-MM-dd HH:mm:ss</string>
     <string name="firebase_url">https://firebasestorage.googleapis.com/</string>
+    <string name="your_phone">Your Phone</string>
+    <string name="your_about">Your About</string>
+    <string name="your_full_name">Your Full Name*</string>
 
 </resources>

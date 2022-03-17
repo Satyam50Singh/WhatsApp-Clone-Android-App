@@ -109,6 +109,5 @@ public class ChatFragment extends Fragment {
                 .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
                 .setValue("Offline");
-
     }
 }

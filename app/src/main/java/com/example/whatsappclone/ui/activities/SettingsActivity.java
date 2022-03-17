@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,21 +50,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingsActivity extends AppCompatActivity implements BottomSheetUpdateProfileFragment.BottomSheetListener {
 
     private Button btnEditProfile;
-    private TextInputEditText etUserAbout, etFullName;
+    private TextInputEditText etUserAbout, etFullName, etPhone;
     private FloatingActionButton fabEditProfilePicture;
 
     private FirebaseDatabase firebaseDatabase;
 
-    CircleImageView civProfileImage;
+    private CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
-    private String profileEncodedString;
+    private String profileEncodedString, userEmail;
     private TextView tvSkipForNow, tvAccountVerificationStatus;
 
+    private LinearLayout llVerify;
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(SettingsActivity.this, MainActivity.class));
         finish();
     }
 
@@ -78,25 +79,28 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
 
         btnEditProfile = findViewById(R.id.btn_edit_profile);
-        btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
         etUserAbout = findViewById(R.id.et_user_about);
+        etPhone = findViewById(R.id.et_user_phone);
         etFullName = findViewById(R.id.et_full_name);
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
         tvSkipForNow = findViewById(R.id.tv_skip_for_now);
         tvAccountVerificationStatus = findViewById(R.id.tv_account_verification_status);
+        llVerify = findViewById(R.id.ll_verify);
 
         // profile syncing
         syncProfile();
-        
+
         // listeners
         btnEditProfile.setOnClickListener(view -> {
             if (btnEditProfile.getText().toString().equals(getString(R.string.edit_profile))) {
                 btnEditProfile.setText(R.string.save);
                 etUserAbout.setEnabled(true);
                 etFullName.setEnabled(true);
+                etPhone.setEnabled(true);
                 etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
                 etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
+                etPhone.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
                 fabEditProfilePicture.setVisibility(View.VISIBLE);
                 btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
             } else {
@@ -116,10 +120,9 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void syncProfile() {
-        checkVerificationStatus();
         firebaseDatabase.getReference()
-            .child(Constants.USER_COLLECTION_NAME)
-            .child(FirebaseAuth.getInstance().getUid())
+                .child(Constants.USER_COLLECTION_NAME)
+                .child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,6 +130,8 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                         if (userModel != null) {
                             etFullName.setText(userModel.getUsername());
                             etUserAbout.setText(userModel.getStatus());
+                            etPhone.setText(userModel.getPhone());
+                            userEmail = userModel.getEmail();
                             if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
                                 civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
                             } else {
@@ -139,6 +144,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                     public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
+        checkVerificationStatus();
     }
 
     @SuppressLint("ResourceAsColor")
@@ -150,7 +156,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         } else {
             tvAccountVerificationStatus.setText(R.string.verified);
             tvAccountVerificationStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#095049")));
-
         }
     }
 
@@ -208,6 +213,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         String fullName = etFullName.getText().toString().trim();
         if (validateUsername(SettingsActivity.this, etFullName)) {
             String userAbout = etUserAbout.getText().toString().trim();
+            String phone = etPhone.getText().toString().trim();
             if (selectedBitmap != null) {
                 profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
             }
@@ -217,10 +223,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             HashMap<String, Object> objectHashMap = new HashMap<>();
             objectHashMap.put("username", fullName);
             objectHashMap.put("status", userAbout);
+            objectHashMap.put("phone", phone);
             firebaseDatabase.getReference()
-                .child(Constants.USER_COLLECTION_NAME)
-                .child(FirebaseAuth.getInstance().getUid())
-                .updateChildren(objectHashMap);
+                    .child(Constants.USER_COLLECTION_NAME)
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .updateChildren(objectHashMap);
 
             changeScreenState();
         }
@@ -230,15 +237,18 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         btnEditProfile.setText(getString(R.string.edit_profile));
         etUserAbout.setEnabled(false);
         etFullName.setEnabled(false);
+        etPhone.setEnabled(false);
         etUserAbout.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         etFullName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
         fabEditProfilePicture.setVisibility(View.GONE);
         btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
+        finish();
     }
 
     private void insertProfileImage() {
         if (profileEncodedString != null) {
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(FirebaseAuth.getInstance().getUid())
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                    .child(FirebaseAuth.getInstance().getUid())
                     .child(getString(R.string.profilePicture))
                     .setValue(profileEncodedString)
                     .addOnSuccessListener(unused -> Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated)));

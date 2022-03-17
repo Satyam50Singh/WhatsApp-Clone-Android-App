@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgreen"
+    android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
 
@@ -52,36 +52,51 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_full_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/bg_sent_message_edit_text"
             android:drawableTint="@color/black"
             android:enabled="false"
-            android:hint="Your Full Name"
-            android:padding="10dp"
+            android:hint="@string/your_full_name"
+            android:paddingHorizontal="16dp"
             android:textColor="@color/black"
-            android:textSize="26sp"></com.google.android.material.textfield.TextInputEditText>
+            android:textSize="22sp" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_user_about"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/bg_sent_message_edit_text"
             android:drawableTint="@color/black"
             android:enabled="false"
-            android:hint="Your About "
+            android:hint="@string/your_about"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_user_phone"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_sent_message_edit_text"
+            android:drawableTint="@color/black"
+            android:enabled="false"
+            android:hint="@string/your_phone"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textSize="22sp"></com.google.android.material.textfield.TextInputEditText>
+            android:textSize="18sp" />
 
         <LinearLayout
+            android:id="@+id/ll_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/bg_sent_message_edit_text"
-            android:elevation="6dp"
             android:gravity="center"
-            android:layout_marginTop="23dp"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -113,19 +128,19 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_edit_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="@drawable/bg_sent_message_edit_text"
             android:backgroundTint="@color/colorPrimary"
             android:drawablePadding="10dp"
+            android:elevation="6dp"
             android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="@string/edit_profile"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"></androidx.appcompat.widget.AppCompatButton>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_skip_for_now"
@@ -134,7 +149,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/skip_for_now"
             android:textAlignment="center"
-            android:textSize="18dp" />
+            android:textSize="14dp" />
 
 
     </LinearLayout>

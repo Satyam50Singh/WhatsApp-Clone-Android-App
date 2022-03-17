@@ -139,7 +139,22 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.GONE);
             }
-
+            ((SenderViewHolder) holder).tvSenderMessage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
+            ((SenderViewHolder) holder).ivSenderImage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
         } else {
             if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
                 ((ReceiverViewHolder) holder).ivReceiverImage.setVisibility(View.VISIBLE);
@@ -156,15 +171,25 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
             }
+
+            ((ReceiverViewHolder) holder).tvReceiverMessage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
+
+            ((ReceiverViewHolder) holder).ivReceiverImage.setOnTouchListener((view, motionEvent) -> {
+                // opening actionbar icons
+                ((ChatDetailActivity) activity).showActionMode();
+                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+                // opening reaction
+                popup.onTouch(view, motionEvent);
+                return false;
+            });
         }
-        holder.itemView.setOnTouchListener((view, motionEvent) -> {
-            // opening actionbar icons
-            ((ChatDetailActivity) activity).showActionMode();
-            ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-            // opening reaction
-            popup.onTouch(view, motionEvent);
-            return false;
-        });
     }
 
     @Override
