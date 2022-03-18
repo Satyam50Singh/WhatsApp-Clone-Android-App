@@ -82,7 +82,7 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
             return false;
         });
         Date date = new Date(messageModel.getMessageTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
         String messageTime = dateFormat.format(date);
         if (holder.getClass() == GroupChatAdapter.SenderViewHolder.class) {
             ((GroupChatAdapter.SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());

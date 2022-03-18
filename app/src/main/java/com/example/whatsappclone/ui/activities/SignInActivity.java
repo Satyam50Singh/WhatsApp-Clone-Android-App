@@ -28,15 +28,15 @@ import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
-    TextInputEditText etEmail, etPassword;
-    TextView tvCreateAnAccount;
-    Button btnSignIn, btnGoogle, btnLoginWithPhone;
+    private TextInputEditText etEmail, etPassword;
+    private TextView tvCreateAnAccount;
+    private Button btnSignIn, btnGoogle, btnLoginWithPhone;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    GoogleSignInClient googleSignInClient;
+    private GoogleSignInClient googleSignInClient;
 
-    String email, password;
+    private String email, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +48,21 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void init() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+
         tvCreateAnAccount = findViewById(R.id.tv_create_an_account);
         btnLoginWithPhone = findViewById(R.id.btn_login_with_phone);
         btnSignIn = findViewById(R.id.btn_sign_in);
         etEmail = findViewById(R.id.et_email_sign_in);
         etPassword = findViewById(R.id.et_password_sign_in);
         btnGoogle = findViewById(R.id.btn_google_sign_in);
+
         tvCreateAnAccount.setOnClickListener(view -> startActivity(new Intent(SignInActivity.this, SignUpActivity.class)));
         btnLoginWithPhone.setOnClickListener(view -> Auth.navigateToLoginWithPhoneActivity(SignInActivity.this));
         btnSignIn.setOnClickListener(view -> userSignIn());
         btnGoogle.setOnClickListener(view -> userSignInByGoogle());
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+
         // Configure Google Sign In
         googleSignInClient = GoogleSignIn.getClient(this, Auth.getGoogleSignInOptions(this));
     }
@@ -84,7 +87,6 @@ public class SignInActivity extends AppCompatActivity {
                                 Utils.hideProgressDialog();
                             }
                         });
-
             }
         } catch (Exception e) {
             Utils.showToastMessage(this, e.getMessage());
@@ -147,5 +149,4 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

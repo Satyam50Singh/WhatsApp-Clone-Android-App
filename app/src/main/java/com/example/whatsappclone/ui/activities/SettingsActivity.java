@@ -254,6 +254,4 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                     .addOnSuccessListener(unused -> Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated)));
         }
     }
-
-
 }

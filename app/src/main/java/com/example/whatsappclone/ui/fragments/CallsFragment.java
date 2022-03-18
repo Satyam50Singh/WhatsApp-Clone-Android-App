@@ -63,7 +63,6 @@ public class CallsFragment extends Fragment {
     }
 
     private void loadUsers() {
-
         database.getReference()
                 .child(Constants.USER_COLLECTION_NAME)
                 .addValueEventListener(new ValueEventListener() {
@@ -91,14 +90,7 @@ public class CallsFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

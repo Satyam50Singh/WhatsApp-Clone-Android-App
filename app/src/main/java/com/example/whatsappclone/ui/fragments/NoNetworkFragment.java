@@ -29,9 +29,9 @@ public class NoNetworkFragment extends Fragment {
         btnReload.setOnClickListener(view -> {
             boolean connStatus = NetworkManager.checkNetworkConnectedStatus(getContext());
             if (connStatus) {
-                Utils.showToastMessage(getContext(), "Restart Your App!");
+                Utils.showToastMessage(getContext(), getString(R.string.restart_your_app));
             } else {
-                Utils.showToastMessage(getContext(), "Connection Status :false");
+                Utils.showToastMessage(getContext(), getString(R.string.connection_status_failed));
             }
         });
     }

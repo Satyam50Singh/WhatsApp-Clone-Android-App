@@ -48,7 +48,6 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
             bottomSheetListener.onOptionClick(getString(R.string.remove_profile));
             dismiss();
         });
-
         return view;
     }
 
@@ -56,7 +55,6 @@ public class BottomSheetUpdateProfileFragment extends BottomSheetDialogFragment 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         try {
             bottomSheetListener = (BottomSheetListener) context;
         } catch (ClassCastException e) {

@@ -117,5 +117,8 @@
     <string name="your_phone">Your Phone</string>
     <string name="your_about">Your About</string>
     <string name="your_full_name">Your Full Name*</string>
-
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="restart_your_app">Restart Your App!</string>
+    <string name="connection_status_failed">Connection Status :false</string>
 </resources>

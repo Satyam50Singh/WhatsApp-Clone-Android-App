@@ -15,8 +15,8 @@ import java.util.Objects;
 public class HomeActivity extends AppCompatActivity {
 
     // controls
-    Button btnGoToSignIn, btnGoToSignUp;
-    TextView tvLoginWithPhone;
+    private Button btnGoToSignIn, btnGoToSignUp;
+    private TextView tvLoginWithPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,4 +9,7 @@ public interface Constants {
     String GROUP_CHAT_COLLECTION_NAME = "Group Chats";
     String STARRED_MESSAGES_COLLECTION_NAME = "Starred Messages";
     String PRESENCE_COLLECTION_NAME = "Presence";
+    String USER_STATUS_COLLECTION_NAME = "User Status";
+    String STATUSES_COLLECTION_NAME = "statuses";
+    String FILE_TYPE = "image/*";
 }

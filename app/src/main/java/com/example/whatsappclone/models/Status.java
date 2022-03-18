@@ -1,10 +1,10 @@
 package com.example.whatsappclone.models;
 
 public class Status {
-    private String imageUrl;
-    private String caption;
+    private String imageUrl, caption;
     private long timeStamp;
 
+    // constructor
     public Status() {
     }
 
@@ -19,6 +19,7 @@ public class Status {
         this.timeStamp = lastUpdated;
     }
 
+    // getters and setters
     public String getImageUrl() {
         return imageUrl;
     }

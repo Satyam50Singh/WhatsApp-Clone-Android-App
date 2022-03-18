@@ -7,6 +7,7 @@ public class StatusModel {
     private long lastUpdated;
     private ArrayList<Status> statuses;
 
+    // constructors
     public StatusModel() {
     }
 
@@ -17,6 +18,7 @@ public class StatusModel {
         this.statuses = statuses;
     }
 
+    // getters and setters
     public String getName() {
         return name;
     }

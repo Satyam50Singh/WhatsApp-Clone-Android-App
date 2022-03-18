@@ -1,15 +1,13 @@
 package com.example.whatsappclone.models;
 
 public class UserModel {
-    String userId, username, email, password, profilePicture, lastMessage, status;
-    String phone;
+    private String userId, username, email, password, profilePicture, lastMessage, status, phone;
+
     // empty constructor
     public UserModel() {
     }
 
     // parameterized constructor
-
-
     public UserModel(String userId, String username, String email, String password, String profilePicture, String lastMessage, String status) {
         this.userId = userId;
         this.username = username;
@@ -29,8 +27,6 @@ public class UserModel {
     }
 
     // getters and setters
-
-
     public String getPhone() {
         return phone;
     }

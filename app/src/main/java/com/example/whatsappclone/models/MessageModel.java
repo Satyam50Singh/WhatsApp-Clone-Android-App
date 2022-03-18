@@ -3,8 +3,8 @@ package com.example.whatsappclone.models;
 public class MessageModel {
 
     private String messageId, messageText, userId;
-    Long messageTime;
-    int Feeling = -1;
+    private Long messageTime;
+    private int feeling = -1;
 
     // constructors
     public MessageModel() {
@@ -27,7 +27,7 @@ public class MessageModel {
         this.messageText = messageText;
         this.userId = userId;
         this.messageTime = messageTime;
-        Feeling = feeling;
+        this.feeling = feeling;
     }
 
     // getter and setters
@@ -68,10 +68,10 @@ public class MessageModel {
     }
 
     public int getFeeling() {
-        return Feeling;
+        return feeling;
     }
 
     public void setFeeling(int feeling) {
-        Feeling = feeling;
+        this.feeling = feeling;
     }
 }

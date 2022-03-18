@@ -32,12 +32,11 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginWithPhoneActivity extends AppCompatActivity {
 
-    private TextInputEditText etMobileNo;
-    private TextInputEditText edtOTP1, edtOTP2, edtOTP3, edtOTP4, edtOTP5, edtOTP6;
+    private TextInputEditText etMobileNo, edtOTP1, edtOTP2, edtOTP3, edtOTP4, edtOTP5, edtOTP6;
     private Button btnLogin;
     private TextView tvResend, tvHeading, tvDescription, tvDescription2;
     private LinearLayout llOTP;
-    String backendOTPValue;
+    private String backendOTPValue;
     private FirebaseDatabase firebaseDatabase;
 
     @Override
@@ -282,5 +281,4 @@ public class LoginWithPhoneActivity extends AppCompatActivity {
             Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.please_check_connection));
         }
     }
-
 }

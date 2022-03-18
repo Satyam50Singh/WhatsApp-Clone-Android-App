@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class StarredMessageActivity extends AppCompatActivity {
 
-    ArrayList<StarredMessageModel> data;
-    StarredMessageAdapter starredMessageAdapter;
+    private ArrayList<StarredMessageModel> data;
+    private StarredMessageAdapter starredMessageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class StarredMessageActivity extends AppCompatActivity {
     private void init() {
         RecyclerView rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
         loadDataSet();
-        rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
         starredMessageAdapter = new StarredMessageAdapter(StarredMessageActivity.this, this.data);
+        rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
         rcvStarredMessages.setAdapter(starredMessageAdapter);
     }
 
@@ -70,6 +70,5 @@ public class StarredMessageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Utils.showLog(getString(R.string.error), e.getMessage());
         }
-
     }
 }

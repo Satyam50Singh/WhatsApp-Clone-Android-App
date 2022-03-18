@@ -65,15 +65,14 @@ public class ChatDetailActivity extends AppCompatActivity {
     private CircleImageView civProfileImage;
     private RecyclerView rcvUserChat;
     private EditText etMessage;
+    private ImageView ivSendImageButton;
 
     private final ArrayList<MessageModel> chatRecord = new ArrayList<>();
-    ChatAdapter chatAdapter;
+    private ChatAdapter chatAdapter;
 
     private static android.view.ActionMode mActionMode = null;
 
-    StarredMessageModel starredMessageModel;
-
-    private ImageView ivSendImageButton;
+    private StarredMessageModel starredMessageModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +158,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setType("image/*");
+                intent.setType(Constants.FILE_TYPE);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, 8979);
             }
@@ -406,7 +405,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
 
             StorageReference storageReference = firebaseStorage.getReference()
-                    .child("Chats")
+                    .child(Constants.CHAT_COLLECTION_NAME)
                     .child(calendar.getTimeInMillis() + "");
             storageReference.putFile(selectedImage)
                     .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -462,7 +461,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Online");
+                .setValue(getString(R.string.online));
     }
 
     @Override
@@ -472,6 +471,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Offline");
+                .setValue(getString(R.string.offline));
     }
 }

@@ -31,8 +31,8 @@ public class GroupChatActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private ArrayList<MessageModel> groupChatRecord = new ArrayList<>();
     private final ArrayList<UserModel> groupChatUsers = new ArrayList<>();
-    GroupChatAdapter groupChatAdapter;
-    RecyclerView rcvUserChatGC;
+    private GroupChatAdapter groupChatAdapter;
+    private RecyclerView rcvUserChatGC;
     private EditText etMessageGC;
     private String senderId;
 
@@ -61,8 +61,7 @@ public class GroupChatActivity extends AppCompatActivity {
         loadGroupChatUsers();
 
         groupChatAdapter = new GroupChatAdapter(GroupChatActivity.this, groupChatRecord, groupChatUsers);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(GroupChatActivity.this);
-        rcvUserChatGC.setLayoutManager(layoutManager);
+        rcvUserChatGC.setLayoutManager(new LinearLayoutManager(GroupChatActivity.this));
         rcvUserChatGC.setAdapter(groupChatAdapter);
         rcvUserChatGC.postDelayed(() -> rcvUserChatGC.scrollToPosition(rcvUserChatGC.getAdapter().getItemCount() - 1), 1000);
 
@@ -122,7 +121,5 @@ public class GroupChatActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.success)))
                 .addOnFailureListener(e -> Utils.showLog(getString(R.string.sent_message_status), getString(R.string.failure)));
         rcvUserChatGC.scrollToPosition(rcvUserChatGC.getAdapter().getItemCount() - 1);
-
-
     }
 }

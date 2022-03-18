@@ -29,13 +29,13 @@ import java.util.Date;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
-    Context context;
-    ArrayList<MessageModel> localDataSet;
-    String receiverId;
+    private Context context;
+    private ArrayList<MessageModel> localDataSet;
+    private Activity activity;
+    private String senderRoom, receiverRoom, receiverId;
+
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
-    private Activity activity;
-    private String senderRoom, receiverRoom;
 
     public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, String receiverId, Activity activity, String senderRoom, String receiverRoom) {
         this.context = context;
@@ -106,12 +106,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             messageModel.setFeeling(pos);
             FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
-                    .child("Chats")
+                    .child(Constants.CHAT_COLLECTION_NAME)
                     .child(senderRoom)
                     .child(messageModel.getMessageId())
                     .setValue(messageModel);
             FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
-                    .child("Chats")
+                    .child(Constants.CHAT_COLLECTION_NAME)
                     .child(receiverRoom)
                     .child(messageModel.getMessageId())
                     .setValue(messageModel);
@@ -125,7 +125,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
         String messageTime = dateFormat.format(date);
         if (holder.getClass() == SenderViewHolder.class) {
-            if (messageModel.getMessageText().startsWith("https://firebasestorage.googleapis.com/")) {
+            if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
                 ((SenderViewHolder) holder).ivSenderImage.setVisibility(View.VISIBLE);
                 ((SenderViewHolder) holder).tvSenderMessage.setVisibility(View.GONE);
                 Picasso.with(context).load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);

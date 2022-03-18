@@ -40,11 +40,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements Filterable {
 
-    Context context;
-    ArrayList<UserModel> localDataSet;
+    private Context context;
+    private ArrayList<UserModel> localDataSet;
     private List<UserModel> localDataSetFull;
-    FirebaseDatabase firebaseDatabase;
-
+    private FirebaseDatabase firebaseDatabase;
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
@@ -72,10 +71,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         // showing last message & message Time
         String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(pos).getUserId();
         firebaseDatabase.getReference()
-                .child("Chats")
+                .child(Constants.CHAT_COLLECTION_NAME)
                 .child(senderRoom)
                 .orderByChild("messageTime")
-                .limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                .limitToLast(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()) {

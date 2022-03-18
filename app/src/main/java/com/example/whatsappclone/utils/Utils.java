@@ -134,7 +134,7 @@ public class Utils {
     public static void takePictureFromGallery(Activity activity) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
+        intent.setType(Constants.FILE_TYPE);
         activity.startActivityForResult(intent,
                 PICK_IMAGE_ACTIVITY_REQUEST_CODE);
     }
@@ -196,7 +196,9 @@ public class Utils {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.remove_profile_photo)
                 .setPositiveButton(R.string.remove, (dialogInterface, i) -> {
-                    firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).child(userId)
+                    firebaseDatabase.getReference()
+                            .child(Constants.USER_COLLECTION_NAME)
+                            .child(userId)
                             .child("profilePicture").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -207,6 +209,5 @@ public class Utils {
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
-
     }
 }

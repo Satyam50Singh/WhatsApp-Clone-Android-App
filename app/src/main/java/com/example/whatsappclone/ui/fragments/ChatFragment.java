@@ -27,14 +27,13 @@ import java.util.ArrayList;
 
 public class ChatFragment extends Fragment {
 
-    ArrayList<UserModel> userList = new ArrayList<>();
-    UserListAdapter userListAdapter;
+    private ArrayList<UserModel> userList = new ArrayList<>();
+    private UserListAdapter userListAdapter;
     private ShimmerFrameLayout shimmerFrameLayout;
     private RecyclerView rcvUserList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         init(rootView);
@@ -104,7 +103,7 @@ public class ChatFragment extends Fragment {
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Online");
+                .setValue(getString(R.string.online));
     }
 
     @Override
@@ -114,6 +113,6 @@ public class ChatFragment extends Fragment {
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
                 .child(FirebaseAuth.getInstance().getUid())
-                .setValue("Offline");
+                .setValue(getString(R.string.offline));
     }
 }

@@ -49,15 +49,16 @@ import java.util.HashMap;
 
 public class StatusFragment extends Fragment {
 
-    RecyclerView rcvStatusLists;
-    TextView tvNoRecordFound;
-    FloatingActionButton fabAddStatus;
-    StatusAdapter statusAdapter;
-    ArrayList<StatusModel> userStatuses = new ArrayList<>();
-    Bitmap selectedBitmap;
+    private RecyclerView rcvStatusLists;
+    private TextView tvNoRecordFound;
+    private FloatingActionButton fabAddStatus;
+    private StatusAdapter statusAdapter;
+    private ArrayList<StatusModel> userStatuses = new ArrayList<>();
+    private Bitmap selectedBitmap;
     private ShimmerFrameLayout shimmerFrameLayout;
 
     private UserModel userModel;
+    private int PICK_IMAGE_ACTIVITY_REQUEST_CODE = 01010101;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,15 +86,16 @@ public class StatusFragment extends Fragment {
 
         fabAddStatus.setOnClickListener(view -> {
             Intent intent = new Intent();
-            intent.setType("image/*");
+            intent.setType(Constants.FILE_TYPE);
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent, 8979);
+            startActivityForResult(intent, PICK_IMAGE_ACTIVITY_REQUEST_CODE);
         });
     }
 
     private void loadStatusData() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-        firebaseDatabase.getReference().child("User Status").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child(Constants.USER_STATUS_COLLECTION_NAME)
+        .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userStatuses.clear();
@@ -103,7 +105,7 @@ public class StatusFragment extends Fragment {
                     status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
                     ArrayList<Status> statuses = new ArrayList<>();
                     statuses.clear();
-                    for (DataSnapshot statusSnapshot : dataSnapshot.child("statuses").getChildren()) {
+                    for (DataSnapshot statusSnapshot : dataSnapshot.child(Constants.STATUSES_COLLECTION_NAME).getChildren()) {
                         Status status1 = statusSnapshot.getValue(Status.class);
                         statuses.add(status1);
                     }
@@ -141,11 +143,14 @@ public class StatusFragment extends Fragment {
             // uploading image to storage
             FirebaseStorage storage = FirebaseStorage.getInstance();
             Date date = new Date();
-            StorageReference storageReference = storage.getReference().child("Status").child(date.getTime() + "");
+            StorageReference storageReference = storage.getReference()
+                                                        .child("Status")
+                                                        .child(date.getTime() + "");
 
             // fetching current user detail
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                    .child(FirebaseAuth.getInstance().getUid())
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -154,7 +159,6 @@ public class StatusFragment extends Fragment {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
 
@@ -168,7 +172,6 @@ public class StatusFragment extends Fragment {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 Utils.hideProgressDialog();
-                                                Utils.showLog("url", uri.toString());
                                                 StatusModel statusModel = new StatusModel();
                                                 statusModel.setName(userModel.getUsername());
                                                 statusModel.setProfileImage(userModel.getProfilePicture());
@@ -182,14 +185,14 @@ public class StatusFragment extends Fragment {
                                                 String imageUrl = uri.toString();
                                                 Status status = new Status(imageUrl, statusModel.getLastUpdated());
                                                 firebaseDatabase.getReference()
-                                                        .child("User Status")
+                                                        .child(Constants.USER_STATUS_COLLECTION_NAME)
                                                         .child(FirebaseAuth.getInstance().getUid())
                                                         .updateChildren(obj);
 
                                                 firebaseDatabase.getReference()
-                                                        .child("User Status")
+                                                        .child(Constants.USER_STATUS_COLLECTION_NAME)
                                                         .child(FirebaseAuth.getInstance().getUid())
-                                                        .child("statuses")
+                                                        .child(Constants.STATUSES_COLLECTION_NAME)
                                                         .push()
                                                         .setValue(status);
                                             }

@@ -2,8 +2,9 @@ package com.example.whatsappclone.models;
 
 public class StarredMessageModel {
     private String id, senderName, receiverName,  senderProfilePicture, messageText, messageId;
-    Long messageTime;
+    private Long messageTime;
 
+    // constructors
     public StarredMessageModel() {
     }
 
@@ -17,6 +18,7 @@ public class StarredMessageModel {
         this.messageTime = messageTime;
     }
 
+    // getters and setters
     public String getId() {
         return id;
     }
