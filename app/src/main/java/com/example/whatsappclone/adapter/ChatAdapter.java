@@ -49,13 +49,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         this.receiverRoom = receiverRoom;
     }
 
-    public ChatAdapter(Activity activity, Context context, ArrayList<MessageModel> localDataSet, String receiverId) {
-        this.context = context;
-        this.activity = activity;
-        this.localDataSet = localDataSet;
-        this.receiverId = receiverId;
-    }
-
     @Override
     public int getItemViewType(int position) {
         if (localDataSet.get(position).getUserId().equals(FirebaseAuth.getInstance().getUid())) {

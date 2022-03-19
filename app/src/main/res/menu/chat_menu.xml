@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_copy"
+        android:icon="@drawable/ic_content_copy"
+        android:title="Copy"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_starred"
         android:icon="@drawable/ic_star_white"
         android:title="Delete"

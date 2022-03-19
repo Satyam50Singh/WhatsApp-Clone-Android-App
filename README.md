@@ -93,3 +93,4 @@
 - Making Call in Call Fragment
 - Setup Profile Dialog Added   
 - Animations Added
+- Copy Message In ClipBoard in Chats

@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,6 +76,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     private static android.view.ActionMode mActionMode = null;
 
     private StarredMessageModel starredMessageModel;
+    private String messageText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,6 +302,10 @@ public class ChatDetailActivity extends AppCompatActivity {
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             // this method is called when menu item is clicked
             switch (menuItem.getItemId()) {
+                case R.id.action_copy:
+                    copyContentToClipBoard();
+                    mActionMode.finish();
+                    return true;
                 case R.id.action_starred:
                     addToStaredMessagesBox();
                     mActionMode.finish();
@@ -308,7 +316,6 @@ public class ChatDetailActivity extends AppCompatActivity {
                     return true;
                 default:
                     return false;
-
             }
         }
 
@@ -318,6 +325,13 @@ public class ChatDetailActivity extends AppCompatActivity {
             mActionMode = null;
         }
     };
+
+    private void copyContentToClipBoard() {
+        ClipboardManager manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("Text", messageText);
+        manager.setPrimaryClip(clipData);
+        Utils.showToastMessage(ChatDetailActivity.this, getString(R.string.copied));
+    }
 
     // method for active action contextual mode
     public void showActionMode() {
@@ -342,6 +356,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     public void sendMessageDetailMode(MessageModel messageModel) {
+        messageText = messageModel.getMessageText();
         messageId = messageModel.getMessageId();
         starredMessageModel = new StarredMessageModel();
         starredMessageModel.setId(receiverId);
