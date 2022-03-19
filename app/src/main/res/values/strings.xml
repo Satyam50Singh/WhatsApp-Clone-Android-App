@@ -51,7 +51,8 @@
     <string name="you_are_currently_offline">You are currently offline!</string>
     <string name="last_message">last message</string>
     <string name="userId">userId</string>
-    <string name="username">userName</string>
+    <string name="username">username</string>
+    <string name="status">status</string>
     <string name="profileImage">profileImage</string>
     <string name="message">Message</string>
     <string name="delete">Delete</string>
@@ -121,4 +122,5 @@
     <string name="offline">Offline</string>
     <string name="restart_your_app">Restart Your App!</string>
     <string name="connection_status_failed">Connection Status :false</string>
+    <string name="profile_updated">Profile Updated</string>
 </resources>

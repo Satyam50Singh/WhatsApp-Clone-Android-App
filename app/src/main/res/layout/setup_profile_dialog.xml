@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
@@ -14,7 +14,7 @@
         android:layout_marginTop="50dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_edit_profile"
+            android:id="@+id/civ_edit_profile_setup"
             android:layout_width="185dp"
             android:layout_height="185dp"
             android:src="@drawable/man"
@@ -27,16 +27,15 @@
         </de.hdodenhof.circleimageview.CircleImageView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_edit_profile"
+            android:id="@+id/fab_edit_profile_setup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:backgroundTint="@color/colorPrimary"
             android:clickable="true"
             android:src="@drawable/ic_edit"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/civ_edit_profile"
-            app:layout_constraintEnd_toEndOf="@+id/civ_edit_profile"
+            app:layout_constraintBottom_toBottomOf="@+id/civ_edit_profile_setup"
+            app:layout_constraintEnd_toEndOf="@+id/civ_edit_profile_setup"
             app:tint="@android:color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -50,55 +49,42 @@
         android:visibility="visible">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_full_name"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:id="@+id/et_full_name_setup"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/bg_sent_message_edit_text"
+            android:drawableRight="@drawable/ic_edit"
             android:drawableTint="@color/black"
-            android:enabled="false"
             android:hint="@string/your_full_name"
             android:paddingHorizontal="16dp"
             android:textColor="@color/black"
             android:textSize="22sp" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_user_about"
+            android:id="@+id/et_user_about_setup"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/bg_sent_message_edit_text"
+            android:drawableRight="@drawable/ic_edit"
             android:drawableTint="@color/black"
-            android:enabled="false"
             android:hint="@string/your_about"
             android:paddingHorizontal="16dp"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_user_phone"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableTint="@color/black"
-            android:enabled="false"
-            android:hint="@string/your_phone"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
         <LinearLayout
-            android:id="@+id/ll_verify"
+            android:id="@+id/ll_verify_setup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/bg_sent_message_edit_text"
             android:gravity="center"
-            android:visibility="visible"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,7 +95,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/tv_account_verification_status"
+                android:id="@+id/tv_account_verification_status_setup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_bg"
@@ -121,15 +107,11 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"></View>
-
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_edit_profile"
+            android:id="@+id/btn_save_profile_setup"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
             android:layout_gravity="bottom|center_horizontal"
             android:backgroundTint="@color/colorPrimary"
             android:drawablePadding="10dp"
@@ -137,11 +119,22 @@
             android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/edit_profile"
+            android:text="@string/save"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/tv_skip_for_now_setup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/skip_for_now"
+            android:textAlignment="center"
+            android:textSize="14dp" />
+
+
     </LinearLayout>
+
 
 </LinearLayout>

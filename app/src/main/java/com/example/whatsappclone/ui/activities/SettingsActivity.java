@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     private CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
     private String profileEncodedString, userEmail;
-    private TextView tvSkipForNow, tvAccountVerificationStatus;
+    private TextView tvAccountVerificationStatus;
 
     private LinearLayout llVerify;
 
@@ -84,7 +84,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         etFullName = findViewById(R.id.et_full_name);
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
-        tvSkipForNow = findViewById(R.id.tv_skip_for_now);
         tvAccountVerificationStatus = findViewById(R.id.tv_account_verification_status);
         llVerify = findViewById(R.id.ll_verify);
 
@@ -111,11 +110,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture.setOnClickListener(view -> {
             BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
             bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
-        });
-
-        tvSkipForNow.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-            finish();
         });
     }
 
@@ -219,11 +213,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
             }
 
             // update/insert image in users database
-            insertProfileImage();
             HashMap<String, Object> objectHashMap = new HashMap<>();
-            objectHashMap.put("username", fullName);
-            objectHashMap.put("status", userAbout);
-            objectHashMap.put("phone", phone);
+            objectHashMap.put(getString(R.string.username), fullName);
+            objectHashMap.put(getString(R.string.status), userAbout);
+            objectHashMap.put(getString(R.string.phone), phone);
+            objectHashMap.put(getString(R.string.profilePicture), profileEncodedString);
             firebaseDatabase.getReference()
                     .child(Constants.USER_COLLECTION_NAME)
                     .child(FirebaseAuth.getInstance().getUid())
@@ -243,15 +237,5 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture.setVisibility(View.GONE);
         btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
         finish();
-    }
-
-    private void insertProfileImage() {
-        if (profileEncodedString != null) {
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
-                    .child(FirebaseAuth.getInstance().getUid())
-                    .child(getString(R.string.profilePicture))
-                    .setValue(profileEncodedString)
-                    .addOnSuccessListener(unused -> Utils.showToastMessage(SettingsActivity.this, getString(R.string.profile_picture_updated)));
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.whatsappclone.ui.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.UserListAdapter;
 import com.example.whatsappclone.models.UserModel;
+import com.example.whatsappclone.ui.activities.LoginWithPhoneActivity;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -31,6 +33,7 @@ public class ChatFragment extends Fragment {
     private UserListAdapter userListAdapter;
     private ShimmerFrameLayout shimmerFrameLayout;
     private RecyclerView rcvUserList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,9 +113,11 @@ public class ChatFragment extends Fragment {
     public void onPause() {
         super.onPause();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-        firebaseDatabase.getReference()
-                .child(Constants.PRESENCE_COLLECTION_NAME)
-                .child(FirebaseAuth.getInstance().getUid())
-                .setValue(getString(R.string.offline));
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            firebaseDatabase.getReference()
+                    .child(Constants.PRESENCE_COLLECTION_NAME)
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .setValue(getString(R.string.offline));
+        }
     }
 }
