@@ -16,9 +16,12 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.Utils;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -92,16 +95,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 .build();
 
         ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
-
             if (holder.getClass() == SenderViewHolder.class) {
-                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
                 if (pos >= 0) {
                     ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
+                    ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
                 }
             } else {
-                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
                 if (pos >= 0) {
                     ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
+                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
                 }
             }
             messageModel.setFeeling(pos);
@@ -114,8 +116,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     .child(Constants.CHAT_COLLECTION_NAME)
                     .child(receiverRoom)
                     .child(messageModel.getMessageId())
-                    .setValue(messageModel);
-            ChatDetailActivity.hideActionMode();
+                    .setValue(messageModel)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                if (pos >= 0) {
+                                    ChatDetailActivity.hideActionMode();
+                                }
+                            }
+                        }
+                    });
             return true; // true is closing popup, false is requesting a new selection
         });
 
@@ -133,7 +144,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
             }
             ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
-            if (messageModel.getFeeling() >= 0) {
+            if (messageModel.getFeeling() > -1) {
                 ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
                 ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[messageModel.getFeeling()]);
             } else {

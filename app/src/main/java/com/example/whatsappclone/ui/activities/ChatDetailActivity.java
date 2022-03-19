@@ -130,7 +130,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         setUserDetailsOnToolbar();
 
         // click listeners
-        ivBackArrow.setOnClickListener(view ->{
+        ivBackArrow.setOnClickListener(view -> {
             finish();
         });
 
@@ -299,12 +299,12 @@ public class ChatDetailActivity extends AppCompatActivity {
             // this method is called when menu item is clicked
             switch (menuItem.getItemId()) {
                 case R.id.action_starred:
-                    mActionMode.finish();
                     addToStaredMessagesBox();
+                    mActionMode.finish();
                     return true;
                 case R.id.action_delete:
-                    mActionMode.finish();
                     deleteMessage();
+                    mActionMode.finish();
                     return true;
                 default:
                     return false;
@@ -400,7 +400,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && data.getData() != null && requestCode == 8979) {
-            Utils.showProgressDialog(ChatDetailActivity.this, "Uploading", getString(R.string.please_wait));
+            Utils.showProgressDialog(ChatDetailActivity.this, getString(R.string.uploading), getString(R.string.please_wait));
             Uri selectedImage = data.getData();
             Calendar calendar = Calendar.getInstance();
 
@@ -442,14 +442,11 @@ public class ChatDetailActivity extends AppCompatActivity {
                                         } catch (Exception e) {
                                             Utils.showLog(getString(R.string.error), e.getMessage());
                                         }
-
-
                                     }
                                 });
                             }
                         }
                     });
-
         }
     }
 
