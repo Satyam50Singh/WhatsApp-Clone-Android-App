@@ -62,20 +62,17 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
                 holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
             }
         }
-        holder.ivCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // make call
-                Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91"+user.getPhone()));// Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
-                } else {
-                    //You already have permission
-                    try {
-                        context.startActivity(mIntent);
-                    } catch (SecurityException e) {
-                        e.printStackTrace();
-                    }
+        holder.ivCall.setOnClickListener(view -> {
+            // make call
+            Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91"+user.getPhone()));// Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            } else {
+                //You already have permission
+                try {
+                    context.startActivity(mIntent);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
                 }
             }
         });

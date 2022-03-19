@@ -125,4 +125,10 @@
     <string name="profile_updated">Profile Updated</string>
     <string name="uploading">Uploading</string>
     <string name="copied">Copied!</string>
+    <string name="copy">Copy</string>
+    <string name="star">Star</string>
+    <string name="sort">Sort</string>
+    <string name="ascending_order">Ascending Order</string>
+    <string name="descending_order">Descending Order</string>
+    <string name="select_sort_order">Select Sort Order :</string>
 </resources>

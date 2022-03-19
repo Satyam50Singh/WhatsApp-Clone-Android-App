@@ -11,13 +11,6 @@ public class StatusModel {
     public StatusModel() {
     }
 
-    public StatusModel(String name, String profileImage, long lastUpdated, ArrayList<Status> statuses) {
-        this.name = name;
-        this.profileImage = profileImage;
-        this.lastUpdated = lastUpdated;
-        this.statuses = statuses;
-    }
-
     // getters and setters
     public String getName() {
         return name;

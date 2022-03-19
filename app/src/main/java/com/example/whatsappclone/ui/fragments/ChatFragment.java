@@ -1,9 +1,11 @@
 package com.example.whatsappclone.ui.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.UserListAdapter;
@@ -26,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ChatFragment extends Fragment {
 
@@ -59,34 +64,35 @@ public class ChatFragment extends Fragment {
     private void loadUserRecord() {
         try {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userList.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                        userModel.getUserId(dataSnapshot.getKey());
-                        try {
-                            if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
-                                userList.add(userModel);
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userList.clear();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                userModel.getUserId(dataSnapshot.getKey());
+                                try {
+                                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                        userList.add(userModel);
+                                    }
+                                } catch (Exception e) {
+                                    Utils.showLog(getString(R.string.error), e.getMessage());
+                                }
+
                             }
-                        } catch (Exception e) {
-                            Utils.showLog(getString(R.string.error), e.getMessage());
+                            userListAdapter.notifyDataSetChanged();
+                            shimmerFrameLayout.hideShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
+                            rcvUserList.setVisibility(View.VISIBLE);
                         }
 
-                    }
-                    userListAdapter.notifyDataSetChanged();
-                    shimmerFrameLayout.hideShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    rcvUserList.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Utils.hideProgressDialog();
-                    Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
-                }
-            });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Utils.hideProgressDialog();
+                            Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                        }
+                    });
         } catch (Exception e) {
             Utils.showLog(getString(R.string.error), e.getMessage());
         }
@@ -119,5 +125,94 @@ public class ChatFragment extends Fragment {
                     .child(FirebaseAuth.getInstance().getUid())
                     .setValue(getString(R.string.offline));
         }
+    }
+
+    public void sortUserList() {
+        final int[] selectedIndex = new int[1];
+        final String[] sortTypesList = new String[]{getString(R.string.ascending_order), getString(R.string.descending_order)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.select_sort_order))
+                .setIcon(R.drawable.ic_sort_by_alpha)
+                .setSingleChoiceItems(sortTypesList, -1, (dialog, whichButton) ->
+                {
+                    selectedIndex[0] = whichButton;
+                })
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int selectedChoiceIndex) {
+                        if (selectedIndex[0] == 0) {
+                            loadUserRecordsWithSorting("ASC");
+                        } else if (selectedIndex[0] == 1) {
+                            loadUserRecordsWithSorting("DESC");
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .create();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void loadUserRecordsWithSorting(String order) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+        if(order.equals("ASC")){
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                    .orderByChild("username")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userList.clear();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                userModel.getUserId(dataSnapshot.getKey());
+                                try {
+                                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                        userList.add(userModel);
+                                    }
+                                } catch (Exception e) {
+                                    Utils.showLog(getString(R.string.error), e.getMessage());
+                                }
+                            }
+                            userListAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Utils.hideProgressDialog();
+                            Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                        }
+                    });
+        }else {
+            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                    .orderByChild("username")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userList.clear();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                userModel.getUserId(dataSnapshot.getKey());
+                                try {
+                                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                        userList.add(userModel);
+                                    }
+                                } catch (Exception e) {
+                                    Utils.showLog(getString(R.string.error), e.getMessage());
+                                }
+                            }
+                            Collections.reverse(userList);
+                            userListAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Utils.hideProgressDialog();
+                            Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                        }
+                    });
+        }
+
     }
 }

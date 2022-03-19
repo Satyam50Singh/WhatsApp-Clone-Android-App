@@ -8,16 +8,6 @@ public class StarredMessageModel {
     public StarredMessageModel() {
     }
 
-    public StarredMessageModel(String id, String senderName, String receiverName, String senderProfilePicture, String messageText, String messageId, Long messageTime) {
-        this.id = id;
-        this.senderName = senderName;
-        this.receiverName = receiverName;
-        this.senderProfilePicture = senderProfilePicture;
-        this.messageText = messageText;
-        this.messageId = messageId;
-        this.messageTime = messageTime;
-    }
-
     // getters and setters
     public String getId() {
         return id;

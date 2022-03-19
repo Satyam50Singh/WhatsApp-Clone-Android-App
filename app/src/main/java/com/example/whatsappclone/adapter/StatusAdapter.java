@@ -64,7 +64,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
         for (Status status : userStatus.getStatuses()) {
             Date date1 = new Date(status.getTimeStamp());
             SimpleDateFormat dateFormat1 = new SimpleDateFormat(context.getString(R.string.date_and_time_format));
-            String messageTime1 = dateFormat.format(date);
+            String messageTime1 = dateFormat.format(date1);
             uris.add(new StoryModel(status.getImageUrl(), userStatus.getName(), messageTime1));
         }
         holder.storyView.setImageUris(uris);

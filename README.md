@@ -94,3 +94,4 @@
 - Setup Profile Dialog Added   
 - Animations Added
 - Copy Message In ClipBoard in Chats
+- Sorting Users List in Ascending and Descending order

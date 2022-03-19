@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_sort:
+                chatFragment.sortUserList();
+                return true;
             case R.id.group_chat:
                 startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
                 return true;

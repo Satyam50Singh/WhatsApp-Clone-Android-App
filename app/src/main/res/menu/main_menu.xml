@@ -8,6 +8,11 @@
         android:title="@string/action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort_by_alpha"
+        android:title="@string/sort"
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/group_chat"

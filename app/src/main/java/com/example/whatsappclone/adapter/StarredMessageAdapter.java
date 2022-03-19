@@ -47,7 +47,7 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
         holder.tvSenderName.setText(localDataSet.get(position).getSenderName());
         holder.tvReceiverName.setText(localDataSet.get(position).getReceiverName());
         Date date = new Date(localDataSet.get(position).getMessageTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
         String messageTime = dateFormat.format(date);
         holder.tvReceiverTime.setText(messageTime);
 

@@ -16,20 +16,7 @@ public class MessageModel {
         this.userId = userId;
         this.messageTime = messageTime;
     }
-
-    public MessageModel(String messageId, String messageText) {
-        this.messageId = messageId;
-        this.messageText = messageText;
-    }
-
-    public MessageModel(String messageId, String messageText, String userId, Long messageTime, int feeling) {
-        this.messageId = messageId;
-        this.messageText = messageText;
-        this.userId = userId;
-        this.messageTime = messageTime;
-        this.feeling = feeling;
-    }
-
+    
     // getter and setters
     public String getMessageId() {
         return messageId;

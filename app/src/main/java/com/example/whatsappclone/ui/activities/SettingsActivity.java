@@ -31,7 +31,6 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.ui.fragments.BottomSheetUpdateProfileFragment;
 import com.example.whatsappclone.utils.Constants;
-import com.example.whatsappclone.utils.NetworkManager;
 import com.example.whatsappclone.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -157,7 +156,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     public void onOptionClick(String text) {
         if (text.equals(getString(R.string.remove_profile))) {
             Utils.removeProfilePicture(SettingsActivity.this, FirebaseAuth.getInstance().getUid());
-            changeScreenState();
         } else if (text.equals(getString(R.string.camera))) {
             takePictureFromCamera(this);
         } else {
