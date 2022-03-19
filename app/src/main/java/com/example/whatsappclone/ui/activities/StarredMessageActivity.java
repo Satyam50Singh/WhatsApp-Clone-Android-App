@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.StarredMessageAdapter;
 import com.example.whatsappclone.models.StarredMessageModel;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,6 +25,8 @@ public class StarredMessageActivity extends AppCompatActivity {
 
     private ArrayList<StarredMessageModel> data;
     private StarredMessageAdapter starredMessageAdapter;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private RecyclerView rcvStarredMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,8 @@ public class StarredMessageActivity extends AppCompatActivity {
     }
 
     private void init() {
-        RecyclerView rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
+        rcvStarredMessages = findViewById(R.id.rcv_starred_messages);
+        shimmerFrameLayout = findViewById(R.id.shimmer_starred_message_container);
         loadDataSet();
         starredMessageAdapter = new StarredMessageAdapter(StarredMessageActivity.this, this.data);
         rcvStarredMessages.setLayoutManager(new LinearLayoutManager(this));
@@ -41,7 +46,8 @@ public class StarredMessageActivity extends AppCompatActivity {
 
     private void loadDataSet() {
         try {
-            Utils.showProgressDialog(StarredMessageActivity.this, "", getString(R.string.please_wait));
+            rcvStarredMessages.setVisibility(View.GONE);
+            shimmerFrameLayout.startShimmer();
             data = new ArrayList<>();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
             firebaseDatabase.getReference()
@@ -55,10 +61,12 @@ public class StarredMessageActivity extends AppCompatActivity {
                                 data.add(starredMessageModel);
                             }
                             starredMessageAdapter.notifyDataSetChanged();
-                            if(data.size() == 0) {
+                            if (data.size() == 0) {
                                 Utils.showToastMessage(StarredMessageActivity.this, getString(R.string.no_star_message));
                             }
-                            Utils.hideProgressDialog();
+                            shimmerFrameLayout.stopShimmer();
+                            rcvStarredMessages.setVisibility(View.VISIBLE);
+                            shimmerFrameLayout.setVisibility(View.GONE);
                         }
 
                         @Override

@@ -12,6 +12,7 @@
         android:id="@+id/rcv_status_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutAnimation="@anim/recycler_view_animation"
         android:orientation="vertical"
         android:visibility="gone"
         tools:listitem="@layout/sample_status_item" />

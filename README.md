@@ -92,3 +92,4 @@
   - fetching user records from firebase in call fragment
 - Making Call in Call Fragment
 - Setup Profile Dialog Added   
+- Animations Added
