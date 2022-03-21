@@ -61,7 +61,6 @@
             android:maxHeight="450dp"
             android:minWidth="50dp"
             android:text="TextViewTextViewTextViewTextView"
-            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/tv_sender_time"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintHorizontal_bias="0.079"

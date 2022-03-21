@@ -74,31 +74,31 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 .orderByChild("messageTime")
                 .limitToLast(1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChildren()) {
-                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                        String lastMessageText = snapshot1.child("messageText").getValue().toString();
-                        Date date = new Date((Long) snapshot1.child("messageTime").getValue());
-                        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
-                        String messageTime = dateFormat.format(date);
-                        if (lastMessageText.length() > 0 && !lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
-                            holder.tvLastMessage.setText(lastMessageText);
-                        } else if (lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
-                            holder.tvLastMessage.setText("Photo");
-                        }
-                        if (lastMessageText.length() > 0) {
-                            holder.tvTime.setText(messageTime);
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChildren()) {
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                String lastMessageText = snapshot1.child("messageText").getValue().toString();
+                                Date date = new Date((Long) snapshot1.child("messageTime").getValue());
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
+                                String messageTime = dateFormat.format(date);
+                                if (lastMessageText.length() > 0 && !lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
+                                    holder.tvLastMessage.setText(lastMessageText);
+                                } else if (lastMessageText.startsWith(context.getString(R.string.firebase_url))) {
+                                    holder.tvLastMessage.setText("Photo");
+                                }
+                                if (lastMessageText.length() > 0) {
+                                    holder.tvTime.setText(messageTime);
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                    }
+                });
 
 
         holder.civProfileImage.setOnClickListener(view -> {

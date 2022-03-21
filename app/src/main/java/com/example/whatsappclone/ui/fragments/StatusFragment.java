@@ -103,6 +103,7 @@ public class StatusFragment extends Fragment {
                     StatusModel status = new StatusModel();
                     status.setName(dataSnapshot.child("name").getValue(String.class));
                     status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
+                    status.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(Long.class));
                     ArrayList<Status> statuses = new ArrayList<>();
                     statuses.clear();
                     for (DataSnapshot statusSnapshot : dataSnapshot.child(Constants.STATUSES_COLLECTION_NAME).getChildren()) {
@@ -163,41 +164,38 @@ public class StatusFragment extends Fragment {
                     });
 
             storageReference.putFile(selectedImageUri)
-                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                storageReference.getDownloadUrl()
-                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                Utils.hideProgressDialog();
-                                                StatusModel statusModel = new StatusModel();
-                                                statusModel.setName(userModel.getUsername());
-                                                statusModel.setProfileImage(userModel.getProfilePicture());
-                                                statusModel.setLastUpdated(date.getTime());
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            storageReference.getDownloadUrl()
+                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Utils.hideProgressDialog();
+                                            StatusModel statusModel = new StatusModel();
+                                            statusModel.setName(userModel.getUsername());
+                                            statusModel.setProfileImage(userModel.getProfilePicture());
+                                            Date d = new Date();
 
-                                                HashMap<String, Object> obj = new HashMap<>();
-                                                obj.put("name", statusModel.getName());
-                                                obj.put("profileImage", statusModel.getProfileImage());
-                                                obj.put("lastUpdated", statusModel.getLastUpdated());
+                                            HashMap<String, Object> obj = new HashMap<>();
+                                            obj.put("name", statusModel.getName());
+                                            obj.put("profileImage", statusModel.getProfileImage());
+                                            obj.put("lastUpdated", d.getTime());
 
-                                                String imageUrl = uri.toString();
-                                                Status status = new Status(imageUrl, statusModel.getLastUpdated());
-                                                firebaseDatabase.getReference()
-                                                        .child(Constants.USER_STATUS_COLLECTION_NAME)
-                                                        .child(FirebaseAuth.getInstance().getUid())
-                                                        .updateChildren(obj);
+                                            String imageUrl = uri.toString();
+                                            Status status = new Status(imageUrl, d.getTime());
+                                            firebaseDatabase.getReference()
+                                                    .child(Constants.USER_STATUS_COLLECTION_NAME)
+                                                    .child(FirebaseAuth.getInstance().getUid())
+                                                    .updateChildren(obj);
 
-                                                firebaseDatabase.getReference()
-                                                        .child(Constants.USER_STATUS_COLLECTION_NAME)
-                                                        .child(FirebaseAuth.getInstance().getUid())
-                                                        .child(Constants.STATUSES_COLLECTION_NAME)
-                                                        .push()
-                                                        .setValue(status);
-                                            }
-                                        });
-                            }
+                                            firebaseDatabase.getReference()
+                                                    .child(Constants.USER_STATUS_COLLECTION_NAME)
+                                                    .child(FirebaseAuth.getInstance().getUid())
+                                                    .child(Constants.STATUSES_COLLECTION_NAME)
+                                                    .push()
+                                                    .setValue(status);
+                                        }
+                                    });
                         }
                     });
         }

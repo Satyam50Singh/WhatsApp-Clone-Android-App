@@ -1,7 +1,6 @@
 package com.example.whatsappclone.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.Status;
 import com.example.whatsappclone.models.StatusModel;
-import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.storyview.StoryModel;
 import com.example.whatsappclone.storyview.StoryView;
-import com.example.whatsappclone.utils.Constants;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.whatsappclone.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,8 +45,9 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StatusModel userStatus = localDataSet.get(position);
         holder.tvUserName.setText(userStatus.getName());
-        Date date = new Date(userStatus.getLastUpdated());
+
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.date_format_ymd));
+        Date date = new Date(userStatus.getLastUpdated());
         String messageTime = dateFormat.format(date);
         holder.tvStatusTime.setText(messageTime);
         // for viewing status
@@ -62,9 +55,9 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
         holder.storyView.resetStoryVisits();
         ArrayList<StoryModel> uris = new ArrayList<>();
         for (Status status : userStatus.getStatuses()) {
-            Date date1 = new Date(status.getTimeStamp());
             SimpleDateFormat dateFormat1 = new SimpleDateFormat(context.getString(R.string.date_and_time_format));
-            String messageTime1 = dateFormat.format(date1);
+            Date date1 = new Date(status.getTimeStamp());
+            String messageTime1 = dateFormat1.format(date1);
             uris.add(new StoryModel(status.getImageUrl(), userStatus.getName(), messageTime1));
         }
         holder.storyView.setImageUris(uris);

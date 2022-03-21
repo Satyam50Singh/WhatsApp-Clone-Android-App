@@ -10,8 +10,6 @@
         android:id="@+id/rcv_user_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:backgroundTint="@color/lightGrey"
         android:layoutAnimation="@anim/recycler_view_animation"
         android:visibility="gone"
         tools:listitem="@layout/user_list_layout" />

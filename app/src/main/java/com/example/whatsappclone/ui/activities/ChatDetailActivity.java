@@ -346,7 +346,8 @@ public class ChatDetailActivity extends AppCompatActivity {
         mActionMode.finish();
     }
 
-    private void addToStaredMessagesBox() {
+    private void
+    addToStaredMessagesBox() {
         String randomKey = firebaseDatabase.getReference().push().getKey();
         starredMessageModel.setMessageId(randomKey);
         firebaseDatabase.getReference()
@@ -371,7 +372,10 @@ public class ChatDetailActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserModel userModel = snapshot.getValue(UserModel.class);
+                        Utils.showToastMessage(getApplicationContext(), FirebaseAuth.getInstance().getUid());
+                        Utils.showToastMessage(getApplicationContext(), userModel.getUserId());
                         if (userModel != null) {
+                            Utils.showToastMessage(getApplicationContext(), userModel.getUserId());
                             if (messageModel.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
                                 starredMessageModel.setSenderName(userModel.getUsername());
                                 starredMessageModel.setReceiverName(username);

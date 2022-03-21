@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
 
@@ -61,6 +60,7 @@
             android:hint="@string/your_full_name"
             android:paddingHorizontal="16dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/darkGray"
             android:textSize="22sp" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -74,6 +74,7 @@
             android:hint="@string/your_about"
             android:paddingHorizontal="16dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/darkGray"
             android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -87,6 +88,7 @@
             android:hint="@string/your_phone"
             android:padding="10dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/darkGray"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -96,16 +98,17 @@
             android:layout_gravity="center"
             android:background="@drawable/bg_sent_message_edit_text"
             android:gravity="center"
-            android:visibility="visible"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".9"
-                android:text="Verification Status : "
+                android:backgroundTint="@color/white"
                 android:textColor="@color/purple_700"
+                android:text="Verification Status : "
                 android:textSize="20sp" />
 
             <TextView

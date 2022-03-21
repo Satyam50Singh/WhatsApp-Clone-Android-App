@@ -13,22 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="2dp"
-        android:backgroundTint="@color/purple_500"
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBaseline_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         app:tabGravity="fill"
-        app:tabIconTint="@color/white"
-        app:tabIndicatorColor="@android:color/white"
         app:tabMaxWidth="0dp"
-        app:tabMode="fixed"
-        app:tabTextColor="@color/white">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_photo_camera" />
+        app:tabMode="fixed">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
