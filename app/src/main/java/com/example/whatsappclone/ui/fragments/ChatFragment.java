@@ -129,7 +129,7 @@ public class ChatFragment extends Fragment {
 
     public void sortUserList() {
         final int[] selectedIndex = new int[1];
-        final String[] sortTypesList = new String[]{getString(R.string.ascending_order), getString(R.string.descending_order)};
+        final String[] sortTypesList = new String[]{"Ascending Order", "Descending Order"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getString(R.string.select_sort_order))
                 .setIcon(R.drawable.ic_sort_by_alpha)
@@ -157,7 +157,7 @@ public class ChatFragment extends Fragment {
 
     private void loadUserRecordsWithSorting(String order) {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-        if(order.equals("ASC")){
+        if (order.equals("ASC")) {
             firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
                     .orderByChild("username")
                     .addValueEventListener(new ValueEventListener() {
@@ -184,7 +184,7 @@ public class ChatFragment extends Fragment {
                             Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
                         }
                     });
-        }else {
+        } else {
             firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
                     .orderByChild("username")
                     .addValueEventListener(new ValueEventListener() {

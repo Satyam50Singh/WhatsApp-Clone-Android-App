@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     private void userLogOut() {
         try {
             new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(R.string.user_log_out)
+                    .setTitle(R.string.action_log_out)
                     .setMessage(R.string.user_log_out_message)
                     .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
                         firebaseAuth.signOut();

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grayBackground"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="18dp"
@@ -27,7 +28,8 @@
             android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +43,8 @@
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,7 +59,8 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -115,5 +119,5 @@
         android:drawablePadding="10dp"
         android:gravity="center_horizontal"
         android:singleLine="true"
-        android:text="@string/login_with_phone"/>
+        android:text="@string/login_with_phone" />
 </LinearLayout>

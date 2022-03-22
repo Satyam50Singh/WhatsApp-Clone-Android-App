@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/grayBackground"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".ui.activities.HomeActivity">
