@@ -72,7 +72,6 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginBottom="4dp"
-        android:src="@drawable/ic_fb_love"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tv_receiver_time"
         app:layout_constraintEnd_toEndOf="@+id/tv_receiver_time"

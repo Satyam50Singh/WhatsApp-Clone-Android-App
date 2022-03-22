@@ -16,7 +16,6 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.utils.Constants;
-import com.example.whatsappclone.utils.Utils;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
@@ -169,7 +168,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
             ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
-            if (messageModel.getFeeling() >= 0) {
+            if (messageModel.getFeeling() > -1) {
                 ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
                 ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[messageModel.getFeeling()]);
             } else {
