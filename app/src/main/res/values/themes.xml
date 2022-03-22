@@ -15,6 +15,12 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="tabStyle">@style/AppTheme.TabLayout</item>
         <!-- Customize your theme here. -->
+        <item name="textInputStyle">
+            @style/MyCustomTextInputStyle
+        </item>
+        <item name="editTextStyle">
+            @style/MyCustomEditTextStyle
+        </item>
     </style>
 
     <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
@@ -73,5 +79,18 @@
         <item name="backgroundColor">@color/lightGrey</item>
         <item name="android:textColor">@color/black</item>
         <item name="drawableTint">@color/black</item>
+    </style>
+    <style name="CustomThemeForSignInScreen">
+        <item name="backgroundColor">@color/lightGrey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="boxStrokeColor">@color/purple_700</item>
+    </style>
+
+    <style name="MyCustomTextInputStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/purple_500</item>
+    </style>
+
+    <style name="MyCustomEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

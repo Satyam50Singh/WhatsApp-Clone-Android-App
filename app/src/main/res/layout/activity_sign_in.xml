@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGrey"
     android:gravity="center"
+    android:theme="@style/CustomThemeForSignInScreen"
     android:orientation="vertical"
     android:padding="15dp"
     tools:context=".ui.activities.SignInActivity">
@@ -72,7 +72,7 @@
 
         <View
             android:id="@+id/divider"
-            android:layout_width="170dp"
+            android:layout_width="166dp"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
@@ -83,7 +83,6 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="Or"
-            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <View
