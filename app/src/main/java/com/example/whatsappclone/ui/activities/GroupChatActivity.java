@@ -55,7 +55,7 @@ public class GroupChatActivity extends AppCompatActivity {
         LinearLayout llSentBtnGC = findViewById(R.id.ll_send_btn_gc);
         etMessageGC.requestFocus();
 
-        ivBackArrowGC.setOnClickListener(view -> startActivity(new Intent(GroupChatActivity.this, MainActivity.class)));
+        ivBackArrowGC.setOnClickListener(view -> finish());
 
         loadGroupChatMessages();
         loadGroupChatUsers();

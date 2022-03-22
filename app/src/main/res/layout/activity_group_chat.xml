@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/chatbackground"
     android:orientation="vertical"
     tools:context=".ui.activities.GroupChatActivity">
 
@@ -13,7 +12,8 @@
         android:id="@+id/toolbar_gc"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white"
         android:minHeight="?attr/actionBarSize">
 
         <LinearLayout
@@ -34,6 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="Group Chat "
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="247dp" />
 
@@ -45,12 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear_layout_gc"
-        android:layout_below="@+id/toolbar_gc" />
+        android:layout_below="@+id/toolbar_gc"
+        android:background="@color/chatbackground" />
 
     <LinearLayout
         android:id="@+id/linear_layout_gc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/chatbackground"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 

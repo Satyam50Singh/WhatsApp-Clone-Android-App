@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
+    android:background="@color/chatbackground"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,6 +62,7 @@
             android:maxHeight="450dp"
             android:minWidth="50dp"
             android:text="TextViewTextViewTextViewTextView"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/tv_sender_time"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintHorizontal_bias="0.079"
@@ -73,6 +75,7 @@
             android:layout_marginEnd="12dp"
             android:inputType="textNoSuggestions|time"
             android:text="TextView"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline3" />

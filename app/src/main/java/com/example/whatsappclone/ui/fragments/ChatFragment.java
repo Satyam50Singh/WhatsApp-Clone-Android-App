@@ -100,7 +100,7 @@ public class ChatFragment extends Fragment {
     }
 
     public void searchUser(String s) {
-        if (s != null || s.length() > 0) {
+        if (s != null && s.length() > 0) {
             userListAdapter.getFilter().filter(s);
         }
     }

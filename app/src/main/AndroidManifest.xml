@@ -28,8 +28,7 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false"
-            android:label="@string/profile_setting"
-            android:parentActivityName=".ui.activities.MainActivity" />
+            android:label="@string/profile_setting"/>
         <activity
             android:name=".ui.activities.ViewProfilePictureActivity"
             android:exported="false" />
