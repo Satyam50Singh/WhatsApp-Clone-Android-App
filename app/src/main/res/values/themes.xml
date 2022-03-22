@@ -68,4 +68,10 @@
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/drawable_round_bottom_sheet</item>
     </style>
+
+    <style name="CustomThemeForHomeScreen">
+        <item name="backgroundColor">@color/lightGrey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="drawableTint">@color/black</item>
+    </style>
 </resources>

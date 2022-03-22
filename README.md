@@ -95,3 +95,5 @@
 - Animations Added
 - Copy Message In ClipBoard in Chats
 - Sorting Users List in Ascending and Descending order
+- Shimmer Effect
+- Theming 
