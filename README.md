@@ -96,4 +96,6 @@
 - Copy Message In ClipBoard in Chats
 - Sorting Users List in Ascending and Descending order
 - Shimmer Effect
-- Theming 
+- Theming
+
+### Date of Completion : Wednesday, 23 March 2022
