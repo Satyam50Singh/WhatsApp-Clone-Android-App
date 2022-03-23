@@ -8,15 +8,10 @@
     <color name="colorPrimary">#0b6156</color>
     <color name="colorPrimaryDark">#095049</color>
     <color name="lightGrey">#EDEDED</color>
-    <color name="whatsAppColor">#0b6156</color>
     <color name="red">#9F0B0B</color>
-    <color name="chat_background">#8BC34A</color>
-    <color name="fb_color">#3c5793</color>
     <color name="lightgreen">#e5ffcc</color>
     <color name="grayBackground">#BCBCBC</color>
     <color name="chatbackground">#AAAAAA</color>
     <color name="darkGray">#888888</color>
-    <color name="login_with_phone">#4E4C4C</color>
-    <color name="transparent_black">#66000000</color>
 
 </resources>

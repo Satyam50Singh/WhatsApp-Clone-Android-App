@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">WhatsApp Clone</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="whatsapp_splash_logo">whatsapp_splash_logo</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
@@ -10,22 +9,14 @@
     <string name="enter_your_password">Enter Your Password :</string>
     <string name="already_have_an_account">Already Have an Account ?</string>
     <string name="sign_up">Sign Up</string>
-    <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="create_an_new_account">Create An new Account </string>
     <string name="sign_in">Sign In</string>
-    <string name="developer_satyam_singh">Developer :: Satyam Singh</string>
     <string name="chats_tab">CHATS</string>
     <string name="status_tab">STATUS</string>
     <string name="calls_tab">CALLS</string>
     <string name="action_group_chat">Group Chat</string>
-    <string name="action_new_broadcast">New Broadcast</string>
-    <string name="action_linked_devices">Linked Devices</string>
     <string name="action_starred_messages">Starred messages</string>
-    <string name="action_payments">Payments</string>
-    <string name="action_debit_card">Debit Card</string>
-    <string name="action_credit_card">Credit Card</string>
-    <string name="action_net_banking">Net Banking</string>
     <string name="please_wait">Please Wait</string>
     <string name="email_required">Email Required!</string>
     <string name="invalid_email">Invalid Email!</string>
@@ -46,10 +37,8 @@
     <string name="logout_successfully">logout Successfully</string>
     <string name="success">Success</string>
     <string name="verification_email_sent">Verification Email has been sent</string>
-    <string name="email_not_verified">Your email is not verified</string>
     <string name="no_record_found">No Records Found</string>
     <string name="you_are_currently_offline">You are currently offline!</string>
-    <string name="last_message">last message</string>
     <string name="userId">userId</string>
     <string name="username">username</string>
     <string name="status">status</string>
@@ -76,7 +65,6 @@
     <string name="receiver_id">receiverId</string>
     <string name="receiver_name">receiverName</string>
     <string name="profile_picture_removed">Profile Picture Removed</string>
-    <string name="profile_picture_updated">Profile Picture Updated</string>
     <string name="SimpleDateFormat">HH:mm</string>
     <string name="no_internet_tab">No Internet Connection</string>
     <string name="try_these_steps_to_get_back_online">Try these Steps to get back online</string>
@@ -92,7 +80,6 @@
     <string name="country_code">+91</string>
     <string name="enter_valid_number">Enter Valid Number</string>
     <string name="verify_otp">Verify OTP</string>
-    <string name="please_enter_otp">Please Enter OTP</string>
     <string name="please_check_connection">Please Check Connection</string>
     <string name="incorrect_otp">Incorrect OTP</string>
     <string name="verification_successful">Verification successful</string>
@@ -120,7 +107,6 @@
     <string name="your_full_name">Your Full Name*</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
-    <string name="restart_your_app">Restart Your App!</string>
     <string name="connection_status_failed">Connection Status :false</string>
     <string name="profile_updated">Profile Updated</string>
     <string name="uploading">Uploading</string>
@@ -128,7 +114,5 @@
     <string name="copy">Copy</string>
     <string name="star">Star</string>
     <string name="sort">Sort</string>
-    <string name="ascending_order">Ascending Order</string>
-    <string name="descending_order">Descending Order</string>
     <string name="select_sort_order">Select Sort Order :</string>
 </resources>
