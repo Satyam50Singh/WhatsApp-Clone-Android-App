@@ -59,43 +59,47 @@ public class GroupChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MessageModel messageModel = localDataSet.get(position);
-        holder.itemView.setOnLongClickListener(view -> {
-            new AlertDialog.Builder(context)
-                    .setTitle(R.string.delete)
-                    .setMessage(R.string.delete_message)
-                    .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-                        firebaseDatabase.getReference()
-                                .child(Constants.GROUP_CHAT_COLLECTION_NAME)
-                                .child(messageModel.getMessageId())
-                                .removeValue()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Utils.showToastMessage(context, context.getString(R.string.message_deleted_successfully));
-                                    }
-                                });
-                    })
-                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                    .show();
-            return false;
-        });
-        Date date = new Date(messageModel.getMessageTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
-        String messageTime = dateFormat.format(date);
-        if (holder.getClass() == GroupChatAdapter.SenderViewHolder.class) {
-            ((GroupChatAdapter.SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
-            ((GroupChatAdapter.SenderViewHolder) holder).tvSenderTime.setText(messageTime);
-        } else {
-            ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
-            ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
-            for (int chatUserCounter = 0; chatUserCounter < groupChatUsers.size(); chatUserCounter++) {
-                if (messageModel.getUserId().equals(groupChatUsers.get(chatUserCounter).getUserId())) {
-                    ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(chatUserCounter).getUsername());
-                    break;
+        try {
+            MessageModel messageModel = localDataSet.get(position);
+            holder.itemView.setOnLongClickListener(view -> {
+                new AlertDialog.Builder(context)
+                        .setTitle(R.string.delete)
+                        .setMessage(R.string.delete_message)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+                            firebaseDatabase.getReference()
+                                    .child(Constants.GROUP_CHAT_COLLECTION_NAME)
+                                    .child(messageModel.getMessageId())
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Utils.showToastMessage(context, context.getString(R.string.message_deleted_successfully));
+                                        }
+                                    });
+                        })
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                        .show();
+                return false;
+            });
+            Date date = new Date(messageModel.getMessageTime());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
+            String messageTime = dateFormat.format(date);
+            if (holder.getClass() == GroupChatAdapter.SenderViewHolder.class) {
+                ((GroupChatAdapter.SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
+                ((GroupChatAdapter.SenderViewHolder) holder).tvSenderTime.setText(messageTime);
+            } else {
+                ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
+                ((GroupChatAdapter.ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
+                for (int chatUserCounter = 0; chatUserCounter < groupChatUsers.size(); chatUserCounter++) {
+                    if (messageModel.getUserId().equals(groupChatUsers.get(chatUserCounter).getUserId())) {
+                        ((ReceiverViewHolder) holder).tvReceiverName.setText(groupChatUsers.get(chatUserCounter).getUsername());
+                        break;
+                    }
                 }
             }
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
         }
     }
 

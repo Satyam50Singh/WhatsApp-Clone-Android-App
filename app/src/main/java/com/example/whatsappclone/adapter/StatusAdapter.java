@@ -43,24 +43,28 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StatusModel userStatus = localDataSet.get(position);
-        holder.tvUserName.setText(userStatus.getName());
+        try {
+            StatusModel userStatus = localDataSet.get(position);
+            holder.tvUserName.setText(userStatus.getName());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.date_format_ymd));
-        Date date = new Date(userStatus.getLastUpdated());
-        String messageTime = dateFormat.format(date);
-        holder.tvStatusTime.setText(messageTime);
-        // for viewing status
-        holder.storyView.setActivityContext((AppCompatActivity) activity);
-        holder.storyView.resetStoryVisits();
-        ArrayList<StoryModel> uris = new ArrayList<>();
-        for (Status status : userStatus.getStatuses()) {
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat(context.getString(R.string.date_and_time_format));
-            Date date1 = new Date(status.getTimeStamp());
-            String messageTime1 = dateFormat1.format(date1);
-            uris.add(new StoryModel(status.getImageUrl(), userStatus.getName(), messageTime1));
+            SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.date_format_ymd));
+            Date date = new Date(userStatus.getLastUpdated());
+            String messageTime = dateFormat.format(date);
+            holder.tvStatusTime.setText(messageTime);
+            // for viewing status
+            holder.storyView.setActivityContext((AppCompatActivity) activity);
+            holder.storyView.resetStoryVisits();
+            ArrayList<StoryModel> uris = new ArrayList<>();
+            for (Status status : userStatus.getStatuses()) {
+                SimpleDateFormat dateFormat1 = new SimpleDateFormat(context.getString(R.string.date_and_time_format));
+                Date date1 = new Date(status.getTimeStamp());
+                String messageTime1 = dateFormat1.format(date1);
+                uris.add(new StoryModel(status.getImageUrl(), userStatus.getName(), messageTime1));
+            }
+            holder.storyView.setImageUris(uris);
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
         }
-        holder.storyView.setImageUris(uris);
     }
 
     @Override

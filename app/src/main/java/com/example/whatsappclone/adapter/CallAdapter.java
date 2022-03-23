@@ -52,32 +52,35 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UserModel user = localDataSet.get(position);
-        holder.tvUserName.setText(user.getUsername());
-        holder.tvPhone.setText(user.getPhone());
-        if (user.getProfilePicture() != null) {
-            if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
-                Picasso.with(context).load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
-            } else {
-                holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
-            }
-        }
-        holder.ivCall.setOnClickListener(view -> {
-            // make call
-            Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91"+user.getPhone()));// Here, thisActivity is the current activity
-            if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
-            } else {
-                //You already have permission
-                try {
-                    context.startActivity(mIntent);
-                } catch (SecurityException e) {
-                    e.printStackTrace();
+        try {
+            UserModel user = localDataSet.get(position);
+            holder.tvUserName.setText(user.getUsername());
+            holder.tvPhone.setText(user.getPhone());
+            if (user.getProfilePicture() != null) {
+                if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
+                    Picasso.with(context).load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
+                } else {
+                    holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
                 }
             }
-        });
+            holder.ivCall.setOnClickListener(view -> {
+                // make call
+                Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91" + user.getPhone()));// Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                } else {
+                    //You already have permission
+                    try {
+                        context.startActivity(mIntent);
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
+        }
     }
-
 
 
     @Override

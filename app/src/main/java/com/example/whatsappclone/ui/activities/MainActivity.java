@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String s) {
                     chatFragment.searchUser(s);
+                    if (s.length() == 0) {
+                        chatFragment.loadUserRecord();
+                    }
                     return false;
                 }
             });
@@ -79,16 +82,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_sort:
                 chatFragment.sortUserList();
                 return true;
-            case R.id.group_chat:
+            case R.id.action_group_chat:
                 startActivity(new Intent(MainActivity.this, GroupChatActivity.class));
                 return true;
-            case R.id.starred_messages:
+            case R.id.action_starred_messages:
                 startActivity(new Intent(MainActivity.this, StarredMessageActivity.class));
                 return true;
-            case R.id.settings:
+            case R.id.action_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
-            case R.id.logout:
+            case R.id.action_logout:
                 userLogOut();
                 return true;
             default:

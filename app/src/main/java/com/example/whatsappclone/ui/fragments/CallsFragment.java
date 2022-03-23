@@ -18,6 +18,7 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.CallAdapter;
 import com.example.whatsappclone.models.UserModel;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -63,34 +64,38 @@ public class CallsFragment extends Fragment {
     }
 
     private void loadUsers() {
-        database.getReference()
-                .child(Constants.USER_COLLECTION_NAME)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        userWithPhoneList.clear();
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            UserModel user = snapshot1.getValue(UserModel.class);
-                            if (!user.getUserId().equals(FirebaseAuth.getInstance().getUid()) && user.getPhone() != null) {
-                                userWithPhoneList.add(user);
+        try {
+            database.getReference()
+                    .child(Constants.USER_COLLECTION_NAME)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userWithPhoneList.clear();
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                UserModel user = snapshot1.getValue(UserModel.class);
+                                if (!user.getUserId().equals(FirebaseAuth.getInstance().getUid()) && user.getPhone() != null) {
+                                    userWithPhoneList.add(user);
+                                }
                             }
-                        }
-                        if (userWithPhoneList.size() <= 0) {
-                            tvNoUserFound.setVisibility(View.VISIBLE);
-                            rcvUserCallList.setVisibility(View.GONE);
-                        } else {
+                            if (userWithPhoneList.size() <= 0) {
+                                tvNoUserFound.setVisibility(View.VISIBLE);
+                                rcvUserCallList.setVisibility(View.GONE);
+                            } else {
+                                rcvUserCallList.setVisibility(View.VISIBLE);
+                                tvNoUserFound.setVisibility(View.GONE);
+                            }
+                            callAdapter.notifyDataSetChanged();
+                            shimmerFrameLayout.hideShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
                             rcvUserCallList.setVisibility(View.VISIBLE);
-                            tvNoUserFound.setVisibility(View.GONE);
                         }
-                        callAdapter.notifyDataSetChanged();
-                        shimmerFrameLayout.hideShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
-                        rcvUserCallList.setVisibility(View.VISIBLE);
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        } catch (Exception e) {
+            Utils.showLog(getString(R.string.error), e.getMessage());
+        }
     }
 }

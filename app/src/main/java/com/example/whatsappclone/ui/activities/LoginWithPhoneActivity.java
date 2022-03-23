@@ -317,8 +317,12 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
         fabEditProfile = dialog.findViewById(R.id.fab_edit_profile_setup);
 
         fabEditProfile.setOnClickListener(view -> {
-            BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
-            bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
+            try {
+                BottomSheetUpdateProfileFragment bottomSheetUpdateProfileFragment = new BottomSheetUpdateProfileFragment();
+                bottomSheetUpdateProfileFragment.show(getSupportFragmentManager(), getString(R.string.bottom_sheet_tag));
+            } catch (Exception e) {
+                Utils.showLog(getString(R.string.error), e.getMessage());
+            }
         });
 
         tvSkip.setOnClickListener(view -> {

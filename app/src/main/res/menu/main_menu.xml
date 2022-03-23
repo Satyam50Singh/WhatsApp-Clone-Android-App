@@ -12,26 +12,22 @@
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_by_alpha"
         android:title="@string/sort"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always" />
 
     <item
-        android:id="@+id/group_chat"
-        android:iconTint="@color/white"
+        android:id="@+id/action_group_chat"
         android:title="@string/action_group_chat"
         app:showAsAction="never" />
     <item
-        android:id="@+id/starred_messages"
-        android:iconTint="@color/white"
+        android:id="@+id/action_starred_messages"
         android:title="@string/action_starred_messages"
         app:showAsAction="never" />
     <item
-        android:id="@+id/settings"
-        android:iconTint="@color/white"
+        android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/logout"
-        android:iconTint="@color/white"
+        android:id="@+id/action_logout"
         android:title="@string/action_log_out"
         app:showAsAction="never" />
 

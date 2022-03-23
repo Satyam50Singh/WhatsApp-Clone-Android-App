@@ -42,23 +42,26 @@ public class StarredMessageAdapter extends RecyclerView.Adapter<StarredMessageAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Utils.showLog("tag", localDataSet.get(position).getMessageText());
-        holder.tvReceiverMessage.setText(localDataSet.get(position).getMessageText());
-        holder.tvSenderName.setText(localDataSet.get(position).getSenderName());
-        holder.tvReceiverName.setText(localDataSet.get(position).getReceiverName());
-        Date date = new Date(localDataSet.get(position).getMessageTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
-        String messageTime = dateFormat.format(date);
-        holder.tvReceiverTime.setText(messageTime);
+        try {
+            holder.tvReceiverMessage.setText(localDataSet.get(position).getMessageText());
+            holder.tvSenderName.setText(localDataSet.get(position).getSenderName());
+            holder.tvReceiverName.setText(localDataSet.get(position).getReceiverName());
+            Date date = new Date(localDataSet.get(position).getMessageTime());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
+            String messageTime = dateFormat.format(date);
+            holder.tvReceiverTime.setText(messageTime);
 
-        holder.ivRemoveStar.setOnClickListener(view -> {
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-            firebaseDatabase.getReference()
-                    .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
-                    .child(localDataSet.get(position).getMessageId())
-                    .removeValue()
-                    .addOnSuccessListener(unused -> Utils.showToastMessage(context, context.getString(R.string.message_removed_successfully)));
-        });
+            holder.ivRemoveStar.setOnClickListener(view -> {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+                firebaseDatabase.getReference()
+                        .child(Constants.STARRED_MESSAGES_COLLECTION_NAME)
+                        .child(localDataSet.get(position).getMessageId())
+                        .removeValue()
+                        .addOnSuccessListener(unused -> Utils.showToastMessage(context, context.getString(R.string.message_removed_successfully)));
+            });
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
+        }
     }
 
     @Override

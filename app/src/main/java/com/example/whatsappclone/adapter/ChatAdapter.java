@@ -16,6 +16,7 @@ import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.MessageModel;
 import com.example.whatsappclone.ui.activities.ChatDetailActivity;
 import com.example.whatsappclone.utils.Constants;
+import com.example.whatsappclone.utils.Utils;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
@@ -71,127 +72,119 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MessageModel messageModel = localDataSet.get(position);
+        try {
+            MessageModel messageModel = localDataSet.get(position);
 
-        // configuration for android reactions
-        int[] reactions = new int[]{
-                R.drawable.ic_fb_like,
-                R.drawable.ic_fb_love,
-                R.drawable.ic_fb_laugh,
-                R.drawable.ic_fb_wow,
-                R.drawable.ic_fb_sad,
-                R.drawable.ic_fb_angry
-        };
-        ReactionsConfig config = new ReactionsConfigBuilder(context)
-                .withReactions(reactions)
-                .build();
+            // configuration for android reactions
+            int[] reactions = new int[]{
+                    R.drawable.ic_fb_like,
+                    R.drawable.ic_fb_love,
+                    R.drawable.ic_fb_laugh,
+                    R.drawable.ic_fb_wow,
+                    R.drawable.ic_fb_sad,
+                    R.drawable.ic_fb_angry
+            };
+            ReactionsConfig config = new ReactionsConfigBuilder(context)
+                    .withReactions(reactions)
+                    .build();
 
-        ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
-            if (holder.getClass() == SenderViewHolder.class) {
-                if (pos >= 0) {
-                    ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
-                    ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
+            ReactionPopup popup = new ReactionPopup(context, config, (pos) -> {
+                if (holder.getClass() == SenderViewHolder.class) {
+                    if (pos >= 0) {
+                        ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[pos]);
+                        ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (pos >= 0) {
+                        ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
+                        ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+                    }
                 }
-            } else {
-                if (pos >= 0) {
-                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[pos]);
-                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
-                }
-            }
-            messageModel.setFeeling(pos);
-            FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
-                    .child(Constants.CHAT_COLLECTION_NAME)
-                    .child(senderRoom)
-                    .child(messageModel.getMessageId())
-                    .setValue(messageModel);
-            FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
-                    .child(Constants.CHAT_COLLECTION_NAME)
-                    .child(receiverRoom)
-                    .child(messageModel.getMessageId())
-                    .setValue(messageModel)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                messageModel.setFeeling(pos);
+                FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
+                        .child(Constants.CHAT_COLLECTION_NAME)
+                        .child(senderRoom)
+                        .child(messageModel.getMessageId())
+                        .setValue(messageModel);
+                FirebaseDatabase.getInstance(Constants.DB_PATH).getReference()
+                        .child(Constants.CHAT_COLLECTION_NAME)
+                        .child(receiverRoom)
+                        .child(messageModel.getMessageId())
+                        .setValue(messageModel)
+                        .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 if (pos >= 0) {
                                     ChatDetailActivity.hideActionMode();
                                 }
                             }
-                        }
-                    });
-            return true; // true is closing popup, false is requesting a new selection
-        });
-
-        // --------------------------------------------------------------------
-
-        Date date = new Date(messageModel.getMessageTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
-        String messageTime = dateFormat.format(date);
-        if (holder.getClass() == SenderViewHolder.class) {
-            if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
-                ((SenderViewHolder) holder).ivSenderImage.setVisibility(View.VISIBLE);
-                ((SenderViewHolder) holder).tvSenderMessage.setVisibility(View.GONE);
-                Picasso.with(context).load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);
-            } else {
-                ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
-            }
-            ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
-            if (messageModel.getFeeling() > -1) {
-                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
-                ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[messageModel.getFeeling()]);
-            } else {
-                ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.GONE);
-            }
-            ((SenderViewHolder) holder).tvSenderMessage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
+                        });
+                return true; // true is closing popup, false is requesting a new selection
             });
-            ((SenderViewHolder) holder).ivSenderImage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
-            });
-        } else {
-            if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
-                ((ReceiverViewHolder) holder).ivReceiverImage.setVisibility(View.VISIBLE);
-                ((ReceiverViewHolder) holder).tvReceiverMessage.setVisibility(View.GONE);
-                Picasso.with(context).load(messageModel.getMessageText()).into(((ReceiverViewHolder) holder).ivReceiverImage);
+
+            // --------------------------------------------------------------------
+
+            Date date = new Date(messageModel.getMessageTime());
+            SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat));
+            String messageTime = dateFormat.format(date);
+            if (holder.getClass() == SenderViewHolder.class) {
+                if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
+                    ((SenderViewHolder) holder).ivSenderImage.setVisibility(View.VISIBLE);
+                    ((SenderViewHolder) holder).tvSenderMessage.setVisibility(View.GONE);
+                    Picasso.with(context).load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);
+                } else {
+                    ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
+                }
+                ((SenderViewHolder) holder).tvSenderTime.setText(messageTime);
+                if (messageModel.getFeeling() > -1) {
+                    ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.VISIBLE);
+                    ((SenderViewHolder) holder).ivSenderFeeling.setImageResource(reactions[messageModel.getFeeling()]);
+                } else {
+                    ((SenderViewHolder) holder).ivSenderFeeling.setVisibility(View.GONE);
+                }
+                ((SenderViewHolder) holder).tvSenderMessage.setOnTouchListener((view, motionEvent) -> {
+                    OpenActionMenu(messageModel);
+                    popup.onTouch(view, motionEvent);
+                    return false;
+                });
+                ((SenderViewHolder) holder).ivSenderImage.setOnTouchListener((view, motionEvent) -> {
+                    OpenActionMenu(messageModel);
+                    // opening reaction
+                    popup.onTouch(view, motionEvent);
+                    return false;
+                });
             } else {
+                if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
+                    ((ReceiverViewHolder) holder).ivReceiverImage.setVisibility(View.VISIBLE);
+                    ((ReceiverViewHolder) holder).tvReceiverMessage.setVisibility(View.GONE);
+                    Picasso.with(context).load(messageModel.getMessageText()).into(((ReceiverViewHolder) holder).ivReceiverImage);
+                } else {
+                    ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
+                }
                 ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
-            }
-            ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
-            ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
-            if (messageModel.getFeeling() > -1) {
-                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
-                ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[messageModel.getFeeling()]);
-            } else {
-                ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
-            }
+                ((ReceiverViewHolder) holder).tvReceiverTime.setText(messageTime);
+                if (messageModel.getFeeling() > -1) {
+                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setImageResource(reactions[messageModel.getFeeling()]);
+                } else {
+                    ((ReceiverViewHolder) holder).ivReceiverFeeling.setVisibility(View.VISIBLE);
+                }
 
-            ((ReceiverViewHolder) holder).tvReceiverMessage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
-            });
+                ((ReceiverViewHolder) holder).tvReceiverMessage.setOnTouchListener((view, motionEvent) -> {
+                    OpenActionMenu(messageModel);
+                    // opening reaction
+                    popup.onTouch(view, motionEvent);
+                    return false;
+                });
 
-            ((ReceiverViewHolder) holder).ivReceiverImage.setOnTouchListener((view, motionEvent) -> {
-                // opening actionbar icons
-                ((ChatDetailActivity) activity).showActionMode();
-                ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
-                // opening reaction
-                popup.onTouch(view, motionEvent);
-                return false;
-            });
+                ((ReceiverViewHolder) holder).ivReceiverImage.setOnTouchListener((view, motionEvent) -> {
+                    OpenActionMenu(messageModel);
+                    // opening reaction
+                    popup.onTouch(view, motionEvent);
+                    return false;
+                });
+            }
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
         }
     }
 
@@ -229,4 +222,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private void OpenActionMenu(MessageModel messageModel) {
+        try {
+            // opening actionbar icons
+            ((ChatDetailActivity) activity).showActionMode();
+            ((ChatDetailActivity) activity).sendMessageDetailMode(messageModel);
+        } catch (Exception e) {
+            Utils.showLog(context.getString(R.string.error), e.getMessage());
+        }
+    }
 }

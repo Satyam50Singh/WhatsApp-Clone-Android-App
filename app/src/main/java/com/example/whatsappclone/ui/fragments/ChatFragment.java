@@ -61,7 +61,7 @@ public class ChatFragment extends Fragment {
     }
 
     // fetching users from firebase
-    private void loadUserRecord() {
+    public void loadUserRecord() {
         try {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
             firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
@@ -128,91 +128,96 @@ public class ChatFragment extends Fragment {
     }
 
     public void sortUserList() {
-        final int[] selectedIndex = new int[1];
-        final String[] sortTypesList = new String[]{"Ascending Order", "Descending Order"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.select_sort_order))
-                .setIcon(R.drawable.ic_sort_by_alpha)
-                .setSingleChoiceItems(sortTypesList, -1, (dialog, whichButton) ->
-                {
-                    selectedIndex[0] = whichButton;
-                })
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int selectedChoiceIndex) {
+        try {
+            final int[] selectedIndex = new int[1];
+            final String[] sortTypesList = new String[]{"Ascending Order", "Descending Order"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(getString(R.string.select_sort_order))
+                    .setIcon(R.drawable.ic_sort_by_alpha)
+                    .setSingleChoiceItems(sortTypesList, -1, (dialog, whichButton) ->
+                    {
+                        selectedIndex[0] = whichButton;
+                    })
+                    .setPositiveButton(R.string.yes, (dialog, selectedChoiceIndex) -> {
                         if (selectedIndex[0] == 0) {
                             loadUserRecordsWithSorting("ASC");
                         } else if (selectedIndex[0] == 1) {
                             loadUserRecordsWithSorting("DESC");
                         }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                })
-                .create();
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    })
+                    .create();
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } catch (Exception e) {
+            Utils.showLog(getString(R.string.error), e.getMessage());
+        }
     }
 
     private void loadUserRecordsWithSorting(String order) {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-        if (order.equals("ASC")) {
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
-                    .orderByChild("username")
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            userList.clear();
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                                userModel.getUserId(dataSnapshot.getKey());
-                                try {
-                                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
-                                        userList.add(userModel);
+        try {
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
+            if (order.equals("ASC")) {
+                firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                        .orderByChild(getString(R.string.username))
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                userList.clear();
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                    userModel.getUserId(dataSnapshot.getKey());
+                                    try {
+                                        if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                            userList.add(userModel);
+                                        }
+                                    } catch (Exception e) {
+                                        Utils.showLog(getString(R.string.error), e.getMessage());
                                     }
-                                } catch (Exception e) {
-                                    Utils.showLog(getString(R.string.error), e.getMessage());
                                 }
+                                userListAdapter.notifyDataSetChanged();
                             }
-                            userListAdapter.notifyDataSetChanged();
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Utils.hideProgressDialog();
-                            Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
-                        }
-                    });
-        } else {
-            firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
-                    .orderByChild("username")
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            userList.clear();
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                                userModel.getUserId(dataSnapshot.getKey());
-                                try {
-                                    if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
-                                        userList.add(userModel);
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Utils.hideProgressDialog();
+                                Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                            }
+                        });
+            } else {
+                firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
+                        .orderByChild(getString(R.string.username))
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                userList.clear();
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                                    userModel.getUserId(dataSnapshot.getKey());
+                                    try {
+                                        if (!dataSnapshot.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                            userList.add(userModel);
+                                        }
+                                    } catch (Exception e) {
+                                        Utils.showLog(getString(R.string.error), e.getMessage());
                                     }
-                                } catch (Exception e) {
-                                    Utils.showLog(getString(R.string.error), e.getMessage());
                                 }
+                                Collections.reverse(userList);
+                                userListAdapter.notifyDataSetChanged();
                             }
-                            Collections.reverse(userList);
-                            userListAdapter.notifyDataSetChanged();
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Utils.hideProgressDialog();
-                            Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Utils.hideProgressDialog();
+                                Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                            }
+                        });
+            }
+        } catch (Exception e) {
+            Utils.showLog(getString(R.string.error), e.getMessage());
         }
-
     }
 }
