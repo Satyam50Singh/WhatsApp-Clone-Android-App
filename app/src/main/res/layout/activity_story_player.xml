@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="@color/colorPrimary"
         android:padding="4dp">
 
         <com.example.whatsappclone.storyview.StoryPlayerProgressView
@@ -25,7 +24,7 @@
             android:layout_height="wrap_content"
             app:gapBetweenProgressBar="2dp"
             app:progressBarHeight="1dp"
-            app:progressBarPrimaryColor="#ffffff"
+            app:progressBarPrimaryColor="@color/white"
             app:progressBarSecondaryColor="#3effffff" />
 
         <TextView
@@ -34,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/progressBarView"
             android:layout_marginStart="8dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/storyUserName"
             android:layout_marginStart="8dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
     </RelativeLayout>

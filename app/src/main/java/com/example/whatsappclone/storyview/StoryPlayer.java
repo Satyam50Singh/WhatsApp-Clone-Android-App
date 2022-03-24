@@ -38,6 +38,7 @@ public class StoryPlayer extends AppCompatActivity implements StoryPlayerProgres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_player);
+        getSupportActionBar().hide();
         storyPlayerProgressView = findViewById(R.id.progressBarView);
         name = findViewById(R.id.storyUserName);
         time = findViewById(R.id.storyTime);
