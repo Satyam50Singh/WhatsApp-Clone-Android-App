@@ -216,11 +216,11 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     private void setUserDetailsOnToolbar() {
-        Picasso.with(getApplicationContext()).load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
+        Picasso.get().load(profileImage).placeholder(R.drawable.man_toolbar).into(civProfileImage);
         if (profileImage != null && !profileImage.startsWith(getString(R.string.http))) {
             civProfileImage.setImageBitmap(decodeImage(profileImage));
         } else {
-            Picasso.with(ChatDetailActivity.this).load(profileImage).placeholder(R.drawable.man).into(civProfileImage);
+            Picasso.get().load(profileImage).placeholder(R.drawable.man).into(civProfileImage);
         }
         tvReceiverName.setText(username);
     }

@@ -14,10 +14,6 @@ import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
-    // controls
-    private Button btnGoToSignIn, btnGoToSignUp;
-    private TextView tvLoginWithPhone;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +25,10 @@ public class HomeActivity extends AppCompatActivity {
 
     // this method will set references of all the controls.
     private void init() {
-        btnGoToSignIn = findViewById(R.id.btn_go_to_sign_in_activity);
-        btnGoToSignUp = findViewById(R.id.btn_go_to_sign_up_activity);
-        tvLoginWithPhone = findViewById(R.id.tv_login_with_phone_home);
+        // controls
+        Button btnGoToSignIn = findViewById(R.id.btn_go_to_sign_in_activity);
+        Button btnGoToSignUp = findViewById(R.id.btn_go_to_sign_up_activity);
+        TextView tvLoginWithPhone = findViewById(R.id.tv_login_with_phone_home);
         btnGoToSignUp.setOnClickListener(view -> {
             startActivity(new Intent(HomeActivity.this, SignUpActivity.class));
             finish();

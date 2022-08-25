@@ -35,7 +35,7 @@ public class ViewProfilePictureActivity extends AppCompatActivity {
         if (intent.getStringExtra(getString(R.string.profileImage)) != null && !intent.getStringExtra(getString(R.string.profileImage)).startsWith(getString(R.string.http))) {
             ivViewProfilePicture.setImageBitmap(decodeImage(intent.getStringExtra(getString(R.string.profileImage))));
         } else {
-            Picasso.with(this).load(intent.getStringExtra(getString(R.string.profileImage))).placeholder(R.drawable.man).into(ivViewProfilePicture);
+            Picasso.get().load(intent.getStringExtra(getString(R.string.profileImage))).placeholder(R.drawable.man).into(ivViewProfilePicture);
         }
     }
 

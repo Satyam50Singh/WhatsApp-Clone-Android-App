@@ -70,7 +70,7 @@ public class ReceiverUserProfile extends AppCompatActivity {
                                     if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
                                         civReceiverProfilePicture.setImageBitmap(decodeImage(userModel.getProfilePicture()));
                                     } else {
-                                        Picasso.with(ReceiverUserProfile.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civReceiverProfilePicture);
+                                        Picasso.get().load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civReceiverProfilePicture);
                                     }
                                 }
                             } catch (Exception e) {

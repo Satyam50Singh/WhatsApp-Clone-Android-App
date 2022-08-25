@@ -58,7 +58,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             holder.tvPhone.setText(user.getPhone());
             if (user.getProfilePicture() != null) {
                 if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
-                    Picasso.with(context).load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
+                    Picasso.get().load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
                 } else {
                     holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
                 }

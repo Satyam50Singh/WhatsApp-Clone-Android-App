@@ -77,10 +77,11 @@
 
         <View
             android:id="@+id/divider"
-            android:layout_width="166dp"
+            android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:layout_weight="1"
             android:background="?android:attr/listDivider" />
 
         <TextView
@@ -96,9 +97,9 @@
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:layout_weight="1"
             android:background="?android:attr/listDivider" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"

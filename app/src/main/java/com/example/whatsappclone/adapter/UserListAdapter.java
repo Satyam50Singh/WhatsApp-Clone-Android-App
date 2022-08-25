@@ -65,7 +65,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
                 holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
             } else {
-                Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
+                Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
             }
             holder.tvUsername.setText(localDataSet.get(position).getUsername());
             // showing last message & message Time
@@ -112,7 +112,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
                     imageView.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
                 } else {
-                    Picasso.with(context).load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
+                    Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
                 }
                 textView.setText(localDataSet.get(position).getUsername());
 

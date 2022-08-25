@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
                             if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
                                 civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
                             } else {
-                                Picasso.with(SettingsActivity.this).load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+                                Picasso.get().load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
                             }
                         }
                     }

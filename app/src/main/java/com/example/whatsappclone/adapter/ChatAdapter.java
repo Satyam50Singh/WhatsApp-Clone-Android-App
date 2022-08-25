@@ -130,7 +130,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
                     ((SenderViewHolder) holder).ivSenderImage.setVisibility(View.VISIBLE);
                     ((SenderViewHolder) holder).tvSenderMessage.setVisibility(View.GONE);
-                    Picasso.with(context).load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);
+                    Picasso.get().load(messageModel.getMessageText()).into(((SenderViewHolder) holder).ivSenderImage);
                 } else {
                     ((SenderViewHolder) holder).tvSenderMessage.setText(messageModel.getMessageText());
                 }
@@ -156,7 +156,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 if (messageModel.getMessageText().startsWith(context.getString(R.string.firebase_url))) {
                     ((ReceiverViewHolder) holder).ivReceiverImage.setVisibility(View.VISIBLE);
                     ((ReceiverViewHolder) holder).tvReceiverMessage.setVisibility(View.GONE);
-                    Picasso.with(context).load(messageModel.getMessageText()).into(((ReceiverViewHolder) holder).ivReceiverImage);
+                    Picasso.get().load(messageModel.getMessageText()).into(((ReceiverViewHolder) holder).ivReceiverImage);
                 } else {
                     ((ReceiverViewHolder) holder).tvReceiverMessage.setText(messageModel.getMessageText());
                 }
