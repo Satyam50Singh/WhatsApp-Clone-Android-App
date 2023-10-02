@@ -32,10 +32,10 @@ import java.util.Date;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
-    private Context context;
-    private ArrayList<MessageModel> localDataSet;
-    private Activity activity;
-    private String senderRoom, receiverRoom, receiverId;
+    private final Context context;
+    private final ArrayList<MessageModel> localDataSet;
+    private final Activity activity;
+    private final String senderRoom, receiverRoom, receiverId;
 
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;

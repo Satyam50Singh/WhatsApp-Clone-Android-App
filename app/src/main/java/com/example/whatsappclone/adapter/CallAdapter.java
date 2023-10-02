@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
-import com.example.whatsappclone.ui.fragments.CallsFragment;
-import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +56,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             holder.tvPhone.setText(user.getPhone());
             if (user.getProfilePicture() != null) {
                 if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
-                    Picasso.get().load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
+                    Picasso.get().load(user.getProfilePicture()).placeholder(R.drawable.user_placeholder).into(holder.civProfileImage);
                 } else {
                     holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
                 }

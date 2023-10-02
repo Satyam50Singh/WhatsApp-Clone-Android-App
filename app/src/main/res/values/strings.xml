@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WhatsApp Clone</string>
+    <string name="app_name">ChatLinker</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="whatsapp_splash_logo">whatsapp_splash_logo</string>
     <string name="action_search">Search</string>

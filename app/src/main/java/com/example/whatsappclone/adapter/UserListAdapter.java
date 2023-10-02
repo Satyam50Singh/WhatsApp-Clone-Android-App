@@ -61,15 +61,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            int pos = position;
-            if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
-                holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
+            if (localDataSet.get(position).getProfilePicture() != null && !localDataSet.get(position).getProfilePicture().startsWith(context.getString(R.string.http))) {
+                holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(position).getProfilePicture()));
             } else {
-                Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
+                Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.user_placeholder).into(holder.civProfileImage);
             }
             holder.tvUsername.setText(localDataSet.get(position).getUsername());
             // showing last message & message Time
-            String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(pos).getUserId();
+            String senderRoom = FirebaseAuth.getInstance().getUid() + localDataSet.get(position).getUserId();
             firebaseDatabase.getReference()
                     .child(Constants.CHAT_COLLECTION_NAME)
                     .child(senderRoom)
@@ -109,8 +108,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 dialog.setContentView(R.layout.custom_profile_dialog);
                 ImageView imageView = dialog.findViewById(R.id.iv_dialog_profile);
                 TextView textView = dialog.findViewById(R.id.tv_dialog_username);
-                if (localDataSet.get(pos).getProfilePicture() != null && !localDataSet.get(pos).getProfilePicture().startsWith(context.getString(R.string.http))) {
-                    imageView.setImageBitmap(decodeImage(localDataSet.get(pos).getProfilePicture()));
+                if (localDataSet.get(position).getProfilePicture() != null && !localDataSet.get(position).getProfilePicture().startsWith(context.getString(R.string.http))) {
+                    imageView.setImageBitmap(decodeImage(localDataSet.get(position).getProfilePicture()));
                 } else {
                     Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(imageView);
                 }
@@ -118,8 +117,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
                 imageView.setOnClickListener(view1 -> {
                     Intent intent = new Intent(context, ViewProfilePictureActivity.class);
-                    intent.putExtra(context.getResources().getString(R.string.username), localDataSet.get(pos).getUsername());
-                    intent.putExtra(context.getResources().getString(R.string.profileImage), localDataSet.get(pos).getProfilePicture());
+                    intent.putExtra(context.getResources().getString(R.string.username), localDataSet.get(position).getUsername());
+                    intent.putExtra(context.getResources().getString(R.string.profileImage), localDataSet.get(position).getProfilePicture());
                     context.startActivity(intent);
                 });
                 dialog.show();

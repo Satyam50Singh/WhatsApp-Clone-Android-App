@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         // checking is internet available or not.
         boolean connStatus = NetworkManager.checkNetworkConnectedStatus(SplashScreen.this);
-        if(!connStatus) {
+        if (!connStatus) {
             Utils.snackBar(constraintLayout, getString(R.string.you_are_currently_offline));
         }
         new Handler().postDelayed(() -> {

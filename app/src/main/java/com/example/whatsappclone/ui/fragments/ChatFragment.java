@@ -1,8 +1,12 @@
 package com.example.whatsappclone.ui.fragments;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -10,15 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.UserListAdapter;
 import com.example.whatsappclone.models.UserModel;
-import com.example.whatsappclone.ui.activities.LoginWithPhoneActivity;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -29,7 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class ChatFragment extends Fragment {
@@ -38,6 +35,8 @@ public class ChatFragment extends Fragment {
     private UserListAdapter userListAdapter;
     private ShimmerFrameLayout shimmerFrameLayout;
     private RecyclerView rcvUserList;
+
+    private static final String TAG = "ChatFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +65,7 @@ public class ChatFragment extends Fragment {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
             firebaseDatabase.getReference().child(Constants.USER_COLLECTION_NAME)
                     .addValueEventListener(new ValueEventListener() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             userList.clear();
@@ -90,7 +90,10 @@ public class ChatFragment extends Fragment {
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             Utils.hideProgressDialog();
+                            shimmerFrameLayout.hideShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
                             Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                            Log.e(TAG, "onCancelled: "  + error.getMessage() );
                         }
                     });
         } catch (Exception e) {
