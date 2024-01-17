@@ -117,4 +117,5 @@
     <string name="select_sort_order">Select Sort Order :</string>
     <string name="sample_messages">Sample Messages</string>
     <string name="message_time">Message Time</string>
+    <string name="please_enter_valid_otp">Please enter valid OTP</string>
 </resources>

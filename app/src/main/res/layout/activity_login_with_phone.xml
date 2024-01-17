@@ -15,7 +15,7 @@
         android:layout_width="132dp"
         android:layout_height="132dp"
         android:layout_marginTop="84dp"
-        android:src="@drawable/whatsapp"
+        android:src="@drawable/chatlinker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

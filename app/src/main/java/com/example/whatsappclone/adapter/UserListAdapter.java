@@ -64,7 +64,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             if (localDataSet.get(position).getProfilePicture() != null && !localDataSet.get(position).getProfilePicture().startsWith(context.getString(R.string.http))) {
                 holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(position).getProfilePicture()));
             } else {
-                Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.user_placeholder).into(holder.civProfileImage);
+                Picasso.get().load(localDataSet.get(position).getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
             }
             holder.tvUsername.setText(localDataSet.get(position).getUsername());
             // showing last message & message Time

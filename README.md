@@ -106,3 +106,5 @@
 
 ## Links Used :
 # Logos :- https://www.freelogodesign.org/manager
+
+## For Resolving SMS related issue : Please add SHA-1 & SHA-256 in firebase project.

@@ -23,7 +23,7 @@
             android:id="@+id/civ_profile_image"
             android:layout_width="@dimen/dimen_56dp"
             android:layout_height="@dimen/dimen_56dp"
-            android:src="@drawable/user_placeholder"
+            android:src="@drawable/man_toolbar"
             app:civ_border_color="@color/darkGray"
             app:civ_border_width="@dimen/dimen_1dp" />
 
