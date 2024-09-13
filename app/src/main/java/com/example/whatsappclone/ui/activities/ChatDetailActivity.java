@@ -53,6 +53,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -473,7 +474,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
-                .child(FirebaseAuth.getInstance().getUid())
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .setValue(getString(R.string.online));
     }
 
@@ -483,7 +484,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
         firebaseDatabase.getReference()
                 .child(Constants.PRESENCE_COLLECTION_NAME)
-                .child(FirebaseAuth.getInstance().getUid())
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .setValue(getString(R.string.offline));
     }
 }

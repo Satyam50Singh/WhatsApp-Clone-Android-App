@@ -1,18 +1,16 @@
 package com.example.whatsappclone.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.CallAdapter;
@@ -35,8 +33,9 @@ public class CallsFragment extends Fragment {
     private ArrayList<UserModel> userWithPhoneList = new ArrayList<>();
     private TextView tvNoUserFound;
     private ShimmerFrameLayout shimmerFrameLayout;
-
     private FirebaseDatabase database;
+
+    private static final String TAG = "CallsFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +91,10 @@ public class CallsFragment extends Fragment {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
+                            shimmerFrameLayout.hideShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
+                            rcvUserCallList.setVisibility(View.GONE);
+                            Log.e(TAG, "onCancelled: "  + error.getMessage() );
                         }
                     });
         } catch (Exception e) {

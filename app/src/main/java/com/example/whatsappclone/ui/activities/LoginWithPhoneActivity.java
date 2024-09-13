@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.whatsappclone.R;
@@ -41,9 +42,11 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.internal.Util;
 
 public class LoginWithPhoneActivity extends AppCompatActivity implements BottomSheetUpdateProfileFragment.BottomSheetListener {
 
@@ -261,7 +264,13 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
     }
 
     private void verifyOTP() {
-        if (edtOTP1.getText().toString().isEmpty() || edtOTP2.getText().toString().isEmpty() || edtOTP3.getText().toString().isEmpty() || edtOTP4.getText().toString().isEmpty() || edtOTP5.getText().toString().isEmpty() || edtOTP6.getText().toString().isEmpty()) {
+        if (Objects.requireNonNull(edtOTP1.getText()).toString().isEmpty() ||
+                Objects.requireNonNull(edtOTP2.getText()).toString().isEmpty() ||
+                Objects.requireNonNull(edtOTP3.getText()).toString().isEmpty() ||
+                Objects.requireNonNull(edtOTP4.getText()).toString().isEmpty() ||
+                Objects.requireNonNull(edtOTP5.getText()).toString().isEmpty() ||
+                Objects.requireNonNull(edtOTP6.getText()).toString().isEmpty()) {
+            Utils.showToastMessage(this, getString(R.string.please_enter_valid_otp));
             return;
         }
         String OTPValue = edtOTP1.getText().toString().trim() +

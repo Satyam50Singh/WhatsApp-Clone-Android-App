@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayBackground"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="18dp"
@@ -12,10 +11,10 @@
 
 
     <ImageView
-        android:layout_width="110dp"
-        android:layout_height="105dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_marginBottom="50dp"
-        app:srcCompat="@drawable/whatsapp" />
+        app:srcCompat="@drawable/app_logo" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

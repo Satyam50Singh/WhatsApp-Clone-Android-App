@@ -1,38 +1,30 @@
 package com.example.whatsappclone.ui.fragments;
 
-import static com.example.whatsappclone.utils.Utils.encodeImage;
-import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.StatusAdapter;
 import com.example.whatsappclone.models.Status;
 import com.example.whatsappclone.models.StatusModel;
 import com.example.whatsappclone.models.UserModel;
-import com.example.whatsappclone.storyview.StoryModel;
-import com.example.whatsappclone.storyview.StoryView;
 import com.example.whatsappclone.utils.Constants;
 import com.example.whatsappclone.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,43 +86,46 @@ public class StatusFragment extends Fragment {
     private void loadStatusData() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
         firebaseDatabase.getReference().child(Constants.USER_STATUS_COLLECTION_NAME)
-        .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userStatuses.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    StatusModel status = new StatusModel();
-                    status.setName(dataSnapshot.child("name").getValue(String.class));
-                    status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
-                    status.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(Long.class));
-                    ArrayList<Status> statuses = new ArrayList<>();
-                    statuses.clear();
-                    for (DataSnapshot statusSnapshot : dataSnapshot.child(Constants.STATUSES_COLLECTION_NAME).getChildren()) {
-                        Status status1 = statusSnapshot.getValue(Status.class);
-                        statuses.add(status1);
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        userStatuses.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            StatusModel status = new StatusModel();
+                            status.setName(dataSnapshot.child("name").getValue(String.class));
+                            status.setProfileImage(dataSnapshot.child("profileImage").getValue(String.class));
+                            status.setLastUpdated(dataSnapshot.child("lastUpdated").getValue(Long.class));
+                            ArrayList<Status> statuses = new ArrayList<>();
+                            for (DataSnapshot statusSnapshot : dataSnapshot.child(Constants.STATUSES_COLLECTION_NAME).getChildren()) {
+                                Status status1 = statusSnapshot.getValue(Status.class);
+                                statuses.add(status1);
+                            }
+                            status.setStatuses(statuses);
+                            userStatuses.add(status);
+                        }
+                        if (userStatuses.size() == 0) {
+                            tvNoRecordFound.setVisibility(View.VISIBLE);
+                            rcvStatusLists.setVisibility(View.GONE);
+                        } else {
+                            rcvStatusLists.setVisibility(View.VISIBLE);
+                            tvNoRecordFound.setVisibility(View.GONE);
+                        }
+                        statusAdapter.notifyDataSetChanged();
+                        shimmerFrameLayout.hideShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        rcvStatusLists.setVisibility(View.VISIBLE);
+                        fabAddStatus.setVisibility(View.VISIBLE);
                     }
-                    status.setStatuses(statuses);
-                    userStatuses.add(status);
-                }
-                if (userStatuses.size() <= 0) {
-                    tvNoRecordFound.setVisibility(View.VISIBLE);
-                    rcvStatusLists.setVisibility(View.GONE);
-                } else {
-                    rcvStatusLists.setVisibility(View.VISIBLE);
-                    tvNoRecordFound.setVisibility(View.GONE);
-                }
-                statusAdapter.notifyDataSetChanged();
-                shimmerFrameLayout.hideShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                rcvStatusLists.setVisibility(View.VISIBLE);
-                fabAddStatus.setVisibility(View.VISIBLE);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        shimmerFrameLayout.hideShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        rcvStatusLists.setVisibility(View.GONE);
+                        Utils.showToastMessage(getContext(), getString(R.string.no_record_found));
+                    }
+                });
     }
 
     @Override
@@ -145,8 +139,8 @@ public class StatusFragment extends Fragment {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             Date date = new Date();
             StorageReference storageReference = storage.getReference()
-                                                        .child("Status")
-                                                        .child(date.getTime() + "");
+                    .child("Status")
+                    .child(date.getTime() + "");
 
             // fetching current user detail
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);

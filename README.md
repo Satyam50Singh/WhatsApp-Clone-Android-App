@@ -101,3 +101,10 @@
 ### Date of Completion : Wednesday, 23 March 2022
 
 ## AGP, Libraries & Version Upgrade - 01 July 2023
+
+### Changes Made for College Submission :
+
+## Links Used :
+# Logos :- https://www.freelogodesign.org/manager
+
+## For Resolving SMS related issue : Please add SHA-1 & SHA-256 in firebase project.
