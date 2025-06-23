@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grayBackground"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
 
@@ -108,8 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".9"
                 android:backgroundTint="@color/white"
-                android:textColor="@color/purple_700"
                 android:text="Verification Status : "
+                android:textColor="@color/purple_700"
                 android:textSize="20sp" />
 
             <TextView
