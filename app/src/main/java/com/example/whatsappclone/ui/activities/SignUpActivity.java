@@ -21,12 +21,8 @@ import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private TextView tvAlreadyHaveAccount, tvLoginWithForm;
-    private Button btnSignUp;
     private TextInputEditText etUsername, etEmail, etPassword;
-
     private String username, email, password;
-
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
@@ -42,12 +38,12 @@ public class SignUpActivity extends AppCompatActivity {
     private void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.DB_PATH);
-        tvAlreadyHaveAccount = findViewById(R.id.tv_already_have_account);
-        btnSignUp = findViewById(R.id.btn_sign_up);
+        TextView tvAlreadyHaveAccount = findViewById(R.id.tv_already_have_account);
+        Button btnSignUp = findViewById(R.id.btn_sign_up);
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        tvLoginWithForm = findViewById(R.id.tv_login_with_phone_sign_up);
+        TextView tvLoginWithForm = findViewById(R.id.tv_login_with_phone_sign_up);
         tvAlreadyHaveAccount.setOnClickListener(view -> startActivity(new Intent(SignUpActivity.this, SignInActivity.class)));
         btnSignUp.setOnClickListener(view -> userSignUp());
         tvLoginWithForm.setOnClickListener(view -> Auth.navigateToLoginWithPhoneActivity(SignUpActivity.this));
