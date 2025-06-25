@@ -4,6 +4,7 @@ import static com.example.whatsappclone.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUE
 import static com.example.whatsappclone.utils.Utils.PICK_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.whatsappclone.utils.Utils.encodeImage;
 import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
+import static com.example.whatsappclone.utils.Utils.showToastMessage;
 import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
 import static com.example.whatsappclone.utils.Utils.takePictureFromGallery;
 
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,9 +37,11 @@ import com.example.whatsappclone.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -54,17 +58,23 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
     private Button btnLogin;
     private TextView tvResend, tvHeading, tvDescription, tvDescription2;
     private LinearLayout llOTP;
-    private String backendOTPValue;
     private FirebaseDatabase firebaseDatabase;
     private Bitmap selectedBitmap;
     CircleImageView civProfileImage;
     private String profileEncodedString;
 
+    private String mVerificationId;
+    private PhoneAuthProvider.ForceResendingToken token;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_with_phone);
-        getSupportActionBar().hide();
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         init();
     }
 
@@ -102,8 +112,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
                     }
                     etMobileNo.setEnabled(false);
                     edtOTP1.requestFocus();
-                    // login with phone number
-                    loginWithPhoneNumber(mobileNumber);
+                    verifyMobileNumber(mobileNumber);
 
                     llOTP.setVisibility(View.VISIBLE);
                     btnLogin.setText(R.string.verify_otp);
@@ -119,9 +128,79 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
             }
         });
         tvResend.setOnClickListener(view -> {
-            loginWithPhoneNumber(etMobileNo.getText().toString().trim());
+            resendOtp(etMobileNo.getText().toString().trim());
             verifyOTP();
         });
+    }
+
+    private void resendOtp(String phoneNumber) {
+        if (token != null) {
+            PhoneAuthOptions options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                    .setPhoneNumber("+91" + phoneNumber)
+                    .setTimeout(60L, TimeUnit.SECONDS)
+                    .setActivity(this)
+                    .setCallbacks(callbacks)
+                    .setForceResendingToken(token) // important
+                    .build();
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        } else {
+            showToastMessage(this, "Please try again.");
+        }
+    }
+
+    private void verifyMobileNumber(String mobileNumber) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder()
+                .setPhoneNumber("+91" + mobileNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(callbacks)
+                .build();
+
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
+            new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                @Override
+                public void onVerificationCompleted(PhoneAuthCredential credential) {
+                    // Auto-verification or instant verification
+                    signInWithPhoneAuthCredential(credential);
+                }
+
+                @Override
+                public void onVerificationFailed(FirebaseException e) {
+                    Log.e("Auth", "Verification Failed: " + e.getMessage());
+                }
+
+                @Override
+                public void onCodeSent(String verificationId,
+                                       PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                    // Save verificationId for later
+                    mVerificationId = verificationId;
+                    token = forceResendingToken;
+                }
+            };
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        UserModel userModel = new UserModel();
+                        userModel.setUserId(firebaseUser.getUid());
+                        userModel.setPhone(etMobileNo.getText().toString().trim());
+
+                        firebaseDatabase.getReference()
+                                .child(Constants.USER_COLLECTION_NAME)
+                                .child(task.getResult().getUser().getUid())
+                                .setValue(userModel);
+
+                        // method for profile setup
+                        setUpProfile();
+                    } else {
+                        Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.incorrect_otp));
+                    }
+                });
     }
 
     private void numberMoveOTP() {
@@ -235,34 +314,6 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
         });
     }
 
-    private void loginWithPhoneNumber(String phoneNumber) {
-        if (phoneNumber.length() == 10) {
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    "+91" + phoneNumber,
-                    60,
-                    TimeUnit.SECONDS,
-                    LoginWithPhoneActivity.this,
-                    new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        @Override
-                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                            Utils.showLog(getString(R.string.success), getString(R.string.verification_successful));
-                        }
-
-                        @Override
-                        public void onVerificationFailed(@NonNull FirebaseException e) {
-                            Utils.showLog(getString(R.string.error), e.getMessage());
-                        }
-
-                        @Override
-                        public void onCodeSent(@NonNull String backendOTP, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                            super.onCodeSent(backendOTP, forceResendingToken);
-                            backendOTPValue = backendOTP;
-                        }
-                    }
-            );
-        }
-    }
-
     private void verifyOTP() {
         if (Objects.requireNonNull(edtOTP1.getText()).toString().isEmpty() ||
                 Objects.requireNonNull(edtOTP2.getText()).toString().isEmpty() ||
@@ -273,6 +324,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
             Utils.showToastMessage(this, getString(R.string.please_enter_valid_otp));
             return;
         }
+
         String OTPValue = edtOTP1.getText().toString().trim() +
                 edtOTP2.getText().toString().trim() +
                 edtOTP3.getText().toString().trim() +
@@ -280,30 +332,11 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
                 edtOTP5.getText().toString().trim() +
                 edtOTP6.getText().toString().trim();
 
-        if (backendOTPValue != null) {
-            Utils.showProgressDialog(LoginWithPhoneActivity.this, "", getString(R.string.please_wait));
-            PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(
-                    backendOTPValue, OTPValue
-            );
-            FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                            UserModel userModel = new UserModel();
-                            userModel.setUserId(firebaseUser.getUid());
-                            userModel.setPhone(etMobileNo.getText().toString().trim());
+        Utils.showProgressDialog(LoginWithPhoneActivity.this, "", getString(R.string.please_wait));
 
-                            firebaseDatabase.getReference()
-                                    .child(Constants.USER_COLLECTION_NAME)
-                                    .child(task.getResult().getUser().getUid())
-                                    .setValue(userModel);
-
-                            // method for profile setup
-                            setUpProfile();
-                        } else {
-                            Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.incorrect_otp));
-                        }
-                    });
+        if (mVerificationId != null) {
+            PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(mVerificationId, OTPValue);
+            signInWithPhoneAuthCredential(authCredential);
         } else {
             Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.please_check_connection));
         }
