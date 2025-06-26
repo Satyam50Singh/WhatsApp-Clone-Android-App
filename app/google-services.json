@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "150087040940",
+    "firebase_url": "https://whatsapp-clone-2511-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "whatsapp-clone-2511",
     "storage_bucket": "whatsapp-clone-2511.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "150087040940-duthckdlqhh79b18nma4gv360v8vl7f4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whatsappclone",
+            "certificate_hash": "64c785d4319af13cc24be38aac328793a080f643"
+          }
+        },
         {
           "client_id": "150087040940-0otnuhbqmjvskhdvp2geqojku3uee9cq.apps.googleusercontent.com",
           "client_type": 3

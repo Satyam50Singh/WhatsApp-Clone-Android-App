@@ -1,9 +1,9 @@
 package com.example.whatsappclone.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,8 +20,6 @@ import com.example.whatsappclone.utils.Utils;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -32,18 +30,18 @@ import java.util.Date;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
-    private Context context;
-    private ArrayList<MessageModel> localDataSet;
-    private Activity activity;
-    private String senderRoom, receiverRoom, receiverId;
+    private final Context context;
+    private final ArrayList<MessageModel> localDataSet;
+    private final Activity activity;
+    private final String senderRoom;
+    private final String receiverRoom;
 
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
 
-    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, String receiverId, Activity activity, String senderRoom, String receiverRoom) {
+    public ChatAdapter(Context context, ArrayList<MessageModel> localDataSet, Activity activity, String senderRoom, String receiverRoom) {
         this.context = context;
         this.localDataSet = localDataSet;
-        this.receiverId = receiverId;
         this.activity = activity;
         this.senderRoom = senderRoom;
         this.receiverRoom = receiverRoom;
@@ -70,6 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         try {

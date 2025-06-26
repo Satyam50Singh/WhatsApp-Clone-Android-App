@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class GroupChatAdapter extends RecyclerView.Adapter {
-    private Context context;
-    private ArrayList<MessageModel> localDataSet;
-    private ArrayList<UserModel> groupChatUsers;
+    private final Context context;
+    private final ArrayList<MessageModel> localDataSet;
+    private final ArrayList<UserModel> groupChatUsers;
     final int SENDER_VIEW_TYPE = 1;
     final int RECEIVER_VIEW_TYPE = 2;
 

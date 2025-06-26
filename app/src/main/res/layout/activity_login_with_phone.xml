@@ -90,8 +90,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:enabled="false"
                 android:layout_marginRight="5dp"
+                android:enabled="false"
                 android:textColorHint="@color/purple_700"
                 app:boxStrokeColor="@color/purple_700">
 
@@ -99,8 +99,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    android:textColor="@color/black"
                     android:text="@string/country_code"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,9 +116,9 @@
                     android:id="@+id/et_enter_mobile_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:inputType="phone"
                     android:maxLength="10"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -142,7 +142,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
                     android:layout_height="60dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="2dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/purple_700"
                     app:boxStrokeColor="@color/purple_700">
@@ -154,6 +154,7 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +162,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
                     android:layout_height="60dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="2dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/purple_700"
                     app:boxStrokeColor="@color/purple_700">
@@ -172,6 +173,7 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,7 +181,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
                     android:layout_height="60dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="2dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/purple_700"
                     app:boxStrokeColor="@color/purple_700">
@@ -191,6 +193,7 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,7 +201,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
                     android:layout_height="60dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="2dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/purple_700"
                     app:boxStrokeColor="@color/purple_700">
@@ -210,6 +213,7 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +221,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
                     android:layout_height="60dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="2dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/purple_700"
                     app:boxStrokeColor="@color/purple_700">
@@ -229,8 +233,10 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="48dp"
@@ -247,6 +253,7 @@
                         android:layout_height="52dp"
                         android:maxLength="1"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -256,11 +263,11 @@
                 android:id="@+id/tv_resend_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_autorenew"
-                android:drawableTint="@color/purple_700"
+                android:drawableStart="@drawable/ic_autorenew"
                 android:gravity="right|center_vertical"
                 android:text="@string/resend_otp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableTint="@color/purple_700" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -282,20 +289,5 @@
         </androidx.appcompat.widget.AppCompatButton>
 
     </LinearLayout>
-
-
-    <!--    <ProgressBar-->
-    <!--        android:id="@+id/pb_loading"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:layout_marginTop="64dp"-->
-    <!--        android:layout_marginBottom="64dp"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/ll_login_section"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/ll_login_section"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.3" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

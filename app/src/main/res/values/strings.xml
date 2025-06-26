@@ -117,4 +117,7 @@
     <string name="select_sort_order">Select Sort Order :</string>
     <string name="sample_messages">Sample Messages</string>
     <string name="message_time">Message Time</string>
+    <string name="or">Or</string>
+    <string name="google_sign_in_failed_account_is_null">Google Sign-In failed: account is null</string>
+    <string name="group_chat">Group Chat</string>
 </resources>

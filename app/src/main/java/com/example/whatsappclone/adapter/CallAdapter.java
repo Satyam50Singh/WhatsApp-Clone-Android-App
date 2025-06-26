@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.models.UserModel;
-import com.example.whatsappclone.ui.fragments.CallsFragment;
-import com.example.whatsappclone.ui.fragments.ChatFragment;
 import com.example.whatsappclone.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -32,14 +30,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
 
-    private Context context;
-    private Activity activity;
-    private ArrayList<UserModel> localDataSet;
-    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 010101;
+    private final Context context;
+    private final ArrayList<UserModel> localDataSet;
+    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 19991;
 
-    public CallAdapter(Activity activity, Context context, ArrayList<UserModel> localDataSet) {
+    public CallAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
-        this.activity = activity;
         this.localDataSet = localDataSet;
     }
 
@@ -58,7 +54,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             holder.tvPhone.setText(user.getPhone());
             if (user.getProfilePicture() != null) {
                 if (user.getProfilePicture().startsWith(context.getString(R.string.http))) {
-                    Picasso.get().load(user.getProfilePicture()).placeholder(R.drawable.man_toolbar).into(holder.civProfileImage);
+                    Picasso.get().load(user.getProfilePicture()).placeholder(R.drawable.man).into(holder.civProfileImage);
                 } else {
                     holder.civProfileImage.setImageBitmap(decodeImage(user.getProfilePicture()));
                 }
@@ -66,14 +62,14 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             holder.ivCall.setOnClickListener(view -> {
                 // make call
                 Intent mIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "+91" + user.getPhone()));// Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission((Activity) context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
                 } else {
                     //You already have permission
                     try {
                         context.startActivity(mIntent);
                     } catch (SecurityException e) {
-                        e.printStackTrace();
+                        e.fillInStackTrace();
                     }
                 }
             });
@@ -88,10 +84,11 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         return localDataSet.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private CircleImageView civProfileImage;
-        private TextView tvUserName, tvPhone;
-        private ImageView ivCall;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CircleImageView civProfileImage;
+        private final TextView tvUserName;
+        private final TextView tvPhone;
+        private final ImageView ivCall;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

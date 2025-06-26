@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp">
+    android:layout_marginBottom="@dimen/dimen_4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="3dp"
+        android:paddingHorizontal="@dimen/dimen_8dp"
+        android:paddingVertical="@dimen/dimen_3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -20,9 +20,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_user_call_profile"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/man" />
+            android:layout_width="@dimen/dimen_56dp"
+            android:layout_height="@dimen/dimen_56dp"
+            android:src="@drawable/man"
+            app:civ_border_width="@dimen/dimen_1dp"
+            app:civ_border_color="@color/darkGray"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,37 +36,37 @@
                 android:id="@+id/tv_user_call_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="start"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:textAllCaps="false"
-                android:textSize="20dp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_user_call_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:textAllCaps="false"
-                android:textSize="14dp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
 
         <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_0dp"
             android:layout_gravity="center"
             android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/iv_call"
-            android:layout_width="32dp"
-            android:layout_height="45dp"
+            android:layout_width="28dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/ic_call"
             app:tint="@color/purple_700" />
     </LinearLayout>

@@ -1,14 +1,14 @@
 package com.example.whatsappclone.ui.fragments;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +32,7 @@ public class CallsFragment extends Fragment {
 
     private RecyclerView rcvUserCallList;
     private CallAdapter callAdapter;
-    private ArrayList<UserModel> userWithPhoneList = new ArrayList<>();
+    private final ArrayList<UserModel> userWithPhoneList = new ArrayList<>();
     private TextView tvNoUserFound;
     private ShimmerFrameLayout shimmerFrameLayout;
 
@@ -58,7 +58,7 @@ public class CallsFragment extends Fragment {
         shimmerFrameLayout.startShimmer();
         loadUsers();
 
-        callAdapter = new CallAdapter(getActivity(), getContext(), userWithPhoneList);
+        callAdapter = new CallAdapter(getContext(), userWithPhoneList);
         rcvUserCallList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvUserCallList.setAdapter(callAdapter);
     }
@@ -68,12 +68,13 @@ public class CallsFragment extends Fragment {
             database.getReference()
                     .child(Constants.USER_COLLECTION_NAME)
                     .addValueEventListener(new ValueEventListener() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             userWithPhoneList.clear();
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 UserModel user = snapshot1.getValue(UserModel.class);
-                                if (!user.getUserId().equals(FirebaseAuth.getInstance().getUid()) && user.getPhone() != null) {
+                                if (user != null && !user.getUserId().equals(FirebaseAuth.getInstance().getUid()) && user.getPhone() != null) {
                                     userWithPhoneList.add(user);
                                 }
                             }
@@ -92,6 +93,10 @@ public class CallsFragment extends Fragment {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
+                            shimmerFrameLayout.hideShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
+                            rcvUserCallList.setVisibility(View.GONE);
+                            Log.e("TAG", "onCancelled: " + error.getMessage());
                         }
                     });
         } catch (Exception e) {
