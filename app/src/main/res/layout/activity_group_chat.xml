@@ -33,9 +33,9 @@
                 android:id="@+id/tv_receiver_name_gc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@color/colorPrimary"
-                android:text="Group Chat "
+                android:text="@string/group_chat"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="247dp" />
@@ -61,17 +61,18 @@
 
         <EditText
             android:id="@+id/et_message_gc"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:layout_weight="1"
             android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableLeft="@drawable/ic_emoji_emotions"
-            android:drawableRight="@drawable/ic_camera"
+            android:drawableStart="@drawable/ic_emoji_emotions"
+            android:drawableEnd="@drawable/ic_camera"
             android:drawablePadding="2dp"
             android:drawableTint="@color/darkGray"
             android:ems="10"
             android:hint="@string/message"
+            android:textColor="@color/black"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
