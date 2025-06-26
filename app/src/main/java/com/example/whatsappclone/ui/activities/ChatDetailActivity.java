@@ -142,7 +142,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         Utils.showProgressDialog(ChatDetailActivity.this, "", getString(R.string.please_wait));
         loadChatMessages();
 
-        chatAdapter = new ChatAdapter(getApplicationContext(), chatRecord, receiverId, ChatDetailActivity.this, senderRoom, receiverRoom);
+        chatAdapter = new ChatAdapter(getApplicationContext(), chatRecord, ChatDetailActivity.this, senderRoom, receiverRoom);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ChatDetailActivity.this);
         rcvUserChat.setLayoutManager(layoutManager);
         rcvUserChat.setAdapter(chatAdapter);

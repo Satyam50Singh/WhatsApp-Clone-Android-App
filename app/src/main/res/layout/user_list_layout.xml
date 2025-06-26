@@ -21,16 +21,18 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_profile_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/user" />
+            android:layout_width="@dimen/dimen_56dp"
+            android:layout_height="@dimen/dimen_56dp"
+            android:src="@drawable/man_toolbar"
+            app:civ_border_color="@color/darkGray"
+            app:civ_border_width="@dimen/dimen_1dp" />
 
         <LinearLayout
             android:id="@+id/ll_user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp"
+            android:padding="@dimen/dimen_15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -41,9 +43,10 @@
                 android:id="@+id/tv_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="@dimen/dimen_2dp"
                 android:singleLine="true"
-                android:textSize="18sp"
+                android:text="@string/username"
+                android:textSize="@dimen/dimen_18sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -53,12 +56,12 @@
 
                 <TextView
                     android:id="@+id/tv_last_message"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="@string/tap_to_chat"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/dimen_14sp" />
 
                 <TextView
                     android:id="@+id/tv_time"
@@ -71,6 +74,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

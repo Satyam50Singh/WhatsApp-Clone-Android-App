@@ -101,3 +101,5 @@
 ### Date of Completion : Wednesday, 23 March 2022
 
 ## AGP, Libraries & Version Upgrade - 01 July 2023
+
+## For Resolving SMS related issue : Please add SHA-1 & SHA-256 in firebase project.

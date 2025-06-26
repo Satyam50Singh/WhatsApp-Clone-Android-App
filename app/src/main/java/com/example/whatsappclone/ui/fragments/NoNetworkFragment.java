@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +29,10 @@ public class NoNetworkFragment extends Fragment {
     private void init(View rootView) {
         Button btnReload = rootView.findViewById(R.id.btn_reload);
         btnReload.setOnClickListener(view -> {
-            boolean connStatus = NetworkManager.checkNetworkConnectedStatus(getContext());
+            boolean connStatus = NetworkManager.checkNetworkConnectedStatus(requireContext());
             if (connStatus) {
                 startActivity(new Intent(getContext(), MainActivity.class));
-                getActivity().finish();
+                requireActivity().finish();
             } else {
                 Utils.showToastMessage(getContext(), getString(R.string.connection_status_failed));
             }
