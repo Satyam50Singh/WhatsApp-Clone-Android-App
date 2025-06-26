@@ -119,5 +119,6 @@
         android:drawablePadding="10dp"
         android:gravity="center_horizontal"
         android:singleLine="true"
-        android:text="@string/login_with_phone" />
+        android:text="@string/login_with_phone"
+        app:drawableTint="@color/icon_tint" />
 </LinearLayout>
