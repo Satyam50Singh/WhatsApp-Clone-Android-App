@@ -1,4 +1,5 @@
 # WhatsApp Clone Project
+
 ![This is an image](./app/src/main/res/drawable/whatsapp.png)
 
 ## Developer :: Satyam Singh
@@ -8,25 +9,32 @@
 ## Links
 
 - **Android Documentation**
->  https://developer.android.com/docs
+
+> https://developer.android.com/docs
+
 - **Firebase**
->  https://firebase.google.com/docs
+
+> https://firebase.google.com/docs
+
 - **Tutorial Link (Hindi)**
->  https://www.youtube.com/watch?v=d2_bcbUbCtc
+
+> https://www.youtube.com/watch?v=d2_bcbUbCtc
+
 - **Tutorial Link (English)**
->  https://www.youtube.com/watch?v=lJfMvLTKnwI  
+
+> https://www.youtube.com/watch?v=lJfMvLTKnwI
 
 ## Steps involved
 
 - Splash Screen
-- Tab Layout 
+- Tab Layout
 - Menu and search option at action bar
 - Home Activity Layout Design
 - Sign Up Activity Layout Design
 - Sign In Activity Layout Design
 - Navigation Between Home, SignUp, SignIn Activities
 - Utils : Toast, ProgressDialog
-- Connection With Firebase 
+- Connection With Firebase
 - SignUp Controls Validation
 - SignUp With Email and Password
 - Storing User Data in realtime database
@@ -60,7 +68,7 @@
 - Group Chat Activity Added
 - ViewProfilePictureActivity Added
 - ViewProfilePictureActivity's Menu Added
-- Adding BottomSheet Inside ViewProfilePictureActivity 
+- Adding BottomSheet Inside ViewProfilePictureActivity
 - Showing last Message in Chat Fragments Using UserAdapter
 - Profile Setting Layout Added
 - Picking Profile Picture Code Completed in Settings Activity
@@ -75,7 +83,7 @@
 - Resend OTP functionality Added
 - Enabling Contextual Action Mode ChatDetailActivity
 - Search User Functionality Added
-- ReceiverUserProfile Added 
+- ReceiverUserProfile Added
 - Account verification Status Added In User Settings Activity
 - Deleting Message From User Chat and Group Chat
 - Remove Message From Starred Messages
@@ -85,13 +93,13 @@
 - Online Indicator with Firebase
 - Typing Status of Users
 - Showing user list in call fragment
-  - sample layout for recyclerview
-  - adding recyclerview inside call fragment
-  - adapter for recyclerview
-  - setting recyclerview adapter
-  - fetching user records from firebase in call fragment
+    - sample layout for recyclerview
+    - adding recyclerview inside call fragment
+    - adapter for recyclerview
+    - setting recyclerview adapter
+    - fetching user records from firebase in call fragment
 - Making Call in Call Fragment
-- Setup Profile Dialog Added   
+- Setup Profile Dialog Added
 - Animations Added
 - Copy Message In ClipBoard in Chats
 - Sorting Users List in Ascending and Descending order
@@ -103,3 +111,19 @@
 ## AGP, Libraries & Version Upgrade - 01 July 2023
 
 ## For Resolving SMS related issue : Please add SHA-1 & SHA-256 in firebase project.
+
+## Firebase Storage Rules
+
+To enable temporary read and write access to Firebase Storage, use the following security rules:
+
+```js
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      // Allow read and write access until July 25, 2026
+      allow read, write: if request.time < timestamp.date(2026, 7, 25);
+    }
+  }
+}
+```
