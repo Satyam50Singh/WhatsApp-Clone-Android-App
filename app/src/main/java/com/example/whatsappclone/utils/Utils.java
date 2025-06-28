@@ -146,7 +146,7 @@ public class Utils {
             imageStream = context.getContentResolver().openInputStream(uri);
             selectedBitmap = BitmapFactory.decodeStream(imageStream);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
         return selectedBitmap;
     }
@@ -186,8 +186,7 @@ public class Utils {
     // converting base64 string to Bitmap
     public static Bitmap decodeImage(String img) {
         byte[] decodedString = Base64.decode(img, Base64.DEFAULT);
-        Bitmap decodeByteImage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return decodeByteImage;
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     // method to remove image
@@ -199,12 +198,14 @@ public class Utils {
                     firebaseDatabase.getReference()
                             .child(Constants.USER_COLLECTION_NAME)
                             .child(userId)
-                            .child("profilePicture").setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Utils.showToastMessage(context, context.getString(R.string.profile_picture_removed));
-                        }
-                    });
+                            .child("profilePicture")
+                            .setValue(null)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Utils.showToastMessage(context, context.getString(R.string.profile_picture_removed));
+                                }
+                            });
 
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())

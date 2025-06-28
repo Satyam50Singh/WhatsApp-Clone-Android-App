@@ -75,12 +75,13 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="send_otp">Send OTP</string>
-    <string name="so_we_know_you_are_real">so we know you are real</string>
+    <string name="so_we_know_you_are_real">so we know you are real.</string>
     <string name="add_your_phone_number_we_ll_send_you_a_verification_code">Add your phone number, we\'ll send you a verification code</string>
     <string name="country_code">+91</string>
     <string name="enter_valid_number">Enter Valid Number</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="please_check_connection">Please Check Connection</string>
+    <string name="something_went_wrong">Oops something went wrong!</string>
     <string name="incorrect_otp">Incorrect OTP</string>
     <string name="verification_successful">Verification successful</string>
     <string name="skip_for_now">Skip for now</string>
@@ -103,7 +104,7 @@
     <string name="date_and_time_format">yyyy-MM-dd HH:mm:ss</string>
     <string name="firebase_url">https://firebasestorage.googleapis.com/</string>
     <string name="your_phone">Your Phone</string>
-    <string name="your_about">Your About</string>
+    <string name="your_about">About me</string>
     <string name="your_full_name">Your Full Name*</string>
     <string name="online">Online</string>
     <string name="offline">Offline</string>
@@ -120,4 +121,6 @@
     <string name="or">Or</string>
     <string name="google_sign_in_failed_account_is_null">Google Sign-In failed: account is null</string>
     <string name="group_chat">Group Chat</string>
+    <string name="please_enter_otp">Please enter OTP</string>
+    <string name="user_name_is_required">User name is required.\n</string>
 </resources>

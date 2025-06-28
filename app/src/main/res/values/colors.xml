@@ -14,5 +14,6 @@
     <color name="grayBackground">#BCBCBC</color>
     <color name="chatbackground">#AAAAAA</color>
     <color name="darkGray">#888888</color>
+    <color name="text_color">@android:color/black</color>
 
 </resources>

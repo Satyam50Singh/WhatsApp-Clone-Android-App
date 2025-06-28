@@ -4,6 +4,7 @@ import static com.example.whatsappclone.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUE
 import static com.example.whatsappclone.utils.Utils.PICK_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.whatsappclone.utils.Utils.encodeImage;
 import static com.example.whatsappclone.utils.Utils.getBitmapFromUri;
+import static com.example.whatsappclone.utils.Utils.hideProgressDialog;
 import static com.example.whatsappclone.utils.Utils.showToastMessage;
 import static com.example.whatsappclone.utils.Utils.takePictureFromCamera;
 import static com.example.whatsappclone.utils.Utils.takePictureFromGallery;
@@ -99,8 +100,9 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
     private void setListeners() {
         btnLogin.setOnClickListener(view -> {
             try {
-                if (llOTP.getVisibility() == View.GONE) {
+                if (llOTP.getVisibility() == View.GONE && etMobileNo.getText() != null) {
                     // send OTP code
+                    Utils.showProgressDialog(LoginWithPhoneActivity.this, "", getString(R.string.please_wait));
                     String mobileNumber = etMobileNo.getText().toString().trim();
                     if (mobileNumber.length() < 10) {
                         etMobileNo.setError(getString(R.string.enter_valid_number));
@@ -159,20 +161,23 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
     PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
             new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 @Override
-                public void onVerificationCompleted(PhoneAuthCredential credential) {
+                public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                     // Auto-verification or instant verification
+                    hideProgressDialog();
                     signInWithPhoneAuthCredential(credential);
                 }
 
                 @Override
                 public void onVerificationFailed(FirebaseException e) {
+                    hideProgressDialog();
                     Log.e("Auth", "Verification Failed: " + e.getMessage());
                 }
 
                 @Override
-                public void onCodeSent(String verificationId,
-                                       PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                public void onCodeSent(@NonNull String verificationId,
+                                       @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                     // Save verificationId for later
+                    hideProgressDialog();
                     mVerificationId = verificationId;
                     token = forceResendingToken;
                 }
@@ -181,19 +186,24 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
+                    hideProgressDialog();
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        UserModel userModel = new UserModel();
-                        userModel.setUserId(firebaseUser.getUid());
-                        userModel.setPhone(etMobileNo.getText().toString().trim());
+                        if (firebaseUser != null) {
+                            UserModel userModel = new UserModel();
+                            userModel.setUserId(firebaseUser.getUid());
+                            userModel.setPhone(etMobileNo.getText() != null ? etMobileNo.getText().toString().trim() : "");
 
-                        firebaseDatabase.getReference()
-                                .child(Constants.USER_COLLECTION_NAME)
-                                .child(task.getResult().getUser().getUid())
-                                .setValue(userModel);
+                            if (task.getResult().getUser() != null) {
+                                firebaseDatabase.getReference()
+                                        .child(Constants.USER_COLLECTION_NAME)
+                                        .child(task.getResult().getUser().getUid())
+                                        .setValue(userModel);
+                            }
 
-                        // method for profile setup
-                        setUpProfile();
+                            // method for profile setup
+                            setUpProfile();
+                        }
                     } else {
                         Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.incorrect_otp));
                     }
@@ -313,8 +323,11 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
 
     private void verifyOTP() {
         if (edtOTP1.getText().toString().isEmpty() || edtOTP2.getText().toString().isEmpty() || edtOTP3.getText().toString().isEmpty() || edtOTP4.getText().toString().isEmpty() || edtOTP5.getText().toString().isEmpty() || edtOTP6.getText().toString().isEmpty()) {
+            showToastMessage(this, getString(R.string.please_enter_otp));
             return;
         }
+
+        Utils.showProgressDialog(LoginWithPhoneActivity.this, "", getString(R.string.please_wait));
 
         String OTPValue = edtOTP1.getText().toString().trim() +
                 edtOTP2.getText().toString().trim() +
@@ -323,13 +336,12 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
                 edtOTP5.getText().toString().trim() +
                 edtOTP6.getText().toString().trim();
 
-        Utils.showProgressDialog(LoginWithPhoneActivity.this, "", getString(R.string.please_wait));
-
         if (mVerificationId != null) {
             PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(mVerificationId, OTPValue);
             signInWithPhoneAuthCredential(authCredential);
         } else {
-            Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.please_check_connection));
+            hideProgressDialog();
+            Utils.showToastMessage(LoginWithPhoneActivity.this, getString(R.string.something_went_wrong));
         }
     }
 
@@ -367,7 +379,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
             String fullName = etFullName.getText().toString().trim();
             String about = etAbout.getText().toString().trim();
 
-            if (fullName.length() > 0) {
+            if (!fullName.isEmpty()) {
                 if (selectedBitmap != null) {
                     profileEncodedString = encodeImage(selectedBitmap); // converting bitmap to base64 string
                 }
@@ -390,7 +402,7 @@ public class LoginWithPhoneActivity extends AppCompatActivity implements BottomS
                             }
                         });
             } else {
-                etFullName.setError(getString(R.string.username_required));
+                etFullName.setError(getString(R.string.user_name_is_required));
                 etFullName.requestFocus();
             }
         });

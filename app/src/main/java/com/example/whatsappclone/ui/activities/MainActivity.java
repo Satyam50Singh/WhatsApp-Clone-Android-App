@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,6 +19,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.whatsappclone.R;
 import com.example.whatsappclone.adapter.ViewPagerAdapter;
@@ -47,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+
+
+        View decorView = getWindow().getDecorView();
+        WindowInsetsControllerCompat insetsController =
+                new WindowInsetsControllerCompat(getWindow(), decorView);
+        insetsController.setAppearanceLightStatusBars(false); // Light icons (white)
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_view), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -69,21 +81,23 @@ public class MainActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.main_menu, menu);
             MenuItem item = menu.findItem(R.id.action_search);
             SearchView searchView = (SearchView) item.getActionView();
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    chatFragment.searchUser(s);
-                    if (s.length() == 0) {
-                        chatFragment.loadUserRecord();
+            if (searchView != null) {
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
                     }
-                    return false;
-                }
-            });
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        chatFragment.searchUser(s);
+                        if (s.isEmpty()) {
+                            chatFragment.loadUserRecord();
+                        }
+                        return false;
+                    }
+                });
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -135,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             viewPagerAdapter.addFragment(new NoNetworkFragment(), "");
             viewPager.setAdapter(viewPagerAdapter);
-            tabLayout.getTabAt(0).setIcon(R.drawable.ic_wifi_off);
+            if (tabLayout.getTabAt(0) != null) {
+                tabLayout.getTabAt(0).setIcon(R.drawable.ic_wifi_off);
+            }
         }
     }
 

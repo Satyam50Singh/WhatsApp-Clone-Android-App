@@ -39,10 +39,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> implements Filterable {
 
-    private Context context;
-    private ArrayList<UserModel> localDataSet;
-    private List<UserModel> localDataSetFull;
-    private FirebaseDatabase firebaseDatabase;
+    private final Context context;
+    private final ArrayList<UserModel> localDataSet;
+    private final List<UserModel> localDataSetFull;
+    private final FirebaseDatabase firebaseDatabase;
 
     public UserListAdapter(Context context, ArrayList<UserModel> localDataSet) {
         this.context = context;
@@ -59,8 +59,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         try {
+            int position = holder.getAdapterPosition();
             if (localDataSet.get(position).getProfilePicture() != null && !localDataSet.get(position).getProfilePicture().startsWith(context.getString(R.string.http))) {
                 holder.civProfileImage.setImageBitmap(decodeImage(localDataSet.get(position).getProfilePicture()));
             } else {

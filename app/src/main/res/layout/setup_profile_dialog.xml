@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/lightGrey"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
 
@@ -15,8 +14,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_edit_profile_setup"
-            android:layout_width="185dp"
-            android:layout_height="185dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/man"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,38 +41,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="20dp"
         android:visibility="visible">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/et_full_name_setup"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableRight="@drawable/ic_edit"
-            android:drawableTint="@color/black"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_profile_edittext"
             android:hint="@string/your_full_name"
             android:paddingHorizontal="16dp"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:textSize="18sp" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/et_user_about_setup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableRight="@drawable/ic_edit"
-            android:drawableTint="@color/black"
+            android:background="@drawable/bg_profile_edittext"
             android:hint="@string/your_about"
+            android:maxLines="2"
             android:paddingHorizontal="16dp"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textColor="@color/text_color"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/ll_verify_setup"
@@ -111,8 +108,8 @@
             android:id="@+id/btn_save_profile_setup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="60dp"
             android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="60dp"
             android:backgroundTint="@color/colorPrimary"
             android:drawablePadding="10dp"
             android:elevation="6dp"

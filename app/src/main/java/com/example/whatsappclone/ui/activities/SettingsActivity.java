@@ -52,15 +52,11 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     private Button btnEditProfile;
     private TextInputEditText etUserAbout, etFullName, etPhone;
     private FloatingActionButton fabEditProfilePicture;
-
     private FirebaseDatabase firebaseDatabase;
-
     private CircleImageView civProfileImage;
     private Bitmap selectedBitmap;
     private String profileEncodedString, userEmail;
     private TextView tvAccountVerificationStatus;
-
-    private LinearLayout llVerify;
 
     @Override
     public void onBackPressed() {
@@ -72,7 +68,10 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0b6156")));
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0b6156")));
+        }
 
         init();
     }
@@ -87,7 +86,6 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture = findViewById(R.id.fab_edit_profile);
         civProfileImage = findViewById(R.id.civ_edit_profile);
         tvAccountVerificationStatus = findViewById(R.id.tv_account_verification_status);
-        llVerify = findViewById(R.id.ll_verify);
 
         // profile syncing
         syncProfile();
@@ -116,37 +114,39 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
     }
 
     private void syncProfile() {
-        firebaseDatabase.getReference()
-                .child(Constants.USER_COLLECTION_NAME)
-                .child(FirebaseAuth.getInstance().getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        UserModel userModel = snapshot.getValue(UserModel.class);
-                        if (userModel != null) {
-                            etFullName.setText(userModel.getUsername());
-                            etUserAbout.setText(userModel.getStatus());
-                            etPhone.setText(userModel.getPhone());
-                            userEmail = userModel.getEmail();
-                            if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
-                                civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
-                            } else {
-                                Picasso.get().load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            firebaseDatabase.getReference()
+                    .child(Constants.USER_COLLECTION_NAME)
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            UserModel userModel = snapshot.getValue(UserModel.class);
+                            if (userModel != null) {
+                                etFullName.setText(userModel.getUsername());
+                                etUserAbout.setText(userModel.getStatus());
+                                etPhone.setText(userModel.getPhone());
+                                userEmail = userModel.getEmail();
+                                if (userModel.getProfilePicture() != null && !userModel.getProfilePicture().startsWith(getString(R.string.http))) {
+                                    civProfileImage.setImageBitmap(decodeImage(userModel.getProfilePicture()));
+                                } else {
+                                    Picasso.get().load(userModel.getProfilePicture()).placeholder(R.drawable.man).into(civProfileImage);
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
-        checkVerificationStatus();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+            checkVerificationStatus();
+        }
     }
 
     @SuppressLint("ResourceAsColor")
     private void checkVerificationStatus() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (!firebaseUser.isEmailVerified()) {
+        if (firebaseUser != null && !firebaseUser.isEmailVerified()) {
             tvAccountVerificationStatus.setText(R.string.not_verified);
             tvAccountVerificationStatus.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9F0B0B")));
         } else {
@@ -238,5 +238,13 @@ public class SettingsActivity extends AppCompatActivity implements BottomSheetUp
         fabEditProfilePicture.setVisibility(View.GONE);
         btnEditProfile.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_edit, 0);
         finish();
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

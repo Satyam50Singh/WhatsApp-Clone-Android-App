@@ -68,6 +68,6 @@
             android:layout_gravity="center"
             android:layout_marginEnd="4dp"
             android:src="@drawable/ic_call"
-            app:tint="@color/purple_700" />
+            app:tint="@color/purple_500" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

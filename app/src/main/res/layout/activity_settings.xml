@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayBackground"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
@@ -56,26 +55,26 @@
             android:layout_height="55dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableTint="@color/black"
+            android:background="@drawable/bg_profile_edittext"
+            android:drawableTint="@color/icon_tint"
             android:enabled="false"
             android:hint="@string/your_full_name"
             android:paddingHorizontal="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textColorHint="@color/darkGray"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_user_about"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginBottom="4dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableTint="@color/black"
+            android:background="@drawable/bg_profile_edittext"
+            android:drawableTint="@color/icon_tint"
             android:enabled="false"
             android:hint="@string/your_about"
             android:paddingHorizontal="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textColorHint="@color/darkGray"
             android:textSize="18sp" />
 
@@ -84,21 +83,21 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_sent_message_edit_text"
-            android:drawableTint="@color/black"
+            android:background="@drawable/bg_profile_edittext"
+            android:drawableTint="@color/icon_tint"
             android:enabled="false"
             android:hint="@string/your_phone"
-            android:padding="10dp"
-            android:textColor="@color/black"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/text_color"
             android:textColorHint="@color/darkGray"
             android:textSize="18sp" />
 
         <LinearLayout
             android:id="@+id/ll_verify"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_sent_message_edit_text"
+            android:background="@drawable/bg_profile_edittext"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -119,11 +118,12 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_bg"
                 android:backgroundTint="@color/purple_700"
-                android:padding="8dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
                 android:text="Verified"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <View
