@@ -37,9 +37,9 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             // if user is loggedIn then we navigate to MainActivity
             if (firebaseAuth.getCurrentUser() != null) {
-                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
             } else {
-                startActivity(new Intent(SplashScreen.this, HomeActivity.class));
+                startActivity(new Intent(this, HomeActivity.class));
             }
             finish();
         }, 1000);
